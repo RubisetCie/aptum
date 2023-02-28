@@ -59,5 +59,8 @@ Adam Heath <doogie@debian.org> - 2nd Generation FTP method author
 Ben Collins <bcollins@debian.org> - Initial RSH method
 Many other bug reports through the Debian Bug system
 
+Fork author:
+        Matthieu Carteron <rubisetcie@gmail.com>
+
 NOTE: The ChangeLog generator will parse for names and email addresses. The
 'CVS:<name>' tag should indicate who this pair refers to.
