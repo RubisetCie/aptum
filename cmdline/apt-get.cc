@@ -92,49 +92,6 @@
 
 using namespace std;
 
-/* mark packages as automatically/manually installed.			{{{*/
-static bool DoMarkAuto(CommandLine &CmdL)
-{
-   bool Action = true;
-   int AutoMarkChanged = 0;
-   OpTextProgress progress;
-   CacheFile Cache;
-   if (Cache.Open() == false)
-      return false;
-
-   if (strcasecmp(CmdL.FileList[0],"markauto") == 0)
-      Action = true;
-   else if (strcasecmp(CmdL.FileList[0],"unmarkauto") == 0)
-      Action = false;
-
-   for (const char **I = CmdL.FileList + 1; *I != 0; I++)
-   {
-      const char *S = *I;
-      // Locate the package
-      pkgCache::PkgIterator Pkg = Cache->FindPkg(S);
-      if (Pkg.end() == true) {
-         return _error->Error(_("Couldn't find package %s"),S);
-      }
-      else
-      {
-         if (!Action)
-            ioprintf(c1out,_("%s set to manually installed.\n"), Pkg.Name());
-         else
-            ioprintf(c1out,_("%s set to automatically installed.\n"),
-                      Pkg.Name());
-
-         Cache->MarkAuto(Pkg,Action);
-         AutoMarkChanged++;
-      }
-   }
-
-   _error->Notice(_("This command is deprecated. Please use 'apt-mark auto' and 'apt-mark manual' instead."));
-
-   if (AutoMarkChanged && ! _config->FindB("APT::Get::Simulate",false))
-      return Cache->writeStateFile(NULL);
-   return false;
-}
-									/*}}}*/
 // DoDSelectUpgrade - Do an upgrade by following dselects selections	/*{{{*/
 // ---------------------------------------------------------------------
 /* Follows dselect's selections */
@@ -414,8 +371,6 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
       {"autoremove", &DoInstall, _("Remove automatically all unused packages")},
       {"auto-remove", &DoInstall, nullptr},
       {"autopurge",&DoInstall, nullptr},
-      {"markauto", &DoMarkAuto, nullptr},
-      {"unmarkauto", &DoMarkAuto, nullptr},
       {"dist-upgrade", &DoDistUpgrade, _("Distribution upgrade, see apt-get(8)")},
       {"full-upgrade", &DoDistUpgrade, nullptr},
       {"dselect-upgrade", &DoDSelectUpgrade, _("Follow dselect selections")},
