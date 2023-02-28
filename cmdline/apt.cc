@@ -115,7 +115,6 @@ int main(int argc, const char *argv[])					/*{{{*/
    InitSignals();
    InitOutput();
 
-   CheckIfCalledByScript(argc, argv);
    CheckIfSimulateMode(CmdL);
 
    return DispatchCommandLine(CmdL, Cmds);
