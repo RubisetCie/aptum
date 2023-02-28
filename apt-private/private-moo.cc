@@ -31,7 +31,7 @@ static std::string getMooLine(time_t const timenow)			/*{{{*/
 {
    struct tm special;
    localtime_r(&timenow, &special);
-   enum { NORMAL, PACKAGEMANAGER, APPRECIATION, AGITATION, AIRBORN } line;
+   enum { NORMAL, PACKAGEMANAGER, APPRECIATION, AGITATION, AIRBORN, BIRTH } line;
    if (special.tm_mon == 11 && special.tm_mday == 25)
       line = PACKAGEMANAGER;
    else if (special.tm_mon == 7 && special.tm_mday == 16)
@@ -40,6 +40,8 @@ static std::string getMooLine(time_t const timenow)			/*{{{*/
       line = AGITATION;
    else if (special.tm_mon == 1 && special.tm_mday == 18)
       line = AIRBORN;
+   else if (special.tm_mon == 3 && special.tm_mday == 20)
+      line = BIRTH;
    else
       line = NORMAL;
 
@@ -54,6 +56,7 @@ static std::string getMooLine(time_t const timenow)			/*{{{*/
       case APPRECIATION:   out << "Three moos for Debian!"; break;
       case AGITATION:      out << "Whoever needs milk, bows to the animal."; break;
       case AIRBORN:        out << "It's a Bird ... It's a Plane ... It's Super Cow!"; break;
+      case BIRTH:          out << "It's moo birthday today!"; break;
       default:             out << "Have you mooed today?"; break;
    }
 
