@@ -110,7 +110,7 @@ static void RemoveDownloadNeedingItemsFromFetcher(pkgAcquire &Fetcher, bool &Tra
       I = Fetcher.ItemsBegin();
    }
 }
-bool InstallPackages(CacheFile &Cache, APT::PackageVector &HeldBackPackages, bool ShwKept, bool Ask, bool Safety, std::string const &Hook, CommandLine const &CmdL)
+bool InstallPackages(CacheFile &Cache, APT::PackageVector &HeldBackPackages, bool ShwKept, bool Safety, std::string const &Hook, CommandLine const &CmdL)
 {
    if (not RunScripts("APT::Install::Pre-Invoke"))
       return false;
@@ -309,8 +309,6 @@ bool InstallPackages(CacheFile &Cache, APT::PackageVector &HeldBackPackages, boo
    else
    {
       // Prompt to continue
-      if (Ask == true || Fail == true)
-      {
 	 if (_config->FindB("APT::Get::Trivial-Only",false) == true)
 	    return _error->Error(_("Trivial Only specified but this is not a trivial operation."));
 
@@ -323,7 +321,6 @@ bool InstallPackages(CacheFile &Cache, APT::PackageVector &HeldBackPackages, boo
 	       exit(1);
 	    }
 	 }
-      }
    }
 
    if (!CheckAuth(Fetcher, true))
@@ -977,9 +974,9 @@ bool DoInstall(CommandLine &CmdL)
    // See if we need to prompt
    // FIXME: check if really the packages in the set are going to be installed
    if (Cache->InstCount() == verset[MOD_INSTALL].size() && Cache->DelCount() == 0)
-      result = InstallPackages(Cache, HeldBackPackages, false, false, true, "AptCli::Hooks::Install", CmdL);
+      result = InstallPackages(Cache, HeldBackPackages, false, true, "AptCli::Hooks::Install", CmdL);
    else
-      result = InstallPackages(Cache, HeldBackPackages, false, true, true, "AptCli::Hooks::Install", CmdL);
+      result = InstallPackages(Cache, HeldBackPackages, false, true, "AptCli::Hooks::Install", CmdL);
 
    if (result)
       result = RunJsonHook("AptCli::Hooks::Install", "org.debian.apt.hooks.install.post", CmdL.FileList, Cache);

@@ -892,7 +892,7 @@ bool DoBuildDep(CommandLine &CmdL)
 	 HeldBackPackages.push_back(Pkg);
 
    pseudoPkgs.clear();
-   if (_error->PendingError() || not InstallPackages(Cache, HeldBackPackages, false, true))
+   if (_error->PendingError() || not InstallPackages(Cache, HeldBackPackages, false))
       return _error->Error(_("Failed to process build dependencies"));
    return true;
 }

@@ -40,7 +40,7 @@ bool DoCacheManipulationFromCommandLine(CommandLine &CmdL, std::vector<PseudoPkg
 
 APT_PUBLIC bool InstallPackages(CacheFile &Cache,
 				APT::PackageVector &HeldBackPackages,
-				bool ShwKept, bool Ask = true,
+				bool ShwKept,
 				bool Safety = true,
 				std::string const &Hook = "",
 				CommandLine const &CmdL = {});

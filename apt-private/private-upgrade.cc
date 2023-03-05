@@ -36,7 +36,7 @@ static bool UpgradeHelper(CommandLine &CmdL, int UpgradeFlags)
       return false;
    }
    RunJsonHook("AptCli::Hooks::Upgrade", "org.debian.apt.hooks.install.pre-prompt", CmdL.FileList, Cache);
-   if (InstallPackages(Cache, HeldBackPackages, true, true, true, "AptCli::Hooks::Upgrade", CmdL))
+   if (InstallPackages(Cache, HeldBackPackages, true, true, "AptCli::Hooks::Upgrade", CmdL))
       return RunJsonHook("AptCli::Hooks::Upgrade", "org.debian.apt.hooks.install.post", CmdL.FileList, Cache);
    else
       return RunJsonHook("AptCli::Hooks::Upgrade", "org.debian.apt.hooks.install.fail", CmdL.FileList, Cache);
