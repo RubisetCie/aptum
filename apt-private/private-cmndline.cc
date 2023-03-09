@@ -428,7 +428,7 @@ static void ShowHelpListCommands(std::vector<aptDispatchWithHelp> const &Cmds)/*
 static bool ShowCommonHelp(APT_CMD const Binary, CommandLine &CmdL, std::vector<aptDispatchWithHelp> const &Cmds,/*{{{*/
       bool (*ShowHelp)(CommandLine &))
 {
-   std::cout << PACKAGE << " " << PACKAGE_VERSION << " (" << COMMON_ARCH << ")" << std::endl;
+   std::cout << "aptum " << PACKAGE_VERSION << " (" << COMMON_ARCH << ")" << std::endl;
    if (_config->FindB("version") == true && Binary != APT_CMD::APT_GET)
       return true;
    if (ShowHelp(CmdL) == false)
