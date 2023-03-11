@@ -126,10 +126,16 @@ bool DoRollback(CommandLine&)
 
    // do not upgrade any package
    APT::PackageVector HeldBackPackages;
-   //SortedPackageUniverse Universe(Cache);
-   //for (auto const &Pkg: Universe)
-      //if (Pkg->CurrentVer != 0 && not Cache[Pkg].Delete())
-	 //HeldBackPackages.push_back(Pkg);
+   APT::PackageSet UpgradablePackages;
+   {
+      APT::CacheSetHelper helper;
+      helper.PackageFrom(APT::CacheSetHelper::PATTERN, &UpgradablePackages, Cache, "?upgradable");
+   }
+   SortedPackageUniverse Universe(Cache);
+   for (auto const &Pkg: Universe)
+      if (Pkg->CurrentVer != 0 && not Cache[Pkg].Delete() &&
+	  UpgradablePackages.find(Pkg) != UpgradablePackages.end())
+	 HeldBackPackages.push_back(Pkg);
 
    if (_error->PendingError() || not InstallPackages(Cache, HeldBackPackages, false))
       return _error->Error(_("Failed to process rollback"));
