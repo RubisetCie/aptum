@@ -219,6 +219,8 @@ static bool addArgumentsAPTGet(std::vector<CommandLine::Args> &Args, char const 
       addArg(0, "tar-only", "APT::Get::Tar-Only", 0);
       addArg(0, "dsc-only", "APT::Get::Dsc-Only", 0);
    }
+   else if (CmdMatches("rollback"))
+      addArg(0, "purge", "APT::Get::Purge", 0);
    else if (CmdMatches("build-dep") || CmdMatches("satisfy"))
    {
       addArg('a', "host-architecture", "APT::Get::Host-Architecture", CommandLine::HasArg);
