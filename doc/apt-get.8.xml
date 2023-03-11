@@ -199,6 +199,38 @@
      to the current directory, like source tarballs.</para></listitem>
      </varlistentry>
 
+     <varlistentry><term><option>save</option></term>
+     <listitem><para>
+	   <literal>save</literal> is used to initialize a temporary state in
+	   which every package changes are stored for futher rollbacks. If a
+	   previous state exists, it will ask to override it.
+     </para></listitem>
+     </varlistentry>
+
+     <varlistentry><term><option>rollback</option></term>
+     <listitem><para>
+	   <literal>rollback</literal> is used to revert back to the
+	   previously saved temporary state. The option <option>--purge</option>
+	   may be specified to purge the removing packages instead of simply
+	   removing them.
+     </para></listitem>
+     </varlistentry>
+
+     <varlistentry><term><option>apply</option></term>
+     <listitem><para>
+	   <literal>apply</literal> is used to apply permanently the package
+	   changes. The temporary state is erased afterwards thus any rollback
+	   is impossible.
+     </para></listitem>
+     </varlistentry>
+
+     <varlistentry><term><option>log</option></term>
+     <listitem><para>
+	   <literal>log</literal> is used to display the package changes
+	   since the last save.
+     </para></listitem>
+     </varlistentry>
+
      <varlistentry><term><option>build-dep</option></term>
      <listitem><para><literal>build-dep</literal> causes apt-get to install/remove packages in an 
      attempt to satisfy the build dependencies for a source package. By default the dependencies are

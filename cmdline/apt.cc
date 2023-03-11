@@ -80,8 +80,8 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
       // saving stuff
       {"save", &DoSave, _("start a new temporary state and push it")},
       {"rollback", &DoRollback, _("cancel the changes made since to the temporary state")},
-      {"log", &DoLog, _("display the changes made in the temporary state")},
       {"apply", &DoApply, _("apply the current state as irreversible")},
+      {"log", &DoLog, _("display the changes made in the temporary state")},
 
       // misc
       {"edit-sources", &EditSources, _("edit the source information file")},

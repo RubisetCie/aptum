@@ -118,6 +118,48 @@
      </varlistentry>
 
 
+     <varlistentry><term><option>save</option> (&apt-get;)</term>
+     <listitem><para>
+	   <literal>save</literal> is used to initialize a temporary state in
+	   which every package changes are stored for futher rollbacks. If a
+	   previous state exists, it will ask to override it.
+     </para></listitem>
+     </varlistentry>
+
+     <varlistentry><term><option>rollback</option> (&apt-get;)</term>
+     <listitem><para>
+	   <literal>rollback</literal> is used to revert back to the
+	   previously saved temporary state. The option <option>--purge</option>
+	   may be specified to purge the removing packages instead of simply
+	   removing them.
+     </para></listitem>
+     </varlistentry>
+
+     <varlistentry><term><option>apply</option> (&apt-get;)</term>
+     <listitem><para>
+	   <literal>apply</literal> is used to apply permanently the package
+	   changes. The temporary state is erased afterwards thus any rollback
+	   is impossible.
+     </para></listitem>
+     </varlistentry>
+
+     <varlistentry><term><option>log</option> (&apt-get;)</term>
+     <listitem><para>
+	   <literal>log</literal> is used to display the package changes
+	   since the last save.
+     </para></listitem>
+     </varlistentry>
+
+
+     <varlistentry><term><option>satisfy</option> (&apt-get;)</term>
+     <listitem><para><option>satisfy</option> satisfies dependency strings, as
+	  used in Build-Depends. It also handles conflicts, by prefixing an argument
+	  with <literal>"Conflicts: "</literal>.
+     </para><para>Example: <literal>apt satisfy "foo, bar (>= 1.0)" "Conflicts: baz, fuzz"</literal>
+     </para></listitem>
+     </varlistentry>
+
+
      <varlistentry><term><option>search</option> (&apt-cache;)</term>
      <listitem><para><option>search</option> can be used to search for the given
 	   &regex; term(s) in the list of available packages and display
