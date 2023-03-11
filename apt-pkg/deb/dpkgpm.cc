@@ -20,6 +20,7 @@
 #include <apt-pkg/macros.h>
 #include <apt-pkg/packagemanager.h>
 #include <apt-pkg/pkgcache.h>
+#include <apt-pkg/saveentry.h>
 #include <apt-pkg/statechanges.h>
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/version.h>
@@ -197,31 +198,31 @@ static bool ionice(int PID)
 }
 									/*}}}*/
 // saveState - save entries into the save state				/*{{{*/
-struct Entry { char prefix; char *package; };
-static void saveState(const char *filename, const vector<Entry>& newly)
+static void saveState(const char *filename, const vector<SaveEntry>& newly)
 {
    FILE *f;
    char *line = NULL;
    size_t len = 0;
-   ssize_t read;
    bool doing;
    bool skip;
-   std::vector<Entry>::iterator omitting;
-   std::vector<Entry> entries;
-   std::vector<std::vector<Entry>::iterator> omit;
+   std::vector<SaveEntry>::iterator omitting;
+   std::vector<SaveEntry> entries;
+   std::vector<std::vector<SaveEntry>::iterator> omit;
 
    f = fopen(filename, "r");
    if (f == NULL)
       goto RETURNING;
 
    // parse the save file
-   while ((read = getline(&line, &len, f)) != -1)
+   while (getline(&line, &len, f) != -1)
    {
-      size_t length = strlen(line);
+      size_t const length = strlen(line);
+      if (length < 3)
+	 continue;
       char *entry = (char*)malloc(length-2);
       strncpy(entry, &line[2], length-3);
       entry[length-3] = '\0';
-      Entry e;
+      SaveEntry e;
       e.prefix = line[0];
       e.package = entry;
       entries.emplace_back(e);
@@ -233,10 +234,10 @@ static void saveState(const char *filename, const vector<Entry>& newly)
 
    // inserting the newly added entries if they don't cancels eachother
    omitting = entries.end();
-   for (std::vector<Entry>::const_iterator I = newly.begin(); I != newly.end(); I++)
+   for (std::vector<SaveEntry>::const_iterator I = newly.begin(); I != newly.end(); I++)
    {
       doing = true;
-      for (std::vector<Entry>::iterator J = entries.begin(); J != entries.end(); J++)
+      for (std::vector<SaveEntry>::iterator J = entries.begin(); J != entries.end(); J++)
       {
 	 if (strcmp(I->package, J->package) == 0)
 	 {
@@ -255,7 +256,7 @@ static void saveState(const char *filename, const vector<Entry>& newly)
       goto RETURNING;
 
    skip = false;
-   for (std::vector<Entry>::iterator I = entries.begin(); I != entries.end(); I++)
+   for (std::vector<SaveEntry>::iterator I = entries.begin(); I != entries.end(); I++)
    {
       if (I == omitting)
 	 skip = true;
@@ -263,7 +264,7 @@ static void saveState(const char *filename, const vector<Entry>& newly)
 	 goto INSERTION;
 
       doing = true;
-      for (std::vector<std::vector<Entry>::iterator>::iterator J = omit.begin(); J != omit.end(); J++)
+      for (std::vector<std::vector<SaveEntry>::iterator>::iterator J = omit.begin(); J != omit.end(); J++)
       {
 	 if (*J == I)
 	 {
@@ -284,7 +285,7 @@ static void saveState(const char *filename, const vector<Entry>& newly)
    RETURNING:
 
    // free the memory
-   for (std::vector<Entry>::iterator I = entries.begin(); I != entries.end(); I++)
+   for (std::vector<SaveEntry>::iterator I = entries.begin(); I != entries.end(); I++)
       free(I->package);
 }
 									/*}}}*/
@@ -1185,10 +1186,10 @@ bool pkgDPkgPM::OpenLog()
    {
       if (access(save_name.c_str(), F_OK) == 0)
       {
-	 std::vector<Entry> entries;
+	 std::vector<SaveEntry> entries;
 	 for (pkgCache::PkgIterator I = Cache.PkgBegin(); I.end() == false; ++I)
 	 {
-	    Entry entry;
+	    SaveEntry entry;
 	    if (Cache[I].NewInstall() == true)
 	       entry.prefix = '+';
 	    else if (Cache[I].Delete() == true)

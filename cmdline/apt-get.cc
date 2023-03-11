@@ -62,6 +62,7 @@
 #include <apt-private/private-main.h>
 #include <apt-private/private-moo.h>
 #include <apt-private/private-output.h>
+#include <apt-private/private-save.h>
 #include <apt-private/private-source.h>
 #include <apt-private/private-update.h>
 #include <apt-private/private-upgrade.h>
@@ -371,6 +372,10 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
       {"autoremove", &DoInstall, _("Remove automatically all unused packages")},
       {"auto-remove", &DoInstall, nullptr},
       {"autopurge",&DoInstall, nullptr},
+      {"save", &DoSave, _("start a new temporary state and push it")},
+      {"rollback", &DoRollback, _("cancel the changes made since to the temporary state")},
+      {"log", &DoLog, _("display the changes made in the temporary state")},
+      {"apply", &DoApply, _("apply the current state as irreversible")},
       {"dist-upgrade", &DoDistUpgrade, _("Distribution upgrade, see apt-get(8)")},
       {"full-upgrade", &DoDistUpgrade, nullptr},
       {"dselect-upgrade", &DoDSelectUpgrade, _("Follow dselect selections")},
