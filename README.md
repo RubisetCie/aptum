@@ -22,15 +22,60 @@ APTUM
 
 APTUM expands APT with the following features:
 
-- Rollback
+- Temporary state support (save state / rollback):
+	- `apt save`: initialize a temporary state, for further rollback
+	- `apt rollback`: rollback from a previously initialized temporary state
+	- `apt apply`: apply a previously initialized temporary state
+	- `apt log`: display the package changes since the initialization of the temporary state
+- Always asking for confirmation before installing a package
 
 
 Building
 --------
-To start the configuration, you need to run the following from a build directory:
+First, you need to install some dependency packages:
+
+```
+# Building tools
+build-essential
+pkg-config
+cmake
+
+# Dependencies
+gnutls-dev
+libdb-dev
+libudev-dev
+libbz2-dev
+libzstd-dev
+libsystemd-dev
+libseccomp-dev
+libgcrypt20-dev
+libxxhash-dev
+liblzma-dev
+liblz4-dev
+zlib1g-dev
+triehash
+
+# Native-language support
+gettext
+
+# Documentation building
+doxygen
+docbook-xsl
+xsltproc
+po4a
+w3m
+
+# Tests running
+libgtest-dev
+```
+
+Then to start the configuration, you need to run the following from a build directory:
 
 	cmake <path to source directory>
 
+Example of standard build:
+
+	cmake -DCMAKE_BUILD_TYPE=Release -DWITH_DOC=ON -DWITH_TESTS=ON .
 
 Testing
 -------
