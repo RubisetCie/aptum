@@ -1158,6 +1158,8 @@ class APT_HIDDEN debSLTypeDebian : public pkgSourceList::Type		/*{{{*/
       std::transform(Options.begin(), Options.end(), std::back_inserter(ret),
 		     [](auto &&O) { return O.first; });
       std::sort(ret.begin(), ret.end());
+      auto r = std::remove(ret.begin(), ret.end(), "SHADOWED");
+      ret.erase(r, ret.end());
       return ret;
    }
 
@@ -1315,7 +1317,7 @@ class APT_HIDDEN debSLTypeDebian : public pkgSourceList::Type		/*{{{*/
 	 std::string filename;
 
 	 // The Release file and config based on that should be the ultimate source of truth.
-	 if (ReleaseFileName(Deb, filename))
+	 if (Deb && ReleaseFileName(Deb, filename))
 	 {
 	    auto OldDeb = dynamic_cast<debReleaseIndex *>(Deb->UnloadedClone());
 	    if (not OldDeb->Load(filename, nullptr))
@@ -1396,6 +1398,9 @@ class APT_HIDDEN debSLTypeDebian : public pkgSourceList::Type		/*{{{*/
 	  Deb->SetDateMaxFuture(GetTimeOption(Options, "date-max-future")) == false ||
 	  Deb->SetSnapshot(GetSnapshotOption(Options, "snapshot")) == false)
 	 return false;
+
+      if (GetBoolOption(Options, "sourceslist-entry-is-deb822", false))
+	 Deb->SetFlag(metaIndex::Flag::DEB822);
 
       std::map<std::string, std::string>::const_iterator const signedby = Options.find("signed-by");
       if (signedby == Options.end())
