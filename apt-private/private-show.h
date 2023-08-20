@@ -10,6 +10,7 @@
 class CommandLine;
 class pkgCacheFile;
 
+APT_PUBLIC bool ShowHistory(CommandLine &CmdL);
 APT_PUBLIC bool ShowPackage(CommandLine &CmdL);
 APT_PUBLIC bool ShowSrcPackage(CommandLine &CmdL);
 APT_PUBLIC bool Policy(CommandLine &CmdL);

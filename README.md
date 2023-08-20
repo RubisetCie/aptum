@@ -27,6 +27,9 @@ APTUM expands APT with the following features:
 	- `apt rollback`: rollback from a previously initialized temporary state
 	- `apt apply`: apply a previously initialized temporary state
 	- `apt log`: display the package changes since the initialization of the temporary state
+- Shortcut to display close history:
+	- `apt history`: print the history of commands:
+	- `apt history -f`: print the full history
 - Always asking for confirmation before installing a package
 
 

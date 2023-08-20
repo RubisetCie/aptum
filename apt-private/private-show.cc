@@ -300,6 +300,73 @@ static bool DisplayRecordV2(pkgCacheFile &CacheFile, pkgRecords &Recs, /*{{{*/
    return true;
 }
 									/*}}}*/
+bool ShowHistory(CommandLine&)						/*{{{*/
+{
+   bool const full = _config->FindB("APT::Cache::ShowFull", false);
+   std::string const history_name = _config->FindFile("Dir::Log::History", "/dev/null");
+   if (history_name == "/dev/null")
+      return _error->WarningE("OpenLog", _("No history file saved"));
+
+   FILE *f = fopen(history_name.c_str(), "r");
+   if (f == NULL)
+      return _error->WarningE("OpenLog", _("Could not open file '%s'"), history_name.c_str());
+
+   char *line = NULL;
+   char *date = NULL;
+   char *entry = NULL;
+   size_t len = 0;
+   ssize_t read;
+   while ((read = getline(&line, &len, f)) != -1)
+   {
+      // If full, print the whole history
+      if (full)
+      {
+	 fputs(line, stdout);
+	 continue;
+      }
+
+      // Store the date
+      if (strncmp(line, "Start-Date", 10) == 0)
+      {
+	 size_t const l = read - 12;
+	 date = (char*) malloc(l);
+	 memcpy(date, &line[12], l - 1);
+	 date[l] = '\0';
+	 continue;
+      }
+
+      // Only print the command line used
+      if (strncmp(line, "Commandline", 11) != 0)
+	 continue;
+
+      size_t const l = read - 13;
+      entry = (char*) malloc(l);
+      memcpy(entry, &line[13], l - 1);
+
+      // Print the entry
+      if (date)
+      {
+	 printf("[%s] %s\n", date, entry);
+	 free(date);
+	 date = NULL;
+      }
+      else
+	 printf("%s\n", entry);
+      free(entry);
+   }
+
+   fclose(f);
+   puts("");      // Printing a new line
+
+   if (line)
+      free(line);
+
+   if (date)
+      free(date);
+
+   return true;
+}
+									/*}}}*/
 bool ShowPackage(CommandLine &CmdL)					/*{{{*/
 {
    pkgCacheFile CacheFile;

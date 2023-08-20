@@ -76,6 +76,10 @@ static bool addArgumentsAPTCache(std::vector<CommandLine::Args> &Args, char cons
    {
       addArg(0,"only-source","APT::Cache::Only-Source",0);
    }
+   else if (CmdMatches("history"))
+   {
+      addArg('f', "full", "APT::Cache::ShowFull", 0);
+   }
    else if (CmdMatches("gencaches", "showpkg", "stats", "dump",
 	    "dumpavail", "showauto", "policy", "madison"))
       ;
@@ -356,6 +360,10 @@ static bool addArgumentsAPT(std::vector<CommandLine::Args> &Args, char const * c
    else if (CmdMatches("show") || CmdMatches("info"))
    {
       addArg('a', "all-versions", "APT::Cache::AllVersions", 0);
+      addArg('f', "full", "APT::Cache::ShowFull", 0);
+   }
+   else if (CmdMatches("history"))
+   {
       addArg('f', "full", "APT::Cache::ShowFull", 0);
    }
    else if (addArgumentsAPTGet(Args, Cmd) || addArgumentsAPTCache(Args, Cmd))

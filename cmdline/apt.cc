@@ -62,6 +62,7 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
       {"list", &DoList, _("list packages based on package names")},
       {"search", &DoSearch, _("search in package descriptions")},
       {"show", &ShowPackage, _("show package details")},
+      {"history", &ShowHistory, _("show installation and removal history")},
 
       // package stuff
       {"install", &DoInstall, _("install packages")},
