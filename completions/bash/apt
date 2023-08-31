@@ -43,6 +43,7 @@ _apt()
         "update"
         "upgrade" "full-upgrade" "dist-upgrade"
         "edit-sources"
+        "history"
         "help"
         "source" "build-dep"
         "clean" "autoclean"
