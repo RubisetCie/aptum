@@ -342,6 +342,7 @@ bool ShowHistory(CommandLine&)						/*{{{*/
       size_t const l = read - 13;
       entry = (char*) malloc(l);
       memcpy(entry, &line[13], l - 1);
+      entry[l] = '\0';
 
       // Print the entry
       if (date)
