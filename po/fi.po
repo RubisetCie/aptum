@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 0.5.26\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2023-07-12 15:26+0000\n"
+"POT-Creation-Date: 2023-09-20 08:27+0000\n"
 "PO-Revision-Date: 2008-12-11 14:52+0200\n"
 "Last-Translator: Tapio Lehtonen <tale@debian.org>\n"
 "Language-Team: Finnish <debian-l10n-finnish@lists.debian.org>\n"
@@ -1795,6 +1795,18 @@ msgstr "Seuraavista tiedoista voi olla hyötyä selvitettäessä tilannetta:"
 #: apt-private/private-install.cc
 msgid "Broken packages"
 msgstr "Rikkinäiset paketit"
+
+#: apt-private/private-install.cc
+msgid ""
+"Unmerged usr is no longer supported, use usrmerge to convert to a merged-usr "
+"system."
+msgstr ""
+
+#. TRANSLATORS: %s is a url to a page describing merged-usr (bookworm release notes)
+#: apt-private/private-install.cc
+#, c-format
+msgid "See %s for more details."
+msgstr ""
 
 #: apt-private/private-install.cc
 msgid ""

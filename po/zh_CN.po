@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 2.5.3\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2023-07-12 15:26+0000\n"
+"POT-Creation-Date: 2023-09-20 08:27+0000\n"
 "PO-Revision-Date: 2022-10-05 17:20-0400\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (simplified) <debian-l10n-chinese@lists.debian.org>\n"
@@ -1805,6 +1805,19 @@ msgstr "下列信息可能会对解决问题有所帮助："
 #: apt-private/private-install.cc
 msgid "Broken packages"
 msgstr "破损的软件包"
+
+#: apt-private/private-install.cc
+msgid ""
+"Unmerged usr is no longer supported, use usrmerge to convert to a merged-usr "
+"system."
+msgstr ""
+
+#. TRANSLATORS: %s is a url to a page describing merged-usr (bookworm release notes)
+#: apt-private/private-install.cc
+#, fuzzy, c-format
+#| msgid "Selected %s for removal.\n"
+msgid "See %s for more details."
+msgstr "选中 %s 以待卸载。\n"
 
 #: apt-private/private-install.cc
 msgid ""
