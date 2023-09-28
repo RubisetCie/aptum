@@ -1,0 +1,26 @@
+name: Build Release
+on:
+  workflow_dispatch:
+    inputs:
+      arch:
+        description: 'Target architecture (amd64, i386, etc)'
+        required: true
+        default: 'amd64'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build
+        uses: jtdor/build-deb-action@v1
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          host-arch: ${{github.event.inputs.arch}}
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: aptum-${{github.event.inputs.arch}}
+          path: 'debian/artifacts/*'
+          if-no-files-found: error
