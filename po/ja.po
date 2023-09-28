@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 2.5\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2023-07-12 15:26+0000\n"
+"POT-Creation-Date: 2023-09-20 08:27+0000\n"
 "PO-Revision-Date: 2022-08-14 14:30+0900\n"
 "Last-Translator: Hideki Yamane <henrich@debian.org>\n"
 "Language-Team: Japanese <debian-japanese@lists.debian.org>\n"
@@ -1901,6 +1901,19 @@ msgstr "以下の情報がこの問題を解決するために役立つかもし
 #: apt-private/private-install.cc
 msgid "Broken packages"
 msgstr "壊れたパッケージ"
+
+#: apt-private/private-install.cc
+msgid ""
+"Unmerged usr is no longer supported, use usrmerge to convert to a merged-usr "
+"system."
+msgstr ""
+
+#. TRANSLATORS: %s is a url to a page describing merged-usr (bookworm release notes)
+#: apt-private/private-install.cc
+#, fuzzy, c-format
+#| msgid "Selected %s for removal.\n"
+msgid "See %s for more details."
+msgstr "%s は削除で選択されました。\n"
 
 #: apt-private/private-install.cc
 msgid ""
