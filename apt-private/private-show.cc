@@ -359,11 +359,8 @@ bool ShowHistory(CommandLine&)						/*{{{*/
    fclose(f);
    puts("");      // Printing a new line
 
-   if (line)
-      free(line);
-
-   if (date)
-      free(date);
+   free(line);
+   free(date);
 
    return true;
 }
