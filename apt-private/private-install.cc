@@ -37,6 +37,7 @@
 #include <apt-private/private-json-hooks.h>
 #include <apt-private/private-output.h>
 #include <apt-private/private-update.h>
+#include <apt-private/private-srcbuild.h>
 
 #include <apti18n.h>
 									/*}}}*/
@@ -895,6 +896,13 @@ bool DoInstall(CommandLine &CmdL)
 
    if (_config->FindB("APT::Update") && not DoUpdate())
       return false;
+
+   // Install packages from sources if a match found in a configuration file
+   bool pExitSuccess = false;
+   if (DoSrcInstallPrivate(CmdL, SrcBuildOpMode::SRC_BUILD_INSTALL, &pExitSuccess) == false)
+      return false;
+   if (pExitSuccess == true)
+      return true;
 
    Cache.InhibitActionGroups(true);
    if (Cache.BuildSourceList() == false)

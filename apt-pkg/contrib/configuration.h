@@ -137,6 +137,13 @@ class APT_PUBLIC Configuration
      /** \brief returns if the matcher setup was successful */
      bool wasConstructedSuccessfully() const { return patterns.empty() == false; }
    };
+
+     // Holds a list of packages from the configuration file
+     std::vector<std::string> buildPkgList;
+     // Holds a list of build options from the configuration file
+     std::vector<std::string> buildOptList;
+     // Holds a list of .deb files after build operation from package sources
+     std::vector<std::string> localDebFileList;
 };
 
 APT_PUBLIC extern Configuration *_config;

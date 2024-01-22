@@ -39,6 +39,7 @@
 #include <unistd.h>
 
 #include <iostream>
+#include <filesystem>
 #include <set>
 #include <sstream>
 #include <string>
@@ -342,7 +343,14 @@ bool DoSource(CommandLine &CmdL)
       std::string Src;
       pkgSrcRecords::Parser *Last = FindSrc(*cmdl, SrcRecs, Src, Cache);
       if (Last == 0) {
-	 return _error->Error(_("Unable to find a source package for %s"),Src.c_str());
+      const std::string pName1 = *cmdl;
+        auto pFound1 = std::find(
+            _config->buildPkgList.begin()
+            , _config->buildPkgList.end(), pName1);
+        bool packageNeedsToBeBuilt = (pFound1 != _config->buildPkgList.end());
+        if (packageNeedsToBeBuilt == true)
+           return _error->Error(_("(1) Unable to find a source package for %s"),Src.c_str());
+        else continue;
       }
 
       if (Last->Index().IsTrusted() == false)
@@ -529,8 +537,14 @@ bool DoSource(CommandLine &CmdL)
 	 }
       }
 
+    // Check if build requested from the configuration
+    const std::string pName1 = D.Package;
+    auto pFound1 = std::find(
+        _config->buildPkgList.begin()
+        , _config->buildPkgList.end(), pName1);
       // Try to compile it with dpkg-buildpackage
-      if (_config->FindB("APT::Get::Compile",false) == true)
+      if (_config->FindB("APT::Get::Compile",false) == true
+        || pFound1 != _config->buildPkgList.end())
       {
 	 std::string buildopts = _config->Find("APT::Get::Host-Architecture");
 	 if (buildopts.empty() == false)
@@ -543,18 +557,40 @@ bool DoSource(CommandLine &CmdL)
 
 	 buildopts.append(_config->Find("DPkg::Build-Options","-b -uc"));
 
-	 // Call dpkg-buildpackage
-	 std::string S;
-	 strprintf(S, "cd %s && %s %s",
-	       Dir.c_str(),
-	       _config->Find("Dir::Bin::dpkg-buildpackage","dpkg-buildpackage").c_str(),
-	       buildopts.c_str());
+     std::string buildOptStr;
+
+     std::vector<std::basic_string<char> >::size_type j = 0;
+     // Append additional build options from the global configuration option list (APT_MOD1)
+	 for (auto opt : _config->buildOptList)
+	 {
+        buildOptStr.append(opt);
+        if (j > 0 && j < _config->buildOptList.size())
+            buildOptStr.append(" ");
+        j++;
+     }
+
+     std::string S;
+     // This file holds lines starting with 'dpkg-deb:' string
+     // from the grep output of 'dpkg-buildpackage' (APT_MOD1)
+     const std::string strDebTmpFileResult = "tmp.deb.result";
+     // Append DEB_CFLAGS_APPEND environment variable (APT_MOD1)
+     // Append executing string with LC_ALL="C" for default locale (APT_MOD1)
+	 strprintf(S, "cd %s && export DEB_BUILD_OPTIONS=\"%s\" && export LC_ALL=\"C\" && echo \"DEB_BUILD_OPTIONS:\"$DEB_BUILD_OPTIONS && %s %s | tee /dev/tty | grep \"dpkg-deb:\" > ../%s"
+	       , Dir.c_str()
+	       , buildOptStr.c_str()
+	       , _config->Find("Dir::Bin::dpkg-buildpackage","dpkg-buildpackage").c_str()
+	       , buildopts.c_str()
+	       , strDebTmpFileResult.c_str());
 
 	 if (system(S.c_str()) != 0)
 	 {
 	    _error->Error(_("Build command '%s' failed.\n"), S.c_str());
 	    continue;
 	 }
+
+	 if (std::filesystem::exists(strDebTmpFileResult) == false)
+	    return false;
+
       }
    }
    return true;

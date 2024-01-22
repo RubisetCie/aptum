@@ -13,6 +13,7 @@
 #include <apt-private/private-output.h>
 #include <apt-private/private-update.h>
 #include <apt-private/private-upgrade.h>
+#include <apt-private/private-srcbuild.h>
 
 #include <iostream>
 
@@ -56,6 +57,13 @@ bool DoDistUpgrade(CommandLine &CmdL)
 									/*}}}*/
 bool DoUpgrade(CommandLine &CmdL)					/*{{{*/
 {
+   // Upgrade packages from sources if a match found in a configuration file
+   bool pExitSuccess = false;
+   if (DoSrcInstallPrivate(CmdL, SrcBuildOpMode::SRC_BUILD_UPGRADE, &pExitSuccess) == false)
+      return false;
+   if (pExitSuccess == true)
+      return true;
+
    if (_config->FindB("APT::Get::Upgrade-Allow-New", false) == true)
       return DoUpgradeWithAllowNewPackages(CmdL);
    else
