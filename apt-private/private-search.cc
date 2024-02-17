@@ -49,140 +49,6 @@ static std::vector<pkgCache::DescIterator> const TranslatedDescriptionsList(pkgC
 }
 
 									/*}}}*/
-static bool FullTextSearch(CommandLine &CmdL)				/*{{{*/
-{
-
-   CacheFile CacheFile;
-   CacheFile.GetDepCache();
-   pkgCache *Cache = CacheFile.GetPkgCache();
-   pkgDepCache::Policy *Plcy = CacheFile.GetPolicy();
-   if (unlikely(Cache == NULL || Plcy == NULL))
-      return false;
-
-   // Make sure there is at least one argument
-   unsigned int const NumPatterns = CmdL.FileSize() -1;
-   if (NumPatterns < 1)
-      return _error->Error(_("You must give at least one search pattern"));
-
-   RunJsonHook("AptCli::Hooks::Search", "org.debian.apt.hooks.search.pre", CmdL.FileList, CacheFile);
-
-#define APT_FREE_PATTERNS() for (std::vector<regex_t>::iterator P = Patterns.begin(); \
-      P != Patterns.end(); ++P) { regfree(&(*P)); }
-
-   // Compile the regex pattern
-   std::vector<regex_t> Patterns;
-   for (unsigned int I = 0; I != NumPatterns; ++I)
-   {
-      regex_t pattern;
-      if (regcomp(&pattern, CmdL.FileList[I + 1], REG_EXTENDED | REG_ICASE | REG_NOSUB) != 0)
-      {
-	 APT_FREE_PATTERNS();
-	 return _error->Error("Regex compilation error");
-      }
-      Patterns.push_back(pattern);
-   }
-
-   std::map<std::string, std::string> output_map;
-
-   LocalitySortedVersionSet bag;
-   OpTextProgress progress(*_config);
-   progress.OverallProgress(0, 100, 50,  _("Sorting"));
-   GetLocalitySortedVersionSet(CacheFile, &bag, &progress);
-   LocalitySortedVersionSet::iterator V = bag.begin();
-
-   progress.OverallProgress(50, 100, 50,  _("Full Text Search"));
-   progress.SubProgress(bag.size());
-   pkgRecords records(CacheFile);
-
-   std::string format = "${color:highlight}${Package}${color:neutral}/${Origin} ${Version} ${Architecture}${ }${apt:Status}\n";
-   if (_config->FindB("APT::Cache::ShowFull",false) == false)
-      format += "  ${Description}\n";
-   else
-      format += "  ${LongDescription}\n";
-
-   bool const NamesOnly = _config->FindB("APT::Cache::NamesOnly", false);
-   bool const Installed = _config->FindB("APT::Cache::Installed",false);
-   int Done = 0;
-   std::vector<bool> PkgsDone(Cache->Head().PackageCount, false);
-   for ( ;V != bag.end(); ++V)
-   {
-      if (Done%500 == 0)
-         progress.Progress(Done);
-      ++Done;
-
-      // we want to list each package only once
-      pkgCache::PkgIterator const P = V.ParentPkg();
-      if (PkgsDone[P->ID] == true)
-	 continue;
-
-      std::vector<std::string> PkgDescriptions;
-      if (not NamesOnly)
-      {
-         for (auto &Desc: TranslatedDescriptionsList(V))
-         {
-            pkgRecords::Parser &parser = records.Lookup(Desc.FileList());
-            PkgDescriptions.push_back(parser.LongDesc());
-         }
-      }
-
-      bool all_found = true;
-
-      char const * const PkgName = P.Name();
-      std::vector<bool> SkipDescription(PkgDescriptions.size(), false);
-      for (std::vector<regex_t>::const_iterator pattern = Patterns.begin();
-           pattern != Patterns.end(); ++pattern)
-      {
-         if (regexec(&(*pattern), PkgName, 0, 0, 0) == 0)
-            continue;
-         else if (not NamesOnly)
-         {
-            bool found = false;
-
-            for (std::vector<std::string>::size_type i = 0; i < PkgDescriptions.size(); ++i)
-            {
-               if (not SkipDescription[i])
-               {
-                  if (regexec(&(*pattern), PkgDescriptions[i].c_str(), 0, 0, 0) == 0)
-                     found = true;
-                  else
-                     SkipDescription[i] = true;
-               }
-            }
-
-            if (found)
-               continue;
-         }
-
-         // search patterns are AND, so one failing fails all
-         all_found = false;
-         break;
-      }
-
-      if (all_found == true)
-      {
-	 PkgsDone[P->ID] = true;
-	 std::stringstream outs;
-	 ListSingleVersion(CacheFile, records, V, outs, format);
-	 output_map.insert(std::make_pair<std::string, std::string>(
-		  PkgName, outs.str()));
-      }
-   }
-   APT_FREE_PATTERNS();
-   progress.Done();
-
-   // FIXME: SORT! and make sorting flexible (alphabetic, by pkg status)
-   // output the sorted map
-   std::map<std::string, std::string>::const_iterator K;
-   for (K = output_map.begin(); K != output_map.end(); ++K)
-      std::cout << (*K).second << std::endl;
-
-   if (output_map.empty())
-      RunJsonHook("AptCli::Hooks::Search", "org.debian.apt.hooks.search.fail", CmdL.FileList, CacheFile);
-   else
-      RunJsonHook("AptCli::Hooks::Search", "org.debian.apt.hooks.search.post", CmdL.FileList, CacheFile);
-   return true;
-}
-									/*}}}*/
 // LocalitySort - Sort a version list by package file locality		/*{{{*/
 static int LocalityCompare(const void * const a, const void * const b)
 {
@@ -219,10 +85,12 @@ struct ExDescFile
    map_id_t ID;
    ExDescFile() : Df(nullptr), ID(0) {}
 };
-static bool Search(CommandLine &CmdL)
+static inline bool Search(CommandLine &CmdL)
 {
    bool const ShowFull = _config->FindB("APT::Cache::ShowFull",false);
    bool const Installed = _config->FindB("APT::Cache::Installed",false);
+   bool const Library = _config->FindB("APT::Cache::Libs",false);
+   bool const Devel = _config->FindB("APT::Cache::Devel",false);
    unsigned int const NumPatterns = CmdL.FileSize() -1;
    
    pkgCacheFile CacheFile;
@@ -264,6 +132,7 @@ static bool Search(CommandLine &CmdL)
 
    // Map versions that we want to write out onto the VerList array.
    bool const NamesOnly = _config->FindB("APT::Cache::NamesOnly",false);
+   bool const NoDesc = _config->FindB("APT::Cache::NoDesc",false);
    for (pkgCache::GrpIterator G = Cache->GrpBegin(); G.end() == false; ++G)
    {
       size_t const PatternOffset = G->ID * NumPatterns;
@@ -298,6 +167,19 @@ static bool Search(CommandLine &CmdL)
       pkgCache::VerIterator V = Plcy->GetCandidateVer(P);
       if (V.end() == false)
       {
+	    // Skip if filtered by section
+	    if (Library || Devel)
+	    {
+		   const char *section = V.Section();
+		   bool skip = true;
+		   if (Library && strcmp(section, "libs") == 0)
+			skip = false;
+		   if (skip && Devel && strcmp(section, "devel") == 0)
+			skip = false;
+		   if (skip)
+			continue;
+	    }
+
 	 pkgCache::DescIterator const D = V.TranslatedDescription();
 	 //FIXME: packages without a description can't be found
 	 if (D.end() == true)
@@ -400,7 +282,10 @@ static bool Search(CommandLine &CmdL)
 	 else
 	 {
 	    pkgRecords::Parser &P = Recs.Lookup(pkgCache::DescFileIterator(*Cache, J->Df));
-	    printf("%s - %s\n", P.Name().c_str(), P.ShortDesc().c_str());
+	    if (not NoDesc)
+         printf("%s - %s\n", P.Name().c_str(), P.ShortDesc().c_str());
+	    else
+         printf("%s\n", P.Name().c_str());
 	 }
       }
    }
@@ -417,9 +302,6 @@ static bool Search(CommandLine &CmdL)
 									/*}}}*/
 bool DoSearch(CommandLine &CmdL)					/*{{{*/
 {
-   int const ShowVersion = _config->FindI("APT::Cache::Search::Version", 1);
-   if (ShowVersion <= 1)
-      return Search(CmdL);
-   return FullTextSearch(CmdL);
+   return Search(CmdL);
 }
 

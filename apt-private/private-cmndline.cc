@@ -58,7 +58,10 @@ static bool addArgumentsAPTCache(std::vector<CommandLine::Args> &Args, char cons
    else if (CmdMatches("search"))
    {
       addArg('i', "installed", "APT::Cache::Installed", 0);
+      addArg('l', "lib", "APT::Cache::Libs", 0);
+      addArg('d', "devel", "APT::Cache::Devel", 0);
       addArg('n', "names-only", "APT::Cache::NamesOnly", 0);
+      addArg('s', "no-description", "APT::Cache::NoDesc", 0);
       addArg('f', "full", "APT::Cache::ShowFull", 0);
    }
    else if (CmdMatches("show") | CmdMatches("info"))

@@ -329,8 +329,8 @@ bool ShowHistory(CommandLine&)						/*{{{*/
       if (strncmp(line, "Start-Date", 10) == 0)
       {
 	 size_t const l = read - 13;
-	 date = (char*) malloc(l);
-	 memcpy(date, &line[12], l - 1);
+	 date = (char*) malloc(l + 1);
+	 memcpy(date, &line[12], l);
 	 date[l] = '\0';
 	 continue;
       }
@@ -340,8 +340,8 @@ bool ShowHistory(CommandLine&)						/*{{{*/
 	 continue;
 
       size_t const l = read - 14;
-      entry = (char*) malloc(l);
-      memcpy(entry, &line[13], l - 1);
+      entry = (char*) malloc(l + 1);
+      memcpy(entry, &line[13], l);
       entry[l] = '\0';
 
       // Print the entry
