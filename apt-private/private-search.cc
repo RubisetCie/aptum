@@ -101,6 +101,7 @@ static bool FullTextSearch(CommandLine &CmdL)				/*{{{*/
       format += "  ${LongDescription}\n";
 
    bool const NamesOnly = _config->FindB("APT::Cache::NamesOnly", false);
+   bool const Installed = _config->FindB("APT::Cache::Installed",false);
    int Done = 0;
    std::vector<bool> PkgsDone(Cache->Head().PackageCount, false);
    for ( ;V != bag.end(); ++V)
@@ -221,6 +222,7 @@ struct ExDescFile
 static bool Search(CommandLine &CmdL)
 {
    bool const ShowFull = _config->FindB("APT::Cache::ShowFull",false);
+   bool const Installed = _config->FindB("APT::Cache::Installed",false);
    unsigned int const NumPatterns = CmdL.FileSize() -1;
    
    pkgCacheFile CacheFile;
@@ -288,6 +290,11 @@ static bool Search(CommandLine &CmdL)
       pkgCache::PkgIterator P = G.FindPreferredPkg();
       if (P.end() == true)
 	 continue;
+
+      // Skip if non-installed (if asked)
+      if (Installed && P->CurrentVer == 0)
+	 continue;
+
       pkgCache::VerIterator V = Plcy->GetCandidateVer(P);
       if (V.end() == false)
       {
