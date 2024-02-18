@@ -117,7 +117,9 @@ bool DoList(CommandLine &Cmd)
       patterns = Cmd.FileList + 1;
    }
 
-   std::string format = "${color:highlight}${Package}${color:neutral}/${Origin} ${Version} ${Architecture}${ }${apt:Status}";
+   std::string format = "${color:highlight}${Package}${color:neutral}";
+   if (_config->FindB("APT::Cache::NoDesc", false) == false)
+      format += "/${Origin} ${Version} ${Architecture}${ }${apt:Status}";
    if (_config->FindB("APT::Cmd::List-Include-Summary", false) == true)
       format += "\n  ${Description}\n";
 

@@ -75,6 +75,17 @@ static void LocalitySort(pkgCache::DescFile ** const begin, unsigned long long c
    qsort(begin,Count,Size,LocalityCompare);
 }
 									/*}}}*/
+// LocalitySort - Sort a version list by package file locality		/*{{{*/
+static bool EndsWith(const char *str, const char *suffix)
+{
+   const size_t lenstr = strlen(str);
+   const size_t lensuffix = strlen(suffix);
+   if (lensuffix > lenstr)
+      return 0;
+   return strncmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
+}
+									/*}}}*/
+
 // Search - Perform a search						/*{{{*/
 // ---------------------------------------------------------------------
 /* This searches the package names and package descriptions for a pattern */
@@ -91,6 +102,10 @@ static inline bool Search(CommandLine &CmdL)
    bool const Installed = _config->FindB("APT::Cache::Installed",false);
    bool const Library = _config->FindB("APT::Cache::Libs",false);
    bool const Devel = _config->FindB("APT::Cache::Devel",false);
+   bool const Debug = _config->FindB("APT::Cache::Debug",false);
+   bool const Doc = _config->FindB("APT::Cache::Doc",false);
+   bool const Kernel = _config->FindB("APT::Cache::Kernel",false);
+   bool const Admin = _config->FindB("APT::Cache::Admin",false);
    unsigned int const NumPatterns = CmdL.FileSize() -1;
    
    pkgCacheFile CacheFile;
@@ -167,18 +182,26 @@ static inline bool Search(CommandLine &CmdL)
       pkgCache::VerIterator V = Plcy->GetCandidateVer(P);
       if (V.end() == false)
       {
-	    // Skip if filtered by section
-	    if (Library || Devel)
-	    {
-		   const char *section = V.Section();
-		   bool skip = true;
-		   if (Library && strcmp(section, "libs") == 0)
+	 // Skip if filtered by section
+	 if (Library || Devel || Debug || Doc || Kernel || Admin)
+	 {
+	    const char *section = V.Section();
+	    bool skip = true;
+	    if (Library && EndsWith(section, "libs"))
 			skip = false;
-		   if (skip && Devel && strcmp(section, "devel") == 0)
+	    if (skip && Devel && EndsWith(section, "libdevel"))
 			skip = false;
-		   if (skip)
+	    if (skip && Debug && EndsWith(section, "debug"))
+			skip = false;
+	    if (skip && Doc && EndsWith(section, "doc"))
+			skip = false;
+	    if (skip && Kernel && EndsWith(section, "kernel"))
+			skip = false;
+	    if (skip && Admin && EndsWith(section, "admin"))
+			skip = false;
+	    if (skip)
 			continue;
-	    }
+	 }
 
 	 pkgCache::DescIterator const D = V.TranslatedDescription();
 	 //FIXME: packages without a description can't be found

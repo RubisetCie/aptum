@@ -60,6 +60,10 @@ static bool addArgumentsAPTCache(std::vector<CommandLine::Args> &Args, char cons
       addArg('i', "installed", "APT::Cache::Installed", 0);
       addArg('l', "lib", "APT::Cache::Libs", 0);
       addArg('d', "devel", "APT::Cache::Devel", 0);
+      addArg(0, "debug", "APT::Cache::Debug", 0);
+      addArg(0, "doc", "APT::Cache::Doc", 0);
+      addArg(0, "kernel", "APT::Cache::Kernel", 0);
+      addArg(0, "admin", "APT::Cache::Admin", 0);
       addArg('n', "names-only", "APT::Cache::NamesOnly", 0);
       addArg('s', "no-description", "APT::Cache::NoDesc", 0);
       addArg('f', "full", "APT::Cache::ShowFull", 0);
@@ -360,8 +364,21 @@ static bool addArgumentsAPT(std::vector<CommandLine::Args> &Args, char const * c
       addArg(0,"upgradeable","APT::Cmd::Upgradable",0);
       addArg('u',"upgradable","APT::Cmd::Upgradable",0);
       addArg(0,"manual-installed","APT::Cmd::Manual-Installed",0);
+      addArg('s', "no-description", "APT::Cache::NoDesc", 0);
       addArg('v', "verbose", "APT::Cmd::List-Include-Summary", 0);
       addArg('a', "all-versions", "APT::Cmd::All-Versions", 0);
+   }
+   else if (CmdMatches("search"))
+   {
+      addArg('i', "installed", "APT::Cache::Installed", 0);
+      addArg('l', "lib", "APT::Cache::Libs", 0);
+      addArg('d', "devel", "APT::Cache::Devel", 0);
+      addArg(0, "debug", "APT::Cache::Debug", 0);
+      addArg(0, "doc", "APT::Cache::Doc", 0);
+      addArg(0, "kernel", "APT::Cache::Kernel", 0);
+      addArg(0, "admin", "APT::Cache::Admin", 0);
+      addArg('n', "names-only", "APT::Cache::NamesOnly", 0);
+      addArg('s', "no-description", "APT::Cache::NoDesc", 0);
    }
    else if (CmdMatches("show") || CmdMatches("info"))
    {

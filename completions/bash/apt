@@ -97,6 +97,7 @@ _apt()
                 COMPREPLY=( $( compgen -W '--installed --upgradable 
                   --manual-installed
                   -v --verbose
+                  -s --no-description
                   -a --all-versions
                   -t --target-release
                   ' -- "$cur" ) )
@@ -125,6 +126,14 @@ _apt()
                 ;;
             search)
                 COMPREPLY=( $( compgen -W '
+                    -i --installed
+                    -l --lib
+                    -d --devel
+                    --debug
+                    --doc
+                    --kernel
+                    --admin
+                    -s --no-description
                     -n --names-only
                     -f --full' -- "$cur" ) )
                 return 0
