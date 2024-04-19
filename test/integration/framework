@@ -444,6 +444,7 @@ _setupprojectenvironment() {
 	echo "Dir::Etc \"etc/apt\";" >> aptconfig.conf
 	echo "Dir::Log \"var/log/apt\";" >> aptconfig.conf
 	echo "APT::Get::Show-User-Simulation-Note \"false\";" >> aptconfig.conf
+	echo "Binary::apt::APT::Output-Version \"0\";" >> aptconfig.conf
 	echo "Dir::Bin::Methods \"${TMPWORKINGDIRECTORY}/rootdir/usr/lib/apt/methods\";" >> aptconfig.conf
 	# either store apt-key were we can access it, even if we run it as a different user
 	#cp "${APTCMDLINEBINDIR}/apt-key" "${TMPWORKINGDIRECTORY}/rootdir/usr/bin/"
@@ -2094,11 +2095,12 @@ testfilestats() {
 	else
 		local OUTPUT="${TMPWORKINGDIRECTORY}/rootdir/tmp/testfilestats.output"
 		{
+			echo
 			ls -ld "$1" || true
 			echo -n "stat(1) reports for $2: "
 			stat --format "$2" "$1" || true
 		} >"$OUTPUT" 2>&1
-		msgfailoutput '' "$OUTPUT"
+		msgfailoutput '' "$OUTPUT" stat --format "$2" "$1"
 	fi
 	msggroup
 }
@@ -2261,8 +2263,8 @@ aptautotest_aptget_update() {
 	# all copied files are properly chmodded
 	local backupIFS="$IFS"
 	IFS="$(printf "\n\b")"
-	cdfind "${TMPWORKINGDIRECTORY}/rootdir/var/lib/apt/lists" -type f ! -name 'lock' | while read file; do
-		testfilestats "$file" '%U:%G:%a' '=' "${TEST_DEFAULT_USER}:${TEST_DEFAULT_GROUP}:644"
+	for file in $(cdfind "${TMPWORKINGDIRECTORY}/rootdir/var/lib/apt/lists" -type f ! -name 'lock' | cut -c "$((${#TMPWORKINGDIRECTORY} + 1))-"); do
+		testfilestats "${TMPWORKINGDIRECTORY}$file" '%U:%G:%a' '=' "${TEST_DEFAULT_USER}:${TEST_DEFAULT_GROUP}:644"
 	done
 	IFS="$backupIFS"
 	if [ "$TESTCALL" = 'testsuccess' ]; then
