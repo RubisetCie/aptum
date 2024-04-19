@@ -41,6 +41,7 @@ First, you need to install some dependency packages:
 # Building tools
 build-essential
 pkg-config
+triehash
 cmake
 
 # Dependencies
@@ -56,7 +57,6 @@ libxxhash-dev
 liblzma-dev
 liblz4-dev
 zlib1g-dev
-triehash
 
 # Native-language support
 gettext
