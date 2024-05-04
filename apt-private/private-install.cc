@@ -20,6 +20,7 @@
 #include <apt-pkg/prettyprinters.h>
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/upgrade.h>
+#include <apt-pkg/version.h>
 
 #include <algorithm>
 #include <cstdlib>
@@ -214,26 +215,26 @@ bool InstallPackages(CacheFile &Cache, APT::PackageVector &HeldBackPackages, boo
 	 return false;
    }
 
-   APT::PackageVector PhasingPackages;
-   APT::PackageVector NotPhasingHeldBackPackages;
-   for (auto const &Pkg : HeldBackPackages)
-   {
-      if (Cache->PhasingApplied(Pkg))
-	 PhasingPackages.push_back(Pkg);
-      else
-	 NotPhasingHeldBackPackages.push_back(Pkg);
-   }
-
    // Show all the various warning indicators
    if (_config->FindI("APT::Output-Version") < 30)
       ShowDel(c1out,Cache);
+   if (_config->FindI("APT::Output-Version") >= 30 && _config->FindB("APT::Get::Show-Upgraded",true) == true)
+      ShowUpgraded(c1out,Cache);
    ShowNew(c1out,Cache);
    if (_config->FindI("APT::Output-Version") >= 30)
       ShowWeakDependencies(Cache);
-   if (_config->FindI("APT::Output-Version") >= 30 && _config->FindB("APT::Get::Show-Upgraded",true) == true)
-      ShowUpgraded(c1out,Cache);
    if (ShwKept == true)
    {
+      APT::PackageVector PhasingPackages;
+      APT::PackageVector NotPhasingHeldBackPackages;
+      for (auto const &Pkg : HeldBackPackages)
+      {
+	 if (Cache->PhasingApplied(Pkg))
+	    PhasingPackages.push_back(Pkg);
+	 else
+	    NotPhasingHeldBackPackages.push_back(Pkg);
+      }
+
       ShowPhasing(c1out, Cache, PhasingPackages);
       ShowKept(c1out, Cache, NotPhasingHeldBackPackages);
       if (not PhasingPackages.empty() && not NotPhasingHeldBackPackages.empty())
@@ -617,12 +618,14 @@ bool DoAutomaticRemove(CacheFile &Cache)
 	 for (APT::PackageSet::iterator Pkg = tooMuch.begin();
 	      Pkg != tooMuch.end(); ++Pkg)
 	 {
-	    APT::PackageSet too;
-	    too.insert(*Pkg);
-	    for (pkgCache::PrvIterator Prv = Cache[Pkg].CandidateVerIter(Cache).ProvidesList();
-		 Prv.end() == false; ++Prv)
-	       too.insert(Prv.ParentPkg());
-	    for (APT::PackageSet::const_iterator P = too.begin(); P != too.end(); ++P)
+	    auto const PkgCand = Cache[Pkg].CandidateVerIter(Cache);
+	    if (unlikely(PkgCand.end()))
+	       continue;
+	    std::vector<std::pair<pkgCache::PkgIterator, char const *>> too;
+	    too.emplace_back(*Pkg, PkgCand.VerStr());
+	    for (pkgCache::PrvIterator Prv = PkgCand.ProvidesList(); not Prv.end(); ++Prv)
+	       too.emplace_back(Prv.ParentPkg(), Prv.ProvideVersion());
+	    for (auto const &[P, PVerStr] : too)
 	    {
 	       for (pkgCache::DepIterator R = P.RevDependsList();
 		    R.end() == false; ++R)
@@ -647,6 +650,11 @@ bool DoAutomaticRemove(CacheFile &Cache)
 		 }
 		 else // ignore dependency from a non-candidate version
 		    continue;
+		 if (R->Version != 0)
+		 {
+		    if (not Cache->VS().CheckDep(PVerStr, R->CompareOp, R.TargetVer()))
+		       continue;
+		 }
 		 if (Debug == true)
 		    std::clog << "Save " << APT::PrettyPkg(Cache, Pkg) << " as another installed package depends on it: " << APT::PrettyPkg(Cache, RP) << std::endl;
 		 Cache->MarkInstall(Pkg, false, 0, false);
@@ -681,6 +689,16 @@ bool DoAutomaticRemove(CacheFile &Cache)
    // if we don't remove them, we should show them!
    if (doAutoRemove == false && autoRemoveCount != 0)
    {
+      std::string note;
+      std::string autocmd = "apt autoremove";
+      if (getenv("SUDO_USER") != nullptr)
+      {
+	 auto const envsudocmd = getenv("SUDO_COMMAND");
+	 auto const envshell = getenv("SHELL");
+	 if (envsudocmd == nullptr || envshell == nullptr || strcmp(envsudocmd, envshell) != 0)
+	    autocmd = "sudo " + autocmd;
+      }
+      strprintf(note, P_("Use '%s' to remove it.", "Use '%s' to remove them.", autoRemoveCount), autocmd.c_str());
       if (smallList == false)
       {
 	 // trigger marking now so that the package list is correct
@@ -690,21 +708,14 @@ bool DoAutomaticRemove(CacheFile &Cache)
 	          "The following packages were automatically installed and are no longer required:",
 	          autoRemoveCount), Universe,
 	       [&Cache](pkgCache::PkgIterator const &Pkg) { return (*Cache)[Pkg].Garbage == true && (*Cache)[Pkg].Delete() == false; },
-	       &PrettyFullName, CandidateVersion(&Cache));
+	       &PrettyFullName, CandidateVersion(&Cache), "", note);
       }
       else
+      {
 	 ioprintf(c1out, P_("%lu package was automatically installed and is no longer required.\n",
 	          "%lu packages were automatically installed and are no longer required.\n", autoRemoveCount), autoRemoveCount);
-      std::string autocmd = "apt autoremove";
-      if (getenv("SUDO_USER") != nullptr)
-      {
-	 auto const envsudocmd = getenv("SUDO_COMMAND");
-	 auto const envshell = getenv("SHELL");
-	 if (envsudocmd == nullptr || envshell == nullptr || strcmp(envsudocmd, envshell) != 0)
-	    autocmd = "sudo " + autocmd;
+	 c1out << note << std::endl;
       }
-      ioprintf(c1out, P_("Use '%s' to remove it.", "Use '%s' to remove them.", autoRemoveCount), autocmd.c_str());
-      c1out << std::endl;
    }
    return true;
 }

@@ -96,6 +96,7 @@ bool InitOutput(std::basic_streambuf<char> * const out)			/*{{{*/
    } else {
       // Colors
       _config->CndSet("APT::Color::Highlight", "\x1B[32m");
+      _config->CndSet("APT::Color::Bold", "\x1B[1m");
       _config->CndSet("APT::Color::Neutral", "\x1B[0m");
       
       _config->CndSet("APT::Color::Red", "\x1B[31m");
@@ -111,6 +112,8 @@ bool InitOutput(std::basic_streambuf<char> * const out)			/*{{{*/
       _config->CndSet("APT::Color::Action::Install-Dependencies", "green");
       _config->CndSet("APT::Color::Action::Downgrade", "yellow");
       _config->CndSet("APT::Color::Action::Remove", "red");
+      _config->CndSet("APT::Color::Show::Field", "\x1B[1m");
+      _config->CndSet("APT::Color::Show::Package", "\x1B[32m");
    }
 
    return true;
@@ -347,7 +350,7 @@ struct columnInfo
 void ShowWithColumns(ostream &out, vector<string> const &List, size_t Indent, size_t ScreenWidth)
 {
    constexpr size_t MinColumnWidth = 2;
-   constexpr size_t ColumnSpace = 1;
+   constexpr size_t ColumnSpace = 2;
 
    size_t const ListSize = List.size();
    size_t const MaxScreenCols = (ScreenWidth - Indent) /
@@ -737,7 +740,7 @@ bool ShowEssential(ostream &out,CacheFile &Cache)
    }
    return ShowList(out,_("WARNING: The following essential packages will be removed.\n"
 			 "This should NOT be done unless you know exactly what you are doing!"),
-	 pkglist, &AlwaysTrue, withdue, &EmptyString);
+	 pkglist, &AlwaysTrue, withdue, &EmptyString, "action::remove");
 }
 									/*}}}*/
 // Stats - Show some statistics						/*{{{*/
