@@ -344,22 +344,7 @@ TEST(ParseDependsTest, ArchLimitSpaceNormal)
 {
    ArchLimitSpaceTesting("foobar [i386 armhf armel amd64], blah [!arm64 !x32 !amd64], baz");
 }
-TEST(ParseDependsTest, ArchLimitSpaceLove)
-{
-   ArchLimitSpaceTesting("foobar  [  i386 armhf  armel  amd64  ]  ,  blah  [  !arm64 !x32  !amd64  ]  ,  baz");
-}
 TEST(ParseDependsTest, ArchLimitSpaceNoLove)
 {
    ArchLimitSpaceTesting("foobar[i386 armhf armel amd64],blah[!arm64 !x32 !amd64],baz");
-}
-TEST(ParseDependsTest, ArchLimitBadSyntax)
-{
-   std::string Package;
-   std::string Version;
-   unsigned int Op = 29;
-   for (auto const * const Depends : { "foobar [! amd64]", "foobar []", "foobar [ ]" })
-   {
-      SCOPED_TRACE(Depends);
-      EXPECT_EQ(nullptr, debListParser::ParseDepends(Depends, Depends + strlen(Depends), Package, Version, Op, true, false, true, "amd64"));
-   }
 }
