@@ -75,13 +75,13 @@ static void LocalitySort(pkgCache::DescFile ** const begin, unsigned long long c
    qsort(begin,Count,Size,LocalityCompare);
 }
 									/*}}}*/
-// LocalitySort - Sort a version list by package file locality		/*{{{*/
+// EndsWith - Check if a string ends with a suffix		/*{{{*/
 static bool EndsWith(const char *str, const char *suffix)
 {
    const size_t lenstr = strlen(str);
    const size_t lensuffix = strlen(suffix);
-   if (lensuffix > lenstr)
-      return 0;
+   if (unlikely(lensuffix > lenstr))
+      return false;
    return strncmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
 }
 									/*}}}*/
