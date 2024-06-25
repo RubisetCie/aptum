@@ -303,7 +303,7 @@ static bool addArgumentsAPTGet(std::vector<CommandLine::Args> &Args, char const 
    addArg(0,"remove","APT::Get::Remove",0);
    addArg(0,"only-source","APT::Get::Only-Source",0);
    addArg(0,"allow-unauthenticated","APT::Get::AllowUnauthenticated",0);
-   addArg(0,"install-recommends","APT::Install-Recommends",CommandLine::Boolean);
+   addArg('R',"install-recommends","APT::Install-Recommends",CommandLine::Boolean);
    addArg(0,"install-suggests","APT::Install-Suggests",CommandLine::Boolean);
    addArg(0,"fix-policy","APT::Get::Fix-Policy-Broken",0);
    addArg(0, "with-source", "APT::Sources::With::", CommandLine::HasArg);
