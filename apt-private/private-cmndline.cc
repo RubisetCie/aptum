@@ -368,6 +368,7 @@ static bool addArgumentsAPT(std::vector<CommandLine::Args> &Args, char const * c
       addArg('s', "no-description", "APT::Cache::NoDesc", 0);
       addArg('v', "verbose", "APT::Cmd::List-Include-Summary", 0);
       addArg('a', "all-versions", "APT::Cmd::All-Versions", 0);
+      addArg('S', "snapshot", "APT::Snapshot", CommandLine::HasArg);
    }
    else if (CmdMatches("search"))
    {
@@ -385,6 +386,7 @@ static bool addArgumentsAPT(std::vector<CommandLine::Args> &Args, char const * c
    {
       addArg('a', "all-versions", "APT::Cache::AllVersions", 0);
       addArg('f', "full", "APT::Cache::ShowFull", 0);
+      addArg('S', "snapshot", "APT::Snapshot", CommandLine::HasArg);
    }
    else if (CmdMatches("history"))
    {
