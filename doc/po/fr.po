@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt-doc 1.8.0\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2024-06-13 19:06+0000\n"
+"POT-Creation-Date: 2024-10-22 16:47+0000\n"
 "PO-Revision-Date: 2019-05-01 17:00+0100\n"
 "Last-Translator: Jean-Pierre Giraud <jean-pierregiraud@neuf.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -3533,6 +3533,13 @@ msgstr ""
 
 #. type: Content of: <refentry><refsect1><para>
 #: apt-mark.8.xml
+#, fuzzy
+#| msgid "&apt-get; &apt-cache; &apt-conf; &sources-list;"
+msgid "&apt-get;, &aptitude;, &apt-conf;"
+msgstr "&apt-get; &apt-cache; &apt-conf; &sources-list;"
+
+#. type: Content of: <refentry><refsect1><para>
+#: apt-mark.8.xml
 msgid ""
 "<command>apt-mark</command> returns zero on normal operation, non-zero on "
 "error."
@@ -3962,14 +3969,14 @@ msgstr ""
 #: apt-secure.8.xml
 msgid ""
 "For more background information you might want to review the <ulink "
-"url=\"https://www.debian.org/doc/manuals/securing-debian-howto/ch7\">Debian "
-"Security Infrastructure</ulink> chapter of the Securing Debian Manual (also "
-"available in the harden-doc package) and the <ulink url=\"http://www."
-"cryptnet.net/fdp/crypto/strong_distro.html\" >Strong Distribution HOWTO</"
-"ulink> by V. Alex Brennen."
+"url=\"https://www.debian.org/doc/manuals/securing-debian-manual/"
+"ch07\">Debian Security Infrastructure</ulink> chapter of the Securing Debian "
+"Manual (also available in the harden-doc package) and the <ulink "
+"url=\"http://www.cryptnet.net/fdp/crypto/strong_distro.html\" >Strong "
+"Distribution HOWTO</ulink> by V. Alex Brennen."
 msgstr ""
 "Pour des informations plus complètes, vous pouvez consulter <ulink "
-"url=\"https://www.debian.org/doc/manuals/securing-debian-howto/ch7\"> "
+"url=\"https://www.debian.org/doc/manuals/securing-debian-manual/ch07\"> "
 "l'infrastructure debian pour la sécurité</ulink> un chapitre du manuel "
 "Debian sur la sécurité (disponible dans le paquet harden-doc) et le <ulink "
 "url=\"http://www.cryptnet.net/fdp/crypto/strong_distro.html\">Strong "
@@ -7033,6 +7040,27 @@ msgstr ""
 msgid ""
 "Package: perl\n"
 "Pin: version &good-perl;*\n"
+"Pin-Priority: 1001\n"
+msgstr ""
+"Package: perl\n"
+"Pin: version &good-perl;*\n"
+"Pin-Priority: 1001\n"
+
+#. type: Content of: <refentry><refsect1><refsect2><para><itemizedlist><listitem><simpara>
+#: apt_preferences.5.xml
+msgid "Since 2.9.9, you can also pin by a source version:"
+msgstr ""
+
+#. type: Content of: <refentry><refsect1><refsect2><para><itemizedlist><listitem><programlisting>
+#: apt_preferences.5.xml
+#, fuzzy, no-wrap
+#| msgid ""
+#| "Package: perl\n"
+#| "Pin: version &good-perl;*\n"
+#| "Pin-Priority: 1001\n"
+msgid ""
+"Package: perl\n"
+"Pin: source-version &good-perl;*\n"
 "Pin-Priority: 1001\n"
 msgstr ""
 "Package: perl\n"
@@ -12309,6 +12337,16 @@ msgstr ""
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
 #: apt-patterns.7.xml
+msgid "<code>?recommends(PATTERN)</code>"
+msgstr ""
+
+#. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: apt-patterns.7.xml
+msgid "<code>~DRecommends:PATTERN</code>"
+msgstr ""
+
+#. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: apt-patterns.7.xml
 msgid "<code>?conflicts(PATTERN)</code>"
 msgstr ""
 
@@ -12360,8 +12398,8 @@ msgstr ""
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
 #: apt-patterns.7.xml
 msgid ""
-"Selects versions depending/pre-depending/suggesting/conflicting/etc on/with/ "
-"packages matching PATTERN."
+"Selects versions depending/pre-depending/suggesting/recommending/conflicting/"
+"etc on/with/ packages matching PATTERN."
 msgstr ""
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
