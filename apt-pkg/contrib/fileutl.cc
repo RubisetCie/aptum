@@ -2,20 +2,20 @@
 // SPDX-License-Identifier: GPL-2.0+
 // Description								/*{{{*/
 /* ######################################################################
-   
+
    File Utilities
-   
+
    CopyFile - Buffered copy of a single file
    GetLock - dpkg compatible lock file manipulation (fcntl)
-   
+
    This file had this historic note, but now includes further changes
    under the GPL-2.0+:
 
-   Most of this source is placed in the Public Domain, do with it what 
+   Most of this source is placed in the Public Domain, do with it what
    you will
    It was originally written by Jason Gunthorpe <jgg@debian.org>.
    FileFd gzip support added by Martin Pitt <martin.pitt@canonical.com>
-   
+
    The exception is RunScripts() it is under the GPLv2
 
    We believe that this reference to GPLv2 was not meant to exclude later
@@ -59,6 +59,7 @@
 #include <unistd.h>
 
 #include <algorithm>
+#include <array>
 #include <memory>
 #include <set>
 
@@ -104,16 +105,16 @@ bool RunScripts(const char *Cnf)
 
    // Fork for running the system calls
    pid_t Child = ExecFork();
-   
+
    // This is the child
    if (Child == 0)
    {
       if (_system != nullptr && _system->IsLocked() == true && (stringcasecmp(Cnf, "dpkg::post-invoke") == 0 || stringcasecmp(Cnf, "dpkg::pre-invoke") == 0))
 	 setenv("DPKG_FRONTEND_LOCKED", "true", 1);
-      if (_config->FindDir("DPkg::Chroot-Directory","/") != "/") 
+      if (_config->FindDir("DPkg::Chroot-Directory","/") != "/")
       {
-         std::cerr << "Chrooting into " 
-                   << _config->FindDir("DPkg::Chroot-Directory") 
+         std::cerr << "Chrooting into "
+                   << _config->FindDir("DPkg::Chroot-Directory")
                    << std::endl;
          if (chroot(_config->FindDir("DPkg::Chroot-Directory","/").c_str()) != 0)
             _exit(100);
@@ -121,7 +122,7 @@ bool RunScripts(const char *Cnf)
 
       if (chdir("/tmp/") != 0)
 	 _exit(100);
-	 
+
       unsigned int Count = 1;
       for (; Opts != 0; Opts = Opts->Next, Count++)
       {
@@ -136,7 +137,7 @@ bool RunScripts(const char *Cnf)
 	    _exit(100+Count);
       }
       _exit(0);
-   }      
+   }
 
    // Wait for the child
    int Status = 0;
@@ -157,10 +158,10 @@ bool RunScripts(const char *Cnf)
 	 for (; Opts != 0 && Count != 1; Opts = Opts->Next, Count--);
 	 _error->Error("Problem executing scripts %s '%s'",Cnf,Opts->Value.c_str());
       }
-      
+
       return _error->Error("Sub-process returned an error code");
    }
-   
+
    return true;
 }
 									/*}}}*/
@@ -175,12 +176,11 @@ bool CopyFile(FileFd &From,FileFd &To)
       return false;
 
    // Buffered copy between fds
-   constexpr size_t BufSize = APT_BUFFER_SIZE;
-   std::unique_ptr<unsigned char[]> Buf(new unsigned char[BufSize]);
+   std::array<unsigned char, APT_BUFFER_SIZE> Buf;
    unsigned long long ToRead = 0;
    do {
-      if (From.Read(Buf.get(),BufSize, &ToRead) == false ||
-	  To.Write(Buf.get(),ToRead) == false)
+      if (From.Read(Buf.data(),Buf.size(), &ToRead) == false ||
+	  To.Write(Buf.data(),ToRead) == false)
 	 return false;
    } while (ToRead != 0);
 
@@ -260,7 +260,7 @@ int GetLock(string File,bool Errors)
 	 _error->Warning(_("Not using locking for read only lock file %s"),File.c_str());
 	 return dup(0);       // Need something for the caller to close
       }
-      
+
       if (Errors == true)
 	 _error->Errno("open",_("Could not open lock file %s"),File.c_str());
 
@@ -269,7 +269,7 @@ int GetLock(string File,bool Errors)
       return -1;
    }
    SetCloseExec(FD,true);
-      
+
    // Acquire a write lock
    struct flock fl;
    fl.l_type = F_WRLCK;
@@ -300,9 +300,9 @@ int GetLock(string File,bool Errors)
       if (errno == ENOLCK)
       {
 	 _error->Warning(_("Not using locking for nfs mounted lock file %s"),File.c_str());
-	 return dup(0);       // Need something for the caller to close	 
+	 return dup(0);       // Need something for the caller to close
       }
-  
+
       if (Errors == true)
       {
 	 // We only do the lookup in the if ((errno == EACCES || errno == EAGAIN))
@@ -462,7 +462,7 @@ std::vector<string> GetListOfFilesInDir(string const &Dir, std::vector<string> c
 
    Configuration::MatchAgainstConfig SilentIgnore("Dir::Ignore-Files-Silently");
    DIR *D = opendir(Dir.c_str());
-   if (D == 0) 
+   if (D == 0)
    {
       if (errno == EACCES)
 	 _error->WarningE("opendir", _("Unable to read %s"), Dir.c_str());
@@ -471,7 +471,7 @@ std::vector<string> GetListOfFilesInDir(string const &Dir, std::vector<string> c
       return List;
    }
 
-   for (struct dirent *Ent = readdir(D); Ent != 0; Ent = readdir(D)) 
+   for (struct dirent *Ent = readdir(D); Ent != 0; Ent = readdir(D))
    {
       // skip "hidden" files
       if (Ent->d_name[0] == '.')
@@ -586,7 +586,7 @@ std::vector<string> GetListOfFilesInDir(string const &Dir, bool SortList)
       return List;
    }
 
-   for (struct dirent *Ent = readdir(D); Ent != 0; Ent = readdir(D)) 
+   for (struct dirent *Ent = readdir(D); Ent != 0; Ent = readdir(D))
    {
       // skip "hidden" files
       if (Ent->d_name[0] == '.')
@@ -713,9 +713,9 @@ string flNoLink(string File)
       return File;
    if (stat(File.c_str(),&St) != 0)
       return File;
-   
-   /* Loop resolving the link. There is no need to limit the number of 
-      loops because the stat call above ensures that the symlink is not 
+
+   /* Loop resolving the link. There is no need to limit the number of
+      loops because the stat call above ensures that the symlink is not
       circular */
    char Buffer[1024];
    string NFile = File;
@@ -723,23 +723,23 @@ string flNoLink(string File)
    {
       // Read the link
       ssize_t Res;
-      if ((Res = readlink(NFile.c_str(),Buffer,sizeof(Buffer))) <= 0 || 
+      if ((Res = readlink(NFile.c_str(),Buffer,sizeof(Buffer))) <= 0 ||
 	  (size_t)Res >= sizeof(Buffer))
 	  return File;
-      
+
       // Append or replace the previous path
       Buffer[Res] = 0;
       if (Buffer[0] == '/')
 	 NFile = Buffer;
       else
 	 NFile = flNotFile(NFile) + Buffer;
-      
+
       // See if we are done
       if (lstat(NFile.c_str(),&St) != 0)
 	 return File;
       if (S_ISLNK(St.st_mode) == 0)
-	 return NFile;      
-   }   
+	 return NFile;
+   }
 }
 									/*}}}*/
 // flCombine - Combine a file and a directory				/*{{{*/
@@ -750,14 +750,16 @@ string flCombine(string Dir,string File)
 {
    if (File.empty() == true)
       return string();
-   
+
    if (File[0] == '/' || Dir.empty() == true)
       return File;
    if (File.length() >= 2 && File[0] == '.' && File[1] == '/')
       return File;
-   if (Dir[Dir.length()-1] == '/')
-      return Dir + File;
-   return Dir + '/' + File;
+
+   if (Dir.back() != '/')
+      Dir.append("/");
+   Dir.append(File);
+   return Dir;
 }
 									/*}}}*/
 // flAbsPath - Return the absolute path of the filename			/*{{{*/
@@ -799,7 +801,7 @@ std::string flNormalize(std::string file)				/*{{{*/
 // ---------------------------------------------------------------------
 /* */
 void SetCloseExec(int Fd,bool Close)
-{   
+{
    if (fcntl(Fd,F_SETFD,(Close == false)?0:FD_CLOEXEC) != 0)
    {
       cerr << "FATAL -> Could not set close on exec " << strerror(errno) << endl;
@@ -811,7 +813,7 @@ void SetCloseExec(int Fd,bool Close)
 // ---------------------------------------------------------------------
 /* */
 void SetNonBlock(int Fd,bool Block)
-{   
+{
    int Flags = fcntl(Fd,F_GETFL) & (~O_NONBLOCK);
    if (fcntl(Fd,F_SETFL,Flags | ((Block == false)?0:O_NONBLOCK)) != 0)
    {
@@ -823,7 +825,7 @@ void SetNonBlock(int Fd,bool Block)
 // WaitFd - Wait for a FD to become readable				/*{{{*/
 // ---------------------------------------------------------------------
 /* This waits for a FD to become readable using select. It is useful for
-   applications making use of non-blocking sockets. The timeout is 
+   applications making use of non-blocking sockets. The timeout is
    in seconds. */
 bool WaitFd(int Fd,bool write,unsigned long timeout)
 {
@@ -833,19 +835,19 @@ bool WaitFd(int Fd,bool write,unsigned long timeout)
    FD_SET(Fd,&Set);
    tv.tv_sec = timeout;
    tv.tv_usec = 0;
-   if (write == true) 
-   {      
+   if (write == true)
+   {
       int Res;
       do
       {
 	 Res = select(Fd+1,0,&Set,0,(timeout != 0?&tv:0));
       }
       while (Res < 0 && errno == EINTR);
-      
+
       if (Res <= 0)
 	 return false;
-   } 
-   else 
+   }
+   else
    {
       int Res;
       do
@@ -853,11 +855,11 @@ bool WaitFd(int Fd,bool write,unsigned long timeout)
 	 Res = select(Fd+1,&Set,0,0,(timeout != 0?&tv:0));
       }
       while (Res < 0 && errno == EINTR);
-      
+
       if (Res <= 0)
 	 return false;
    }
-   
+
    return true;
 }
 									/*}}}*/
@@ -884,13 +886,13 @@ void MergeKeepFdsFromConfiguration(std::set<int> &KeepFDs)
 									/*}}}*/
 // ExecFork - Magical fork that sanitizes the context before execing	/*{{{*/
 // ---------------------------------------------------------------------
-/* This is used if you want to cleanse the environment for the forked 
+/* This is used if you want to cleanse the environment for the forked
    child, it fixes up the important signals and nukes all of the fds,
    otherwise acts like normal fork. */
 pid_t ExecFork()
 {
       set<int> KeepFDs;
-      // we need to merge the Keep-Fds as external tools like 
+      // we need to merge the Keep-Fds as external tools like
       // debconf-apt-progress use it
       MergeKeepFdsFromConfiguration(KeepFDs);
       return ExecFork(KeepFDs);
@@ -939,20 +941,20 @@ pid_t ExecFork(std::set<int> KeepFDs)
 	 }
       }
    }
-   
+
    return Process;
 }
 									/*}}}*/
 // ExecWait - Fancy waitpid						/*{{{*/
 // ---------------------------------------------------------------------
-/* Waits for the given sub process. If Reap is set then no errors are 
+/* Waits for the given sub process. If Reap is set then no errors are
    generated. Otherwise a failed subprocess will generate a proper descriptive
    message */
 bool ExecWait(pid_t Pid,const char *Name,bool Reap)
 {
    if (Pid <= 1)
       return true;
-   
+
    // Wait and collect the error code
    int Status;
    while (waitpid(Pid,&Status,0) != Pid)
@@ -962,11 +964,11 @@ bool ExecWait(pid_t Pid,const char *Name,bool Reap)
 
       if (Reap == true)
 	 return false;
-      
+
       return _error->Error(_("Waited for %s but it wasn't there"),Name);
    }
 
-   
+
    // Check for an error code.
    if (WIFEXITED(Status) == 0 || WEXITSTATUS(Status) != 0)
    {
@@ -976,16 +978,16 @@ bool ExecWait(pid_t Pid,const char *Name,bool Reap)
       {
 	 if( WTERMSIG(Status) == SIGSEGV)
 	    return _error->Error(_("Sub-process %s received a segmentation fault."),Name);
-	 else 
+	 else
 	    return _error->Error(_("Sub-process %s received signal %u."),Name, WTERMSIG(Status));
       }
 
       if (WIFEXITED(Status) != 0)
 	 return _error->Error(_("Sub-process %s returned an error code (%u)"),Name,WEXITSTATUS(Status));
-      
+
       return _error->Error(_("Sub-process %s exited unexpectedly"),Name);
-   }      
-   
+   }
+
    return true;
 }
 									/*}}}*/
@@ -999,24 +1001,18 @@ bool StartsWithGPGClearTextSignature(string const &FileName)
    char * lineptr = nullptr;
    size_t n = 0;
    errno = 0;
+   DEFER([&] { fclose(gpg); free(lineptr); });
    ssize_t const result = getline(&lineptr, &n, gpg);
    if (errno != 0)
    {
       _error->Errno("getline", "Could not read from %s", FileName.c_str());
-      fclose(gpg);
-      free(lineptr);
       return false;
    }
-   fclose(gpg);
 
    _strrstrip(lineptr);
    static const char* SIGMSG = "-----BEGIN PGP SIGNED MESSAGE-----";
    if (result == -1 || strcmp(lineptr, SIGMSG) != 0)
-   {
-      free(lineptr);
       return false;
-   }
-   free(lineptr);
    return true;
 }
 									/*}}}*/
@@ -1246,12 +1242,11 @@ public:
    }
    virtual bool InternalSkip(unsigned long long Over)
    {
-      unsigned long long constexpr buffersize = 1024;
-      char buffer[buffersize];
+      std::array<char, APT_BUFFER_SIZE> buffer;
       while (Over != 0)
       {
-	 unsigned long long toread = std::min(buffersize, Over);
-	 if (filefd->Read(buffer, toread) == false)
+	 auto toread = std::min<unsigned long long>(buffer.size(), Over);
+	 if (filefd->Read(buffer.data(), toread) == false)
 	    return filefd->FileFdError("Unable to seek ahead %llu",Over);
 	 Over -= toread;
       }
@@ -1273,11 +1268,10 @@ public:
    {
       unsigned long long size = 0;
       unsigned long long const oldSeek = filefd->Tell();
-      unsigned long long constexpr ignoresize = 1024;
-      char ignore[ignoresize];
+      std::array<char, APT_BUFFER_SIZE> ignore;
       unsigned long long read = 0;
       do {
-	 if (filefd->Read(ignore, ignoresize, &read) == false)
+	 if (filefd->Read(ignore.data(), ignore.size(), &read) == false)
 	 {
 	    filefd->Seek(oldSeek);
 	    return 0;
@@ -1995,7 +1989,7 @@ class APT_HIDDEN LzmaFileFdPrivate: public FileFdPrivate {		/*{{{*/
    struct LZMAFILE {
       FILE* file;
       FileFd * const filefd;
-      uint8_t buffer[4096];
+      std::array<unsigned char, APT_BUFFER_SIZE> buffer;
       lzma_stream stream;
       lzma_ret err;
       bool eof;
@@ -2006,19 +2000,18 @@ class APT_HIDDEN LzmaFileFdPrivate: public FileFdPrivate {		/*{{{*/
       {
 	 if (compressing == true && filefd->Failed() == false)
 	 {
-	    size_t constexpr buffersize = sizeof(buffer)/sizeof(buffer[0]);
 	    while(true)
 	    {
-	       stream.avail_out = buffersize;
-	       stream.next_out = buffer;
+	       stream.avail_out = buffer.size();
+	       stream.next_out = buffer.data();
 	       err = lzma_code(&stream, LZMA_FINISH);
 	       if (err != LZMA_OK && err != LZMA_STREAM_END)
 	       {
 		  _error->Error("~LZMAFILE: Compress finalisation failed");
 		  break;
 	       }
-	       size_t const n =  buffersize - stream.avail_out;
-	       if (n && fwrite(buffer, 1, n, file) != n)
+	       size_t const n =  buffer.size() - stream.avail_out;
+	       if (n && fwrite(buffer.data(), 1, n, file) != n)
 	       {
 		  _error->Errno("~LZMAFILE",_("Write error"));
 		  break;
@@ -2113,8 +2106,8 @@ public:
       lzma->stream.avail_out = Size;
       if (lzma->stream.avail_in == 0)
       {
-	 lzma->stream.next_in = lzma->buffer;
-	 lzma->stream.avail_in = fread(lzma->buffer, 1, sizeof(lzma->buffer)/sizeof(lzma->buffer[0]), lzma->file);
+	 lzma->stream.next_in = lzma->buffer.data();
+	 lzma->stream.avail_in = fread(lzma->buffer.data(), 1, lzma->buffer.size(), lzma->file);
       }
       lzma->err = lzma_code(&lzma->stream, LZMA_RUN);
       if (lzma->err == LZMA_STREAM_END)
@@ -2148,13 +2141,13 @@ public:
       ssize_t Res;
       lzma->stream.next_in = (uint8_t *)From;
       lzma->stream.avail_in = Size;
-      lzma->stream.next_out = lzma->buffer;
-      lzma->stream.avail_out = sizeof(lzma->buffer)/sizeof(lzma->buffer[0]);
+      lzma->stream.next_out = lzma->buffer.data();
+      lzma->stream.avail_out = lzma->buffer.size();
       lzma->err = lzma_code(&lzma->stream, LZMA_RUN);
       if (lzma->err != LZMA_OK)
 	 return -1;
-      size_t const n = sizeof(lzma->buffer)/sizeof(lzma->buffer[0]) - lzma->stream.avail_out;
-      size_t const m = (n == 0) ? 0 : fwrite(lzma->buffer, 1, n, lzma->file);
+      size_t const n = lzma->buffer.size() - lzma->stream.avail_out;
+      size_t const m = (n == 0) ? 0 : fwrite(lzma->buffer.data(), 1, n, lzma->file);
       if (m != n)
       {
 	 Res = -1;
@@ -2732,10 +2725,10 @@ bool FileFd::Read(void *To,unsigned long long Size,unsigned long long *Actual)
       if (Actual != nullptr)
 	 *Actual += Res;
    }
-   
+
    if (Size == 0)
       return true;
-   
+
    // Eof handling
    if (Actual != 0)
    {

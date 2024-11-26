@@ -3,10 +3,10 @@
 /* ######################################################################
 
    Hashes - Simple wrapper around the hash functions
-   
+
    This is just used to make building the methods simpler, this is the
    only interface required..
-   
+
    ##################################################################### */
 									/*}}}*/
 // Include Files							/*{{{*/
@@ -21,6 +21,7 @@
 #include <apt-pkg/tagfile.h>
 
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <cstddef>
 #include <cstdlib>
@@ -65,7 +66,11 @@ HashString::HashString(std::string Type, std::string Hash) : Type(Type), Hash(Ha
 {
 }
 
-HashString::HashString(std::string StringedHash)			/*{{{*/
+#if APT_PKG_ABI > 600
+HashString::HashString(std::string_view StringedHash)			/*{{{*/
+#else
+HashString::HashString(std::string StringedHash)        /*{{{*/
+#endif
 {
    if (StringedHash.find(":") == std::string::npos)
    {
@@ -79,7 +84,7 @@ HashString::HashString(std::string StringedHash)			/*{{{*/
 	 std::clog << "HashString(string): invalid StringedHash " << StringedHash << std::endl;
       return;
    }
-   std::string::size_type pos = StringedHash.find(":");
+   auto pos = StringedHash.find(":");
    Type = StringedHash.substr(0,pos);
    Hash = StringedHash.substr(pos+1, StringedHash.size() - pos);
 
@@ -372,33 +377,33 @@ bool Hashes::Add(const unsigned char * const Data, unsigned long long const Size
 }
 bool Hashes::AddFD(int const Fd,unsigned long long Size)
 {
-   unsigned char Buf[APT_BUFFER_SIZE];
+   std::array<unsigned char, APT_BUFFER_SIZE> Buf;
    bool const ToEOF = (Size == UntilEOF);
    while (Size != 0 || ToEOF)
    {
-      decltype(Size) n = sizeof(Buf);
+      decltype(Size) n = Buf.size();
       if (!ToEOF) n = std::min(Size, n);
-      ssize_t const Res = read(Fd,Buf,n);
+      ssize_t const Res = read(Fd,Buf.data(),n);
       if (Res < 0 || (!ToEOF && Res != (ssize_t) n)) // error, or short read
 	 return false;
       if (ToEOF && Res == 0) // EOF
 	 break;
       Size -= Res;
-      if (Add(Buf, Res) == false)
+      if (Add(Buf.data(), Res) == false)
 	 return false;
    }
    return true;
 }
 bool Hashes::AddFD(FileFd &Fd,unsigned long long Size)
 {
-   unsigned char Buf[APT_BUFFER_SIZE];
+   std::array<unsigned char, APT_BUFFER_SIZE> Buf;
    bool const ToEOF = (Size == 0);
    while (Size != 0 || ToEOF)
    {
-      decltype(Size) n = sizeof(Buf);
+      decltype(Size) n = Buf.size();
       if (!ToEOF) n = std::min(Size, n);
       decltype(Size) a = 0;
-      if (Fd.Read(Buf, n, &a) == false) // error
+      if (Fd.Read(Buf.data(), n, &a) == false) // error
 	 return false;
       if (ToEOF == false)
       {
@@ -408,7 +413,7 @@ bool Hashes::AddFD(FileFd &Fd,unsigned long long Size)
       else if (a == 0) // EOF
 	 break;
       Size -= a;
-      if (Add(Buf, a) == false)
+      if (Add(Buf.data(), a) == false)
 	 return false;
    }
    return true;

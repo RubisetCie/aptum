@@ -256,7 +256,11 @@ valgrind() {
 	if [ "${CMD##*/}" = "$CMD" ]; then
 		CMD="${APTCMDLINEBINDIR}/${CMD}"
 	fi
-	runapt command valgrind -q --error-exitcode=7 "$CMD" "$@"
+	if command valgrind --version >/dev/null 2>&1; then
+		runapt command valgrind -q --error-exitcode=7 "$CMD" "$@"
+	else
+		runapt command "$CMD" "$@"
+	fi
 }
 
 lastmodification() {
@@ -2024,6 +2028,9 @@ testfailure() {
 				if grep -q " Can't check signature: 
  BAD signature from 
  signature could not be verified" "$OUTPUT"; then
+					msgpass
+				elif [ -e "$OUTPUT" -a ! -s "$OUTPUT" ]; then
+					msgwarn "apt-key failed without output, this is normal for gpgv-sq (see sequoia-chameleon-gnupg#88)"
 					msgpass
 				else
 					msgfailoutput "run failed with exitcode ${EXITCODE}, but no signature error" "$OUTPUT" "$@"

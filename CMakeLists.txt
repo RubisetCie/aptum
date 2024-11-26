@@ -85,6 +85,7 @@ add_optional_compile_options(Wdouble-promotion)
 add_optional_compile_options(Wsuggest-override)
 add_optional_compile_options(Werror=suggest-override)
 add_optional_compile_options(Werror=return-type)
+add_optional_compile_options(Wp,-D_GLIBCXX_ASSERTIONS)
 # apt-ftparchive dependencies
 find_package(Berkeley REQUIRED)
 if (BERKELEY_FOUND)
@@ -206,7 +207,7 @@ endif()
 # Configure some variables like package, version and architecture.
 set(PACKAGE ${PROJECT_NAME})
 set(PACKAGE_MAIL "APT Development Team <deity@lists.debian.org>")
-set(PACKAGE_VERSION "2.9.10")
+set(PACKAGE_VERSION "2.9.14")
 string(REGEX MATCH "^[0-9.]+" PROJECT_VERSION ${PACKAGE_VERSION})
 
 if (NOT DEFINED DPKG_DATADIR)
