@@ -38,7 +38,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt-doc 1.0.5\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2024-12-07 16:13+0000\n"
+"POT-Creation-Date: 2025-01-01 21:58+0100\n"
 "PO-Revision-Date: 2014-07-04 01:31+0200\n"
 "Last-Translator: Omar Campagne <ocampagne@gmail.com>\n"
 "Language-Team: Debian l10n Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -7858,6 +7858,16 @@ msgstr ""
 "<literal>Dir::Ignore-Files-Silently</literal>. Si coincide, se omite "
 "silenciosamente."
 
+#. type: Content of: <refentry><refsect1><para>
+#: sources.list.5.xml
+msgid ""
+"The suggested filename for new systems is <filename>/etc/apt/sources.list.d/"
+"<replaceable>vendor</replaceable>.sources</filename>, where "
+"<replaceable>vendor</replaceable> is the result of <command>dpkg-vendor --"
+"query Vendor | tr A-Z a-z</command>, in deb822-style format.  For example, "
+"Ubuntu uses <filename>/etc/apt/sources.list.d/ubuntu.sources</filename>."
+msgstr ""
+
 #. type: Content of: <refentry><refsect1><title>
 #: sources.list.5.xml
 msgid "One-Line-Style Format"
@@ -8802,42 +8812,42 @@ msgstr ""
 #. type: Content of: <refentry><refsect1><para>
 #: sources.list.5.xml
 msgid ""
-"Uses FTP to access the archive at ftp.debian.org, under the debian "
+"Uses FTP to access the archive at ftp.example.org, under the debian "
 "directory, and uses only the &debian-stable-codename;/contrib area."
 msgstr ""
-"Utiliza FTP para acceder al archivo de Debian en «ftp.debian.org», debajo "
+"Utiliza FTP para acceder al archivo de Debian en «ftp.example.org», debajo "
 "del directorio «debian», y usa sólo la sección «&debian-stable-codename;/"
 "contrib»."
 
 #. type: Content of: <refentry><refsect1><literallayout>
 #: sources.list.5.xml
 #, no-wrap
-msgid "deb ftp://ftp.debian.org/debian &debian-stable-codename; contrib"
-msgstr "deb ftp://ftp.debian.org/debian &debian-stable-codename; contrib"
+msgid "deb ftp://ftp.example.org/debian &debian-stable-codename; contrib"
+msgstr "deb ftp://ftp.example.org/debian &debian-stable-codename; contrib"
 
 #. type: Content of: <refentry><refsect1><literallayout>
 #: sources.list.5.xml
 #, no-wrap
 msgid ""
 "Types: deb\n"
-"URIs: ftp://ftp.debian.org/debian\n"
+"URIs: ftp://ftp.example.org/debian\n"
 "Suites: &debian-stable-codename;\n"
 "Components: contrib"
 msgstr ""
 "Types: deb\n"
-"URIs: ftp://ftp.debian.org/debian\n"
+"URIs: ftp://ftp.example.org/debian\n"
 "Suites: &debian-stable-codename;\n"
 "Components: contrib"
 
 #. type: Content of: <refentry><refsect1><para>
 #: sources.list.5.xml
 msgid ""
-"Uses FTP to access the archive at ftp.debian.org, under the debian "
+"Uses FTP to access the archive at ftp.example.org, under the debian "
 "directory, and uses only the unstable/contrib area. If this line appears as "
 "well as the one in the previous example in <filename>sources.list</filename> "
 "a single FTP session will be used for both resource lines."
 msgstr ""
-"Utiliza FTP para acceder al archivo de Debian en «ftp.debian.org», debajo "
+"Utiliza FTP para acceder al archivo de Debian en «ftp.example.org», debajo "
 "del directorio «debian», y usa sólo la sección unstable/contrib. Si tanto "
 "esta línea como la del ejemplo anterior aparecen en <filename>sources.list</"
 "filename>, se usará sólo una sesión FTP para ambas."
@@ -8845,20 +8855,20 @@ msgstr ""
 #. type: Content of: <refentry><refsect1><literallayout>
 #: sources.list.5.xml
 #, no-wrap
-msgid "deb ftp://ftp.debian.org/debian unstable contrib"
-msgstr "deb ftp://ftp.debian.org/debian unstable contrib"
+msgid "deb ftp://ftp.example.org/debian unstable contrib"
+msgstr "deb ftp://ftp.example.org/debian unstable contrib"
 
 #. type: Content of: <refentry><refsect1><literallayout>
 #: sources.list.5.xml
 #, no-wrap
 msgid ""
 "Types: deb\n"
-"URIs: ftp://ftp.debian.org/debian\n"
+"URIs: ftp://ftp.example.org/debian\n"
 "Suites: unstable\n"
 "Components: contrib"
 msgstr ""
 "Types: deb\n"
-"URIs: ftp://ftp.debian.org/debian\n"
+"URIs: ftp://ftp.example.org/debian\n"
 "Suites: unstable\n"
 "Components: contrib"
 
@@ -10169,16 +10179,16 @@ msgstr "Ejemplos"
 #. type: Content of: <refentry><refsect1><para><literallayout>
 #: apt_auth.conf.5.xml
 #, fuzzy, no-wrap
-#| msgid "deb ftp://ftp.debian.org/debian &debian-stable-codename; contrib"
+#| msgid "deb ftp://ftp.example.org/debian &debian-stable-codename; contrib"
 msgid "deb https://example.org/debian &debian-stable-codename; main"
-msgstr "deb ftp://ftp.debian.org/debian &debian-stable-codename; contrib"
+msgstr "deb ftp://ftp.example.org/debian &debian-stable-codename; contrib"
 
 #. type: Content of: <refentry><refsect1><para><literallayout>
 #: apt_auth.conf.5.xml
 #, fuzzy, no-wrap
-#| msgid "deb ftp://ftp.debian.org/debian &debian-stable-codename; contrib"
+#| msgid "deb ftp://ftp.example.org/debian &debian-stable-codename; contrib"
 msgid "deb https://apt:debian@example.org/debian &debian-stable-codename; main"
-msgstr "deb ftp://ftp.debian.org/debian &debian-stable-codename; contrib"
+msgstr "deb ftp://ftp.example.org/debian &debian-stable-codename; contrib"
 
 #. type: Content of: <refentry><refsect1><para><literallayout>
 #: apt_auth.conf.5.xml
@@ -10910,9 +10920,9 @@ msgstr ""
 #. type: Content of: <refentry><refsect1><refsect2><literallayout>
 #: apt-transport-mirror.1.xml
 #, fuzzy, no-wrap
-#| msgid "deb ftp://ftp.debian.org/debian &debian-stable-codename; contrib"
+#| msgid "deb ftp://ftp.example.org/debian &debian-stable-codename; contrib"
 msgid "deb mirror://apt.example.org/mirror.lst &debian-stable-codename; main\n"
-msgstr "deb ftp://ftp.debian.org/debian &debian-stable-codename; contrib"
+msgstr "deb ftp://ftp.example.org/debian &debian-stable-codename; contrib"
 
 #. type: Content of: <refentry><refsect1><refsect2><para>
 #: apt-transport-mirror.1.xml
@@ -11985,13 +11995,13 @@ msgstr ""
 #, no-wrap
 msgid ""
 "# apt-get update\n"
-"Get http://ftp.de.debian.org/debian-non-US/ stable/binary-i386/ Packages\n"
+"Get http://ftp.de.debian.org/debian/ stable/binary-i386/ Packages\n"
 "Get http://llug.sep.bnl.gov/debian/ testing/contrib Packages\n"
 "Reading Package Lists... Done\n"
 "Building Dependency Tree... Done\n"
 msgstr ""
 "# apt-get update\n"
-"Des http://ftp.de.debian.org/debian-non-US/ stable/binary-i386/ Packages\n"
+"Des http://ftp.de.debian.org/debian/ stable/binary-i386/ Packages\n"
 "Des http://llug.sep.bnl.gov/debian/ testing/contrib Packages\n"
 "Leyendo lista de paquetes... Hecho\n"
 "Creando árbol de dependencias... Hecho\n"
@@ -12162,8 +12172,8 @@ msgid ""
 "\n"
 " For example:\n"
 "      file:/mnt/debian,\n"
-"      ftp://ftp.debian.org/debian,\n"
-"      http://ftp.de.debian.org/debian,\n"
+"      ftp://ftp.example.org/debian,\n"
+"      http://deb.debian.org/debian,\n"
 "\n"
 "\n"
 " URL [http://llug.sep.bnl.gov/debian]:\n"
@@ -12175,8 +12185,8 @@ msgstr ""
 "\n"
 " For example:\n"
 "      file:/mnt/debian,\n"
-"      ftp://ftp.debian.org/debian,\n"
-"      http://ftp.de.debian.org/debian,\n"
+"      ftp://ftp.example.org/debian,\n"
+"      http://deb.debian.org/debian,\n"
 "\n"
 "\n"
 " URL [http://llug.sep.bnl.gov/debian]:\n"
@@ -12198,26 +12208,31 @@ msgstr ""
 msgid ""
 " Please give the distribution tag to get or a path to the\n"
 " package file ending in a /. The distribution\n"
-" tags are typically something like: stable unstable testing non-US\n"
+" tags are typically something like: stable unstable testing\n"
 "\n"
 " Distribution [stable]:\n"
 msgstr ""
 " Please give the distribution tag to get or a path to the\n"
 " package file ending in a /. The distribution\n"
-" tags are typically something like: stable unstable testing non-US\n"
+" tags are typically something like: stable unstable testing\n"
 "\n"
 " Distribution [stable]:\n"
 
 #. type: Content of: <book><chapter><para>
 #: guide.dbk
+#, fuzzy
+#| msgid ""
+#| "The distribution refers to the Debian version in the archive, "
+#| "<emphasis>stable</emphasis> refers to the latest released version and "
+#| "<emphasis>unstable</emphasis> refers to the developmental version. "
+#| "<emphasis>non-US</emphasis> is only available on some mirrors and refers "
+#| "to packages that contain encryption technology or other things that "
+#| "cannot be exported from the United States. Importing these packages into "
+#| "the US is legal however."
 msgid ""
 "The distribution refers to the Debian version in the archive, "
 "<emphasis>stable</emphasis> refers to the latest released version and "
-"<emphasis>unstable</emphasis> refers to the developmental version. "
-"<emphasis>non-US</emphasis> is only available on some mirrors and refers to "
-"packages that contain encryption technology or other things that cannot be "
-"exported from the United States. Importing these packages into the US is "
-"legal however."
+"<emphasis>unstable</emphasis> refers to the developmental version."
 msgstr ""
 "La distribución se refiere a la versión de Debian en el archivo, "
 "<emphasis>stable</emphasis> (estable) se refiere a la última versión "
@@ -12775,18 +12790,18 @@ msgstr ""
 #, no-wrap
 msgid ""
 "# apt-get update\n"
-"Get:1 http://ftp.de.debian.org/debian-non-US/ stable/non-US/ Packages\n"
+"Get:1 http://ftp.de.debian.org/debian/ stable/main Packages\n"
 "Get:2 http://llug.sep.bnl.gov/debian/ testing/contrib Packages\n"
 "Hit http://llug.sep.bnl.gov/debian/ testing/main Packages\n"
-"Get:4 http://ftp.de.debian.org/debian-non-US/ unstable/binary-i386/ Packages\n"
+"Get:4 http://ftp.de.debian.org/debian/ unstable/binary-i386/ Packages\n"
 "Get:5 http://llug.sep.bnl.gov/debian/ testing/non-free Packages\n"
 "11% [5 testing/non-free `Waiting for file' 0/32.1k 0%] 2203b/s 1m52s\n"
 msgstr ""
 "# apt-get update\n"
-"Des:1 http://ftp.de.debian.org/debian-non-US/ stable/non-US/ Packages\n"
+"Des:1 http://ftp.de.debian.org/debian/ stable/main Packages\n"
 "Des:2 http://llug.sep.bnl.gov/debian/ testing/contrib Packages\n"
 "Obj http://llug.sep.bnl.gov/debian/ testing/main Packages\n"
-"Des:4 http://ftp.de.debian.org/debian-non-US/ unstable/binary-i386/ Packages\n"
+"Des:4 http://ftp.de.debian.org/debian/ unstable/binary-i386/ Packages\n"
 "es:5 http://llug.sep.bnl.gov/debian/ testing/non-free Packages\n"
 "11% [5 testing/non-free Esperando las cabeceras 0/32.1k 0%] 2203b/s 1m52s\n"
 

@@ -169,7 +169,7 @@ static bool CheckGPGV(std::unordered_map<std::string, std::forward_list<std::str
 
 /// Verifies a file containing a detached signature has the right format
 /// @return 0 if succesful, or an exit code for ExecGPGV otherwise.
-static int VerifyDetachedSignatureFile(std::string FileGPG, int fd[2], int statusfd = -1)
+static int VerifyDetachedSignatureFile(std::string const &FileGPG, int fd[2], int statusfd = -1)
 {
    auto detached = make_unique_FILE(FileGPG, "r");
    if (detached.get() == nullptr)
@@ -211,10 +211,17 @@ static int VerifyDetachedSignatureFile(std::string FileGPG, int fd[2], int statu
 	 }
       }
    }
-   if (found_signatures == 0 && statusfd != -1)
+   if (found_signatures == 0)
    {
-      auto const errtag = "[GNUPG:] NODATA\n";
-      FileFd::Write(fd[1], errtag, strlen(errtag));
+      if (statusfd != -1 && fd)
+      {
+	 auto const errtag = "[GNUPG:] NODATA\n";
+	 FileFd::Write(fd[1], errtag, strlen(errtag));
+      }
+      else
+      {
+	 _error->Error("Signed file isn't valid, got 'NODATA' (does the network require authentication?)");
+      }
       // guess if this is a binary signature, we never officially supported them,
       // but silently accepted them via passing them unchecked to gpgv
       if (found_badcontent)
@@ -247,6 +254,11 @@ static int VerifyDetachedSignatureFile(std::string FileGPG, int fd[2], int statu
    return 0;
 }
 
+bool VerifyDetachedSignatureFile(std::string const &DetachedSignatureFileName)
+{
+   return VerifyDetachedSignatureFile(DetachedSignatureFileName, nullptr, -1) == 0;
+}
+
 std::pair<std::string, std::forward_list<std::string>> APT::Internal::FindGPGV(bool Debug)
 {
    static thread_local std::unordered_map<std::string, std::forward_list<std::string>> checkedCommands;
@@ -255,12 +267,8 @@ std::pair<std::string, std::forward_list<std::string>> APT::Internal::FindGPGV(b
       // Prefer absolute path
       "/usr/bin/gpgv-sq",
       "/usr/bin/gpgv",
-      "/usr/bin/gpgv2",
-      "/usr/bin/gpgv1",
       "gpgv-sq",
       "gpgv",
-      "gpgv2",
-      "gpgv1",
    };
    for (auto gpgv : gpgvVariants)
       if (CheckGPGV(checkedCommands, gpgv, Debug))

@@ -6,6 +6,7 @@
 #include <apt-pkg/strutl.h>
 
 #include <apt-private/private-main.h>
+#include <apt-private/private-output.h>
 
 #include <iostream>
 #include <locale>

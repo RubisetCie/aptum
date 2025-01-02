@@ -1,3 +1,59 @@
+apt (2.9.21) unstable; urgency=medium
+
+  [ Simon McVittie ]
+  * sources.list(5): Suggest VENDOR.sources for new systems
+
+  [ Guillem Jover ]
+  * Remove non-US leftovers in code and documentation
+  * Remove obsolete references to ftp://ftp.debian.org
+  * Use deb.debian.org instead of ftp.debian.org URLs
+
+  [ Julian Andres Klode ]
+  * Extend v3 subkey expiry to 2026, owing to OBS use
+  * sqv: Avoid propagating errors between files (Closes: #1091679)
+  * http: seccomp: Allow reading directories (Closes: #1091351)
+  * test: Check "${METHODSDIR}/sqv" not "/usr/bin/sqv"
+  * Unfuzzy documentation translations
+  * Run update-po4a
+
+ -- Julian Andres Klode <jak@debian.org>  Wed, 01 Jan 2025 22:48:55 +0100
+
+apt (2.9.20) unstable; urgency=medium
+
+  * symbols: Merge 2.9.19 and fix version for InsertErrno
+  * Re-include std:: symbols in the symbols file as optional again
+
+ -- Julian Andres Klode <jak@debian.org>  Sat, 28 Dec 2024 22:59:50 +0100
+
+apt (2.9.19) unstable; urgency=medium
+
+  * Replace GnuTLS and gcrypt with OpenSSL
+  * Replace GnuPG with Sequoia on supported Debian platforms
+    - methods: Add new sqv method
+    - debian: Add default policy to allow SHA-1 self-signatures until 2026
+    - debian: Plug sqv into the package build
+  * Smaller bits:
+    - apt-helper: Add a hash-file helper to debug file hashing
+    - Use sq in the test suite, remove apt-key
+    - abicheck: Add symbol-merge.py helper
+    - Symbols: Merge stable, noble, testing, unstable
+
+ -- Julian Andres Klode <jak@debian.org>  Mon, 23 Dec 2024 12:16:19 +0100
+
+apt (2.9.18) unstable; urgency=medium
+
+  * Fix out-of-bounds read in `apt show :` (Closes: #1090068)
+  * Introduce git-like automatic pager for apt(8), emulating git behavior.
+    It is enabled for the show, list, search, policy, showsrc commands.
+    The pager can be set using APT_PAGER or PAGER and defaults to `pager`
+  * Add initial pinning information to apt show --full.
+    The fields `APT-Pin`, `APT-Candidate`, and `APT-Release` provide
+    pinning information. It is not yet possible to see multiple sources,
+    and the per-source pinning is not shown.
+  * gpgv: Extract VerifyDetachedSignatureFile()
+
+ -- Julian Andres Klode <jak@debian.org>  Thu, 19 Dec 2024 18:38:04 +0100
+
 apt (2.9.17) unstable; urgency=medium
 
   * solver3:

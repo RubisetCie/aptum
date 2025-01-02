@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: apt-doc 2.9.17\n"
+"Project-Id-Version: apt-doc 2.9.21\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2024-12-07 16:13+0000\n"
+"POT-Creation-Date: 2025-01-01 21:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5560,6 +5560,17 @@ msgid ""
 "case it will be silently ignored."
 msgstr ""
 
+#. type: Content of: <refentry><refsect1><para>
+#: sources.list.5.xml
+msgid ""
+"The suggested filename for new systems is "
+"<filename>/etc/apt/sources.list.d/<replaceable>vendor</replaceable>.sources</filename>, "
+"where <replaceable>vendor</replaceable> is the result of "
+"<command>dpkg-vendor --query Vendor | tr A-Z a-z</command>, in deb822-style "
+"format.  For example, Ubuntu uses "
+"<filename>/etc/apt/sources.list.d/ubuntu.sources</filename>."
+msgstr ""
+
 #. type: Content of: <refentry><refsect1><title>
 #: sources.list.5.xml
 msgid "One-Line-Style Format"
@@ -6307,14 +6318,14 @@ msgstr ""
 #. type: Content of: <refentry><refsect1><para>
 #: sources.list.5.xml
 msgid ""
-"Uses FTP to access the archive at ftp.debian.org, under the debian "
+"Uses FTP to access the archive at ftp.example.org, under the debian "
 "directory, and uses only the &debian-stable-codename;/contrib area."
 msgstr ""
 
 #. type: Content of: <refentry><refsect1><literallayout>
 #: sources.list.5.xml
 #, no-wrap
-msgid "deb ftp://ftp.debian.org/debian &debian-stable-codename; contrib"
+msgid "deb ftp://ftp.example.org/debian &debian-stable-codename; contrib"
 msgstr ""
 
 #. type: Content of: <refentry><refsect1><literallayout>
@@ -6322,7 +6333,7 @@ msgstr ""
 #, no-wrap
 msgid ""
 "Types: deb\n"
-"URIs: ftp://ftp.debian.org/debian\n"
+"URIs: ftp://ftp.example.org/debian\n"
 "Suites: &debian-stable-codename;\n"
 "Components: contrib"
 msgstr ""
@@ -6330,7 +6341,7 @@ msgstr ""
 #. type: Content of: <refentry><refsect1><para>
 #: sources.list.5.xml
 msgid ""
-"Uses FTP to access the archive at ftp.debian.org, under the debian "
+"Uses FTP to access the archive at ftp.example.org, under the debian "
 "directory, and uses only the unstable/contrib area. If this line appears as "
 "well as the one in the previous example in <filename>sources.list</filename> "
 "a single FTP session will be used for both resource lines."
@@ -6339,7 +6350,7 @@ msgstr ""
 #. type: Content of: <refentry><refsect1><literallayout>
 #: sources.list.5.xml
 #, no-wrap
-msgid "deb ftp://ftp.debian.org/debian unstable contrib"
+msgid "deb ftp://ftp.example.org/debian unstable contrib"
 msgstr ""
 
 #. type: Content of: <refentry><refsect1><literallayout>
@@ -6347,7 +6358,7 @@ msgstr ""
 #, no-wrap
 msgid ""
 "Types: deb\n"
-"URIs: ftp://ftp.debian.org/debian\n"
+"URIs: ftp://ftp.example.org/debian\n"
 "Suites: unstable\n"
 "Components: contrib"
 msgstr ""
@@ -8973,7 +8984,7 @@ msgstr ""
 #, no-wrap
 msgid ""
 "# apt-get update\n"
-"Get http://ftp.de.debian.org/debian-non-US/ stable/binary-i386/ Packages\n"
+"Get http://ftp.de.debian.org/debian/ stable/binary-i386/ Packages\n"
 "Get http://llug.sep.bnl.gov/debian/ testing/contrib Packages\n"
 "Reading Package Lists... Done\n"
 "Building Dependency Tree... Done\n"
@@ -9098,8 +9109,8 @@ msgid ""
 "\n"
 " For example:\n"
 "      file:/mnt/debian,\n"
-"      ftp://ftp.debian.org/debian,\n"
-"      http://ftp.de.debian.org/debian,\n"
+"      ftp://ftp.example.org/debian,\n"
+"      http://deb.debian.org/debian,\n"
 "\n"
 "\n"
 " URL [http://llug.sep.bnl.gov/debian]:\n"
@@ -9119,7 +9130,7 @@ msgstr ""
 msgid ""
 " Please give the distribution tag to get or a path to the\n"
 " package file ending in a /. The distribution\n"
-" tags are typically something like: stable unstable testing non-US\n"
+" tags are typically something like: stable unstable testing\n"
 "\n"
 " Distribution [stable]:\n"
 msgstr ""
@@ -9129,11 +9140,7 @@ msgstr ""
 msgid ""
 "The distribution refers to the Debian version in the archive, "
 "<emphasis>stable</emphasis> refers to the latest released version and "
-"<emphasis>unstable</emphasis> refers to the developmental "
-"version. <emphasis>non-US</emphasis> is only available on some mirrors and "
-"refers to packages that contain encryption technology or other things that "
-"cannot be exported from the United States. Importing these packages into the "
-"US is legal however."
+"<emphasis>unstable</emphasis> refers to the developmental version."
 msgstr ""
 
 #. type: Content of: <book><chapter><screen>
@@ -9525,11 +9532,10 @@ msgstr ""
 #, no-wrap
 msgid ""
 "# apt-get update\n"
-"Get:1 http://ftp.de.debian.org/debian-non-US/ stable/non-US/ Packages\n"
+"Get:1 http://ftp.de.debian.org/debian/ stable/main Packages\n"
 "Get:2 http://llug.sep.bnl.gov/debian/ testing/contrib Packages\n"
 "Hit http://llug.sep.bnl.gov/debian/ testing/main Packages\n"
-"Get:4 http://ftp.de.debian.org/debian-non-US/ unstable/binary-i386/ "
-"Packages\n"
+"Get:4 http://ftp.de.debian.org/debian/ unstable/binary-i386/ Packages\n"
 "Get:5 http://llug.sep.bnl.gov/debian/ testing/non-free Packages\n"
 "11% [5 testing/non-free `Waiting for file' 0/32.1k 0%] 2203b/s 1m52s\n"
 msgstr ""
