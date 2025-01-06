@@ -20,7 +20,6 @@
 #include <apt-pkg/macros.h>
 #include <apt-pkg/packagemanager.h>
 #include <apt-pkg/pkgcache.h>
-#include <apt-pkg/saveentry.h>
 #include <apt-pkg/statechanges.h>
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/version.h>
@@ -201,98 +200,6 @@ static bool ionice(int PID)
       execv(Args[0], (char **)Args);
    }
    return ExecWait(Process, "ionice");
-}
-									/*}}}*/
-// saveState - save entries into the save state				/*{{{*/
-static void saveState(const char *filename, const vector<SaveEntry>& newly)
-{
-   FILE *f;
-   char *line = NULL;
-   size_t len = 0;
-   bool doing;
-   bool skip;
-   std::vector<SaveEntry>::iterator omitting;
-   std::vector<SaveEntry> entries;
-   std::vector<std::vector<SaveEntry>::iterator> omit;
-
-   f = fopen(filename, "r");
-   if (f == NULL)
-      goto RETURNING;
-
-   // parse the save file
-   while (getline(&line, &len, f) != -1)
-   {
-      size_t const length = strlen(line);
-      if (length < 3)
-	 continue;
-      char *entry = (char*)malloc(length-2);
-      strncpy(entry, &line[2], length-3);
-      entry[length-3] = '\0';
-      SaveEntry e;
-      e.prefix = line[0];
-      e.package = entry;
-      entries.emplace_back(e);
-   }
-   if (line)
-      free(line);
-
-   fclose(f);
-
-   // inserting the newly added entries if they don't cancels eachother
-   omitting = entries.end();
-   for (std::vector<SaveEntry>::const_iterator I = newly.begin(); I != newly.end(); I++)
-   {
-      doing = true;
-      for (std::vector<SaveEntry>::iterator J = entries.begin(); J != entries.end(); J++)
-      {
-	 if (strcmp(I->package, J->package) == 0)
-	 {
-	    omit.emplace_back(J);
-	    doing = false;
-	    break;
-	 }
-      }
-      if (doing)
-	 entries.emplace_back(*I);
-   }
-
-   // write the filtered entries
-   f = fopen(filename, "w");
-   if (f == NULL)
-      goto RETURNING;
-
-   skip = false;
-   for (std::vector<SaveEntry>::iterator I = entries.begin(); I != entries.end(); I++)
-   {
-      if (I == omitting)
-	 skip = true;
-      if (skip)
-	 goto INSERTION;
-
-      doing = true;
-      for (std::vector<std::vector<SaveEntry>::iterator>::iterator J = omit.begin(); J != omit.end(); J++)
-      {
-	 if (*J == I)
-	 {
-	    doing = false;
-	    break;
-	 }
-      }
-      if (!doing)
-	 continue;
-
-      INSERTION:
-
-      fprintf(f, "%c:%s\n", I->prefix, I->package);
-   }
-   fflush(f);
-   fclose(f);
-
-   RETURNING:
-
-   // free the memory
-   for (std::vector<SaveEntry>::iterator I = entries.begin(); I != entries.end(); I++)
-      free(I->package);
 }
 									/*}}}*/
 // FindNowVersion - Helper to find a Version in "now" state	/*{{{*/
@@ -1189,33 +1096,6 @@ bool pkgDPkgPM::OpenLog()
       WriteHistoryTag("Remove",remove);
       WriteHistoryTag("Purge",purge);
       fflush(d->history_out);
-   }
-
-   // write into the save file if present
-   string const save_name = _config->FindFile("Dir::State::save", "/dev/null");
-   if (save_name != "/dev/null")
-   {
-      if (access(save_name.c_str(), F_OK) == 0)
-      {
-	 std::vector<SaveEntry> entries;
-	 for (pkgCache::PkgIterator I = Cache.PkgBegin(); I.end() == false; ++I)
-	 {
-	    SaveEntry entry;
-	    if (Cache[I].NewInstall() == true)
-	       entry.prefix = '+';
-	    else if (Cache[I].Delete() == true)
-	       entry.prefix = '-';
-	    else
-	       continue;
-	    string const name(I.FullName(false));
-	    const std::string::size_type size = name.size();
-	    char *package = (char*)malloc(size+1); // will be freed in saveState function
-	    memcpy(package, name.c_str(), size+1);
-	    entry.package = package;
-	    entries.emplace_back(entry);
-	 }
-	 saveState(save_name.c_str(), entries);
-      }
    }
    return true;
 }

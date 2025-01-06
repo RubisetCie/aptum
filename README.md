@@ -22,11 +22,9 @@ APTUM
 
 APTUM expands APT with the following features:
 
-- Temporary state support (save state / rollback):
-	- `apt save`: initialize a temporary state, for further rollback
-	- `apt rollback`: rollback from a previously initialized temporary state
-	- `apt apply`: apply a previously initialized temporary state
-	- `apt log`: display the package changes since the initialization of the temporary state
+- Temporary state support (save state / loading):
+	- `apt save`: initialize a temporary state, for further loading
+	- `apt load`: load a previously saved temporary state
 - Shortcut to display close history:
 	- `apt history`: print the history of commands:
 	- `apt history -f`: print the full history
@@ -52,6 +50,7 @@ libbz2-dev
 libzstd-dev
 libsystemd-dev
 libseccomp-dev
+libssl-dev
 libgcrypt20-dev
 libxxhash-dev
 liblzma-dev

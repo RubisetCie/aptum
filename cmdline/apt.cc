@@ -79,10 +79,8 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
       {"full-upgrade", &DoDistUpgrade, _("upgrade the system by removing/installing/upgrading packages")},
 
       // saving stuff
-      {"save", &DoSave, _("start a new temporary state and push it")},
-      {"rollback", &DoRollback, _("cancel the changes made since to the temporary state")},
-      {"apply", &DoApply, _("apply the current state as irreversible")},
-      {"log", &DoLog, _("display the changes made in the temporary state")},
+      {"save", &DoSave, _("start a new save state and push it")},
+      {"load", &DoLoad, _("restore the installed packages to a saved state")},
 
       // misc
       {"edit-sources", &EditSources, _("edit the source information file")},

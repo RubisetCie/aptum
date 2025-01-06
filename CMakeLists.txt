@@ -277,5 +277,6 @@ install_empty_directories(
   ${STATE_DIR}/lists/partial
   ${STATE_DIR}/mirrors/partial
   ${STATE_DIR}/periodic
+  ${STATE_DIR}/states
   ${LOG_DIR}
 )

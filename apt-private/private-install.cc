@@ -142,8 +142,8 @@ struct WarnUsrMerge {
    }
 };
 #endif
-static void ShowWeakDependencies(CacheFile &Cache);
-bool InstallPackages(CacheFile &Cache, APT::PackageVector &HeldBackPackages, bool ShwKept, bool Safety, std::string const &Hook, CommandLine const &CmdL)
+static void ShowWeakDependencies(CacheFile &Cache, bool Suggestions = true);
+bool InstallPackages(CacheFile &Cache, APT::PackageVector &HeldBackPackages, bool ShwKept, bool Safety, bool Suggestions, std::string const &Hook, CommandLine const &CmdL)
 {
    auto outVer = _config->FindI("APT::Output-Version");
 #ifdef REQUIRE_MERGED_USR
@@ -222,7 +222,7 @@ bool InstallPackages(CacheFile &Cache, APT::PackageVector &HeldBackPackages, boo
       ShowUpgraded(c1out,Cache);
    ShowNew(c1out,Cache);
    if (_config->FindI("APT::Output-Version") >= 30)
-      ShowWeakDependencies(Cache);
+      ShowWeakDependencies(Cache, Suggestions);
    if (ShwKept == true)
    {
       APT::PackageVector PhasingPackages;
@@ -1009,7 +1009,7 @@ struct PkgIsExtraInstalled {
    }
 };
 /* Print out a list of suggested and recommended packages */
-static void ShowWeakDependencies(CacheFile &Cache)
+static void ShowWeakDependencies(CacheFile &Cache, bool Suggestions)
 {
    std::list<std::string> Recommends, Suggests, SingleRecommends, SingleSuggests;
    SortedPackageUniverse Universe(Cache);
@@ -1083,7 +1083,7 @@ static void ShowWeakDependencies(CacheFile &Cache)
 	 }
       }
    }
-   auto always_true = [](std::string const&) { return true; };
+   auto suggestions = [Suggestions](std::string const&) { return Suggestions; };
    auto string_ident = [](std::string const&str) { return str; };
    auto verbose_show_candidate =
       [&Cache](std::string str)
@@ -1096,9 +1096,9 @@ static void ShowWeakDependencies(CacheFile &Cache)
 	 return (*Cache)[Pkg].CandVersion;
       };
    ShowList(c1out,_("Suggested packages:"), Suggests,
-	 always_true, string_ident, verbose_show_candidate);
+	 suggestions, string_ident, verbose_show_candidate);
    ShowList(c1out,_("Recommended packages:"), Recommends,
-	 always_true, string_ident, verbose_show_candidate);
+	 suggestions, string_ident, verbose_show_candidate);
 }
 
 bool DoInstall(CommandLine &CmdL)
@@ -1146,9 +1146,9 @@ bool DoInstall(CommandLine &CmdL)
    // See if we need to prompt
    // FIXME: check if really the packages in the set are going to be installed
    if (Cache->InstCount() == verset[MOD_INSTALL].size() && Cache->DelCount() == 0)
-      result = InstallPackages(Cache, HeldBackPackages, false, true, "AptCli::Hooks::Install", CmdL);
+      result = InstallPackages(Cache, HeldBackPackages, false, true, true, "AptCli::Hooks::Install", CmdL);
    else
-      result = InstallPackages(Cache, HeldBackPackages, false, true, "AptCli::Hooks::Install", CmdL);
+      result = InstallPackages(Cache, HeldBackPackages, false, true, true, "AptCli::Hooks::Install", CmdL);
 
    if (result)
       result = RunJsonHook("AptCli::Hooks::Install", "org.debian.apt.hooks.install.post", CmdL.FileList, Cache);

@@ -42,6 +42,7 @@ APT_PUBLIC bool InstallPackages(CacheFile &Cache,
 				APT::PackageVector &HeldBackPackages,
 				bool ShwKept,
 				bool Safety = true,
+				bool Suggestions = true,
 				std::string const &Hook = "",
 				CommandLine const &CmdL = {});
 
