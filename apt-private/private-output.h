@@ -71,7 +71,7 @@ template<class Container, class PredicateC, class DisplayP, class DisplayV> bool
 
       if (ShowVersions == true)
       {
-	 out << std::endl << "   " << setColor << PkgDisplay(Pkg) << resetColor;
+	 out << '\n' << "   " << setColor << PkgDisplay(Pkg) << resetColor;
 	 std::string const verbose = VerboseDisplay(Pkg);
 	 if (verbose.empty() == false)
 	    out << " (" << verbose << ")";
@@ -85,7 +85,7 @@ template<class Container, class PredicateC, class DisplayP, class DisplayV> bool
 	 {
 	    if (ScreenUsed == 0 || (ScreenUsed + PkgName.length()) >= ScreenWidth)
 	    {
-	       out << std::endl
+	       out << '\n'
 		   << "  ";
 	       ScreenUsed = 0;
 	    }
@@ -102,14 +102,14 @@ template<class Container, class PredicateC, class DisplayP, class DisplayV> bool
 
    if (printedTitle == true)
    {
-      out << std::endl;
+      out << '\n';
       if (ListColumns && not PackageList.empty()) {
 	 out << setColor;
 	 ShowWithColumns(out, PackageList, 2, ScreenWidth);
 	 out << resetColor;
       }
       if (not Note.empty())
-	 out << Note << std::endl;
+	 out << Note << '\n';
       if (_config->FindI("APT::Output-Version") >= 30)
 	 out << std::endl;
       return false;
