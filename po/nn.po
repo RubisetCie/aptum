@@ -54,8 +54,8 @@ msgstr "Katalogen %s er avleidd"
 
 #: apt-pkg/acquire-item.cc
 msgid ""
-"This is normally not allowed, but the option "
-"Acquire::AllowDowngradeToInsecureRepositories was given to override it."
+"This is normally not allowed, but the option Acquire::"
+"AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
 
 #: apt-pkg/acquire-item.cc
@@ -2550,8 +2550,8 @@ msgstr "%s har ingen byggjekrav.\n"
 #: apt-private/private-source.cc
 #, c-format
 msgid ""
-"No architecture information available for %s. See apt.conf(5) "
-"APT::Architectures for setup"
+"No architecture information available for %s. See apt.conf(5) APT::"
+"Architectures for setup"
 msgstr ""
 
 #: apt-private/private-source.cc
@@ -3862,8 +3862,8 @@ msgstr ""
 #~ msgstr "PASS mislukkast, tenaren sa: %s"
 
 #~ msgid ""
-#~ "A proxy server was specified but no login script, "
-#~ "Acquire::ftp::ProxyLogin is empty."
+#~ "A proxy server was specified but no login script, Acquire::ftp::"
+#~ "ProxyLogin is empty."
 #~ msgstr ""
 #~ "Ein mellomtenar er oppgitt, men ikkje noko innloggingsskript. Feltet "
 #~ "«Acquire::ftp::ProxyLogin» er tomt."

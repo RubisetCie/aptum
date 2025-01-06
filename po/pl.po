@@ -62,11 +62,11 @@ msgstr "Repozytorium \"%s\" nie ma już pliku Release."
 
 #: apt-pkg/acquire-item.cc
 msgid ""
-"This is normally not allowed, but the option "
-"Acquire::AllowDowngradeToInsecureRepositories was given to override it."
+"This is normally not allowed, but the option Acquire::"
+"AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
-"Zwykle nie byłoby to dopuszczalne, lecz podano opcję "
-"Acquire::AllowDowngradeToInsecureRepositories, aby to przesłonić."
+"Zwykle nie byłoby to dopuszczalne, lecz podano opcję Acquire::"
+"AllowDowngradeToInsecureRepositories, aby to przesłonić."
 
 #: apt-pkg/acquire-item.cc
 #, c-format
@@ -151,8 +151,8 @@ msgid ""
 "component '%s' (component misspelt in sources.list?)"
 msgstr ""
 "Pomijanie pozyskania skonfigurowanego pliku \"%s\", ponieważ repozytorium "
-"\"%s\" nie ma komponentu \"%s\" (pomyłka w nazwie komponentu w pliku "
-"sources.list?)"
+"\"%s\" nie ma komponentu \"%s\" (pomyłka w nazwie komponentu w pliku sources."
+"list?)"
 
 #: apt-pkg/acquire-item.cc
 #, c-format
@@ -170,8 +170,8 @@ msgid ""
 "provide it (sources.list entry misspelt?)"
 msgstr ""
 "Pomijanie pozyskania skonfigurowanego pliku \"%s\", ponieważ wydaje się, że "
-"repozytorium \"%s\" go nie zapewnia (literówka we wpisie w pliku "
-"sources.list?)"
+"repozytorium \"%s\" go nie zapewnia (literówka we wpisie w pliku sources."
+"list?)"
 
 #: apt-pkg/acquire-item.cc
 #, c-format
@@ -2705,11 +2705,11 @@ msgstr "%s nie ma zależności dla budowania.\n"
 #: apt-private/private-source.cc
 #, c-format
 msgid ""
-"No architecture information available for %s. See apt.conf(5) "
-"APT::Architectures for setup"
+"No architecture information available for %s. See apt.conf(5) APT::"
+"Architectures for setup"
 msgstr ""
-"Nie znaleziono informacji o architekturze dla %s. Proszę zapoznać się z "
-"apt.conf(5) APT::Architectures"
+"Nie znaleziono informacji o architekturze dla %s. Proszę zapoznać się z apt."
+"conf(5) APT::Architectures"
 
 #: apt-private/private-source.cc
 msgid "Must specify at least one package to check builddeps for"
@@ -4078,8 +4078,8 @@ msgstr "Puste pliki nie mogą być prawidłowymi archiwami"
 #~ msgstr "Polecenie PASS nie powiodło się, odpowiedź serwera: %s"
 
 #~ msgid ""
-#~ "A proxy server was specified but no login script, "
-#~ "Acquire::ftp::ProxyLogin is empty."
+#~ "A proxy server was specified but no login script, Acquire::ftp::"
+#~ "ProxyLogin is empty."
 #~ msgstr ""
 #~ "Określono serwer pośredniczący, ale nie określono skryptu rejestrowania, "
 #~ "Acquire::ftp::ProxyLogin jest puste."

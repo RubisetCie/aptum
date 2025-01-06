@@ -50,8 +50,8 @@ msgstr "Rêça %s zêde dirêj e"
 
 #: apt-pkg/acquire-item.cc
 msgid ""
-"This is normally not allowed, but the option "
-"Acquire::AllowDowngradeToInsecureRepositories was given to override it."
+"This is normally not allowed, but the option Acquire::"
+"AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
 
 #: apt-pkg/acquire-item.cc
@@ -2489,8 +2489,8 @@ msgstr ""
 #: apt-private/private-source.cc
 #, c-format
 msgid ""
-"No architecture information available for %s. See apt.conf(5) "
-"APT::Architectures for setup"
+"No architecture information available for %s. See apt.conf(5) APT::"
+"Architectures for setup"
 msgstr ""
 
 #: apt-private/private-source.cc

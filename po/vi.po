@@ -57,8 +57,8 @@ msgstr "Thư mục %s bị trệch hướng"
 
 #: apt-pkg/acquire-item.cc
 msgid ""
-"This is normally not allowed, but the option "
-"Acquire::AllowDowngradeToInsecureRepositories was given to override it."
+"This is normally not allowed, but the option Acquire::"
+"AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
 
 #: apt-pkg/acquire-item.cc
@@ -1392,8 +1392,8 @@ msgid ""
 "Could not perform immediate configuration on '%s'. Please see man 5 apt.conf "
 "under APT::Immediate-Configure for details. (%d)"
 msgstr ""
-"Không thể thực hiện ngay lập tức tiến trình cấu hình “%s”. Xem “man 5 "
-"apt.conf ” dưới “APT::Immediate-Configure” để tìm chi tiết. (%d)"
+"Không thể thực hiện ngay lập tức tiến trình cấu hình “%s”. Xem “man 5 apt."
+"conf ” dưới “APT::Immediate-Configure” để tìm chi tiết. (%d)"
 
 #: apt-pkg/packagemanager.cc
 #, c-format
@@ -1409,8 +1409,8 @@ msgid ""
 msgstr ""
 "Việc chạy tiến trình cài đặt này sẽ cần thiết gỡ bỏ tạm gói chủ yếu %s, do "
 "vòng lặp Xung đột/Phụ thuộc trước. Trường hợp này thường xấu, nhưng mà nếu "
-"bạn thật sự muốn tiếp tục, có thể hoạt hóa tuy chọn “APT::Force-LoopBreak” "
-"(buộc ngắt vòng lặp)."
+"bạn thật sự muốn tiếp tục, có thể hoạt hóa tuy chọn “APT::Force-"
+"LoopBreak” (buộc ngắt vòng lặp)."
 
 #: apt-pkg/pkgcache.cc
 msgid "Empty package cache"
@@ -2613,11 +2613,11 @@ msgstr "%s không phụ thuộc vào gì khi biên dịch.\n"
 #: apt-private/private-source.cc
 #, c-format
 msgid ""
-"No architecture information available for %s. See apt.conf(5) "
-"APT::Architectures for setup"
+"No architecture information available for %s. See apt.conf(5) APT::"
+"Architectures for setup"
 msgstr ""
-"Không có thông tin kiến trúc sẵn sàng cho %s. Xem apt.conf(5) "
-"APT::Architectures để cài đặt"
+"Không có thông tin kiến trúc sẵn sàng cho %s. Xem apt.conf(5) APT::"
+"Architectures để cài đặt"
 
 #: apt-private/private-source.cc
 msgid "Must specify at least one package to check builddeps for"
@@ -3975,8 +3975,8 @@ msgstr "Các tập tin trống rỗng không phải là kho lưu hợp lệ"
 #~ msgstr "Lệnh PASS (mật khẩu) đã thất bại: máy chủ nói: %s"
 
 #~ msgid ""
-#~ "A proxy server was specified but no login script, "
-#~ "Acquire::ftp::ProxyLogin is empty."
+#~ "A proxy server was specified but no login script, Acquire::ftp::"
+#~ "ProxyLogin is empty."
 #~ msgstr ""
 #~ "Đã ghi rõ máy phục vụ ủy nhiệm, nhưng mà chưa ghi rõ tập lệnh đăng nhập. "
 #~ "“Acquire::ftp::ProxyLogin” là rỗng."

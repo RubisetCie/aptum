@@ -10957,8 +10957,8 @@ msgid ""
 msgstr ""
 "\"APT\" i ten dokument są oprogramowaniem wolnodostępnym, które można "
 "rozpowszechniać oraz zmieniać zgodnie z postanowieniami drugiej albo (wedle "
-"uznania) dowolnej późniejszej wersji \"Ogólnej Licencji Publicznej GNU\" "
-"(GNU General Public License) publikowanej przez \"Fundację Wolnego "
+"uznania) dowolnej późniejszej wersji \"Ogólnej Licencji Publicznej "
+"GNU\" (GNU General Public License) publikowanej przez \"Fundację Wolnego "
 "Oprogramowania (Free Software Foundation)."
 
 #. type: Content of: <book><bookinfo><legalnotice><para>

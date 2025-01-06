@@ -62,8 +62,8 @@ msgstr "Katalogen %s er avledet"
 
 #: apt-pkg/acquire-item.cc
 msgid ""
-"This is normally not allowed, but the option "
-"Acquire::AllowDowngradeToInsecureRepositories was given to override it."
+"This is normally not allowed, but the option Acquire::"
+"AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
 
 #: apt-pkg/acquire-item.cc
@@ -2620,11 +2620,11 @@ msgstr "%s har ingen avhengigheter.\n"
 #: apt-private/private-source.cc
 #, c-format
 msgid ""
-"No architecture information available for %s. See apt.conf(5) "
-"APT::Architectures for setup"
+"No architecture information available for %s. See apt.conf(5) APT::"
+"Architectures for setup"
 msgstr ""
-"Ingen arkitekturinformasjon tilgjengelig for %s.  Se apt.conf(5) "
-"APT::Architectures for oppsett."
+"Ingen arkitekturinformasjon tilgjengelig for %s.  Se apt.conf(5) APT::"
+"Architectures for oppsett."
 
 #: apt-private/private-source.cc
 msgid "Must specify at least one package to check builddeps for"
@@ -3950,8 +3950,8 @@ msgstr "Tomme filer kan ikke være gyldige arkiver"
 #~ msgstr "PASS mislykkes, tjeneren sa: %s"
 
 #~ msgid ""
-#~ "A proxy server was specified but no login script, "
-#~ "Acquire::ftp::ProxyLogin is empty."
+#~ "A proxy server was specified but no login script, Acquire::ftp::"
+#~ "ProxyLogin is empty."
 #~ msgstr ""
 #~ "En mellomtjener er oppgitt, men ikke noe innloggingsskript. Feltet "
 #~ "«Acquire::ftp::ProxyLogin» er tomt."

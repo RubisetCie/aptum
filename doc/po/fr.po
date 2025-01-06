@@ -3202,8 +3202,8 @@ msgid ""
 "<literal>unhold</literal> is used to cancel a previously set hold on a "
 "package to allow all actions again."
 msgstr ""
-"<literal>unhold</literal> est utilisé pour supprimer l'état « hold » "
-"(retenu) d'un paquet afin de permettre toute action qui y est liée."
+"<literal>unhold</literal> est utilisé pour supprimer l'état "
+"« hold » (retenu) d'un paquet afin de permettre toute action qui y est liée."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
 #: apt-mark.8.xml

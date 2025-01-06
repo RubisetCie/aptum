@@ -51,8 +51,8 @@ msgstr "O directório %s é desviado"
 
 #: apt-pkg/acquire-item.cc
 msgid ""
-"This is normally not allowed, but the option "
-"Acquire::AllowDowngradeToInsecureRepositories was given to override it."
+"This is normally not allowed, but the option Acquire::"
+"AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
 
 #: apt-pkg/acquire-item.cc
@@ -2647,8 +2647,8 @@ msgstr "%s não tem dependências de compilação.\n"
 #: apt-private/private-source.cc
 #, c-format
 msgid ""
-"No architecture information available for %s. See apt.conf(5) "
-"APT::Architectures for setup"
+"No architecture information available for %s. See apt.conf(5) APT::"
+"Architectures for setup"
 msgstr ""
 "Nenhuma informação de arquitectura disponível para %s. Para configuração "
 "veja apt.conf(5) APT::Architectures"
@@ -3980,8 +3980,8 @@ msgstr "Ficheiros vazios não podem ser arquivos válidos"
 #~ msgstr "PASS falhou, o servidor respondeu: %s"
 
 #~ msgid ""
-#~ "A proxy server was specified but no login script, "
-#~ "Acquire::ftp::ProxyLogin is empty."
+#~ "A proxy server was specified but no login script, Acquire::ftp::"
+#~ "ProxyLogin is empty."
 #~ msgstr ""
 #~ "Foi especificado um servidor de proxy mas não um script de login, "
 #~ "Acquire::ftp::ProxyLogin está vazio."
@@ -4293,8 +4293,8 @@ msgstr "Ficheiros vazios não podem ser arquivos válidos"
 #~ "  -c=? Ler este ficheiro de configuração.\n"
 #~ "  -o=? Definir uma opção arbitrária de configuração, p.e.: -o dir::cache=/"
 #~ "tmp\n"
-#~ "Para mais informações veja as páginas do manual apt-cache(8) e "
-#~ "apt.conf(5).\n"
+#~ "Para mais informações veja as páginas do manual apt-cache(8) e apt."
+#~ "conf(5).\n"
 
 #, fuzzy
 #~ msgid ""
@@ -4800,8 +4800,8 @@ msgstr "Ficheiros vazios não podem ser arquivos válidos"
 
 #~ msgid "Sorry, you don't have enough free space in %s to hold all the .debs."
 #~ msgstr ""
-#~ "Desculpe, você não tem espaço livre o suficiente em %s para guardar "
-#~ "os .debs."
+#~ "Desculpe, você não tem espaço livre o suficiente em %s para guardar os ."
+#~ "debs."
 
 #~ msgid "Extract "
 #~ msgstr "extra"

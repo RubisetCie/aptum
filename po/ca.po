@@ -62,11 +62,11 @@ msgstr "El dipòsit «%s» ja no té un fitxer Release."
 
 #: apt-pkg/acquire-item.cc
 msgid ""
-"This is normally not allowed, but the option "
-"Acquire::AllowDowngradeToInsecureRepositories was given to override it."
+"This is normally not allowed, but the option Acquire::"
+"AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
-"Això normalment no està permès, però s'ha donat l'opció "
-"«Acquire::AllowDowngradeToInsecureRepositories» per anul·lar-ho."
+"Això normalment no està permès, però s'ha donat l'opció «Acquire::"
+"AllowDowngradeToInsecureRepositories» per anul·lar-ho."
 
 #: apt-pkg/acquire-item.cc
 #, c-format
@@ -1426,8 +1426,8 @@ msgid ""
 "Could not perform immediate configuration on '%s'. Please see man 5 apt.conf "
 "under APT::Immediate-Configure for details. (%d)"
 msgstr ""
-"No s'ha pogut realitzar la configuració immediata de «%s». Vegeu man 5 "
-"apt.conf dins de APT::Immediate-Configure per a més detalls. (%d)"
+"No s'ha pogut realitzar la configuració immediata de «%s». Vegeu man 5 apt."
+"conf dins de APT::Immediate-Configure per a més detalls. (%d)"
 
 #: apt-pkg/packagemanager.cc
 #, c-format
@@ -2693,8 +2693,8 @@ msgstr "%s no té dependències de muntatge.\n"
 #: apt-private/private-source.cc
 #, c-format
 msgid ""
-"No architecture information available for %s. See apt.conf(5) "
-"APT::Architectures for setup"
+"No architecture information available for %s. See apt.conf(5) APT::"
+"Architectures for setup"
 msgstr ""
 "No hi ha informació d'arquitectura disponible per a %s. Vegeu apt.conf(5) "
 "APT::Architectures per a configurar-ho"
@@ -4070,8 +4070,8 @@ msgstr "Els fitxers buits no poden ser arxius vàlids"
 #~ msgstr "PASS ha fallat, el servidor ha dit: %s"
 
 #~ msgid ""
-#~ "A proxy server was specified but no login script, "
-#~ "Acquire::ftp::ProxyLogin is empty."
+#~ "A proxy server was specified but no login script, Acquire::ftp::"
+#~ "ProxyLogin is empty."
 #~ msgstr ""
 #~ "S'ha especificat un servidor intermediari però no un script d'accés, "
 #~ "Acquire::ftp::ProxyLogin està buit."

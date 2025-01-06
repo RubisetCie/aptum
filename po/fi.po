@@ -53,8 +53,8 @@ msgstr "Kansio %s on korvautunut"
 
 #: apt-pkg/acquire-item.cc
 msgid ""
-"This is normally not allowed, but the option "
-"Acquire::AllowDowngradeToInsecureRepositories was given to override it."
+"This is normally not allowed, but the option Acquire::"
+"AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
 
 #: apt-pkg/acquire-item.cc
@@ -2551,8 +2551,8 @@ msgstr "Paketille %s ei ole määritetty paketointiriippuvuuksia.\n"
 #: apt-private/private-source.cc
 #, c-format
 msgid ""
-"No architecture information available for %s. See apt.conf(5) "
-"APT::Architectures for setup"
+"No architecture information available for %s. See apt.conf(5) APT::"
+"Architectures for setup"
 msgstr ""
 
 #: apt-private/private-source.cc
@@ -3872,8 +3872,8 @@ msgstr ""
 #~ msgstr "PASS ei onnistunut, palvelimen ilmoitus: %s"
 
 #~ msgid ""
-#~ "A proxy server was specified but no login script, "
-#~ "Acquire::ftp::ProxyLogin is empty."
+#~ "A proxy server was specified but no login script, Acquire::ftp::"
+#~ "ProxyLogin is empty."
 #~ msgstr ""
 #~ "Määritettiin välipalvelin mutta ei komentotiedostoa kirjautumiseen, "
 #~ "Acquire::ftp::ProxyLogin on tyhjä."

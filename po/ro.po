@@ -76,12 +76,11 @@ msgstr "Depozitul „%s” nu mai are un fișier „Release” (versiunea lansat
 
 #: apt-pkg/acquire-item.cc
 msgid ""
-"This is normally not allowed, but the option "
-"Acquire::AllowDowngradeToInsecureRepositories was given to override it."
+"This is normally not allowed, but the option Acquire::"
+"AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
-"În mod normal, acest lucru nu este permis, dar opțiunea "
-"Acquire::AllowDowngradeToInsecureRepositories a fost dată pentru a-l "
-"suprascrie."
+"În mod normal, acest lucru nu este permis, dar opțiunea Acquire::"
+"AllowDowngradeToInsecureRepositories a fost dată pentru a-l suprascrie."
 
 #: apt-pkg/acquire-item.cc
 #, c-format
@@ -1494,8 +1493,8 @@ msgstr ""
 "din cauza unei bucle conflict/pre-dependență (Conflicts/Pre-Depends). Acest "
 "lucru este adesea rău, dar dacă doriți cu adevărat să o faceți, activați "
 "opțiunea „APT::Force-LoopBreak” rulând comanda «apt-get -u -o APT::Force-"
-"LoopBreak=1» sau manual, adăugând linia »APT::Force-LoopBreak \"true\";« "
-"(fără săgeți) în fișierul „/etc/apt/apt.conf”."
+"LoopBreak=1» sau manual, adăugând linia »APT::Force-LoopBreak "
+"\"true\";« (fără săgeți) în fișierul „/etc/apt/apt.conf”."
 
 #: apt-pkg/pkgcache.cc
 msgid "Empty package cache"
@@ -2012,9 +2011,8 @@ msgid ""
 "system."
 msgstr ""
 "Un „/usr” neunificat nu mai este acceptat, utilizați «usrmerge» pentru a "
-"converti la un sistem cu un „/usr” unificat (în care directoarele /"
-"{bin,sbin,lib}/ sunt legate simbolic la directoarele corespondente din /"
-"usr/)."
+"converti la un sistem cu un „/usr” unificat (în care directoarele /{bin,sbin,"
+"lib}/ sunt legate simbolic la directoarele corespondente din /usr/)."
 
 #. TRANSLATORS: %s is a url to a page describing merged-usr (bookworm release notes)
 #: apt-private/private-install.cc
@@ -2776,11 +2774,11 @@ msgstr "%s nu are dependențe de compilare.\n"
 #: apt-private/private-source.cc
 #, c-format
 msgid ""
-"No architecture information available for %s. See apt.conf(5) "
-"APT::Architectures for setup"
+"No architecture information available for %s. See apt.conf(5) APT::"
+"Architectures for setup"
 msgstr ""
-"Nu sunt disponibile informații despre arhitectură pentru %s. Consultați "
-"apt.conf(5) „APT::Architectures” pentru configurare."
+"Nu sunt disponibile informații despre arhitectură pentru %s. Consultați apt."
+"conf(5) „APT::Architectures” pentru configurare."
 
 #: apt-private/private-source.cc
 msgid "Must specify at least one package to check builddeps for"
@@ -4169,8 +4167,8 @@ msgstr "Fișierele goale nu pot fi arhive valide"
 #~ msgstr "„PASS” a eșuat, serverul a răspuns: %s"
 
 #~ msgid ""
-#~ "A proxy server was specified but no login script, "
-#~ "Acquire::ftp::ProxyLogin is empty."
+#~ "A proxy server was specified but no login script, Acquire::ftp::"
+#~ "ProxyLogin is empty."
 #~ msgstr ""
 #~ "Un server proxy a fost precizat, dar nu există nici un script de "
 #~ "conectare, valoarea opțiunii „Acquire::ftp::ProxyLogin” este goală."

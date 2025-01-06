@@ -50,8 +50,8 @@ msgstr "Mae'r cyfeiriadur %s wedi ei ddargyfeirio"
 
 #: apt-pkg/acquire-item.cc
 msgid ""
-"This is normally not allowed, but the option "
-"Acquire::AllowDowngradeToInsecureRepositories was given to override it."
+"This is normally not allowed, but the option Acquire::"
+"AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
 
 #: apt-pkg/acquire-item.cc
@@ -2577,8 +2577,8 @@ msgstr "Nid oes dibyniaethau adeiladu gan %s.\n"
 #: apt-private/private-source.cc
 #, c-format
 msgid ""
-"No architecture information available for %s. See apt.conf(5) "
-"APT::Architectures for setup"
+"No architecture information available for %s. See apt.conf(5) APT::"
+"Architectures for setup"
 msgstr ""
 
 #: apt-private/private-source.cc
@@ -3922,11 +3922,11 @@ msgstr ""
 #~ msgstr "Methodd gorchymyn PASS; meddai'r gweinydd: %s"
 
 #~ msgid ""
-#~ "A proxy server was specified but no login script, "
-#~ "Acquire::ftp::ProxyLogin is empty."
+#~ "A proxy server was specified but no login script, Acquire::ftp::"
+#~ "ProxyLogin is empty."
 #~ msgstr ""
-#~ "Penodwyd gweinydd dirprwy ond dim sgript mengofnodi. (Mae "
-#~ "Acquire::ftp::ProxyLogin yn wag.)"
+#~ "Penodwyd gweinydd dirprwy ond dim sgript mengofnodi. (Mae Acquire::ftp::"
+#~ "ProxyLogin yn wag.)"
 
 # FIXME
 #, c-format

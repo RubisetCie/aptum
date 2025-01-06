@@ -51,8 +51,8 @@ msgstr "ไดเรกทอรี %s ถูก divert"
 
 #: apt-pkg/acquire-item.cc
 msgid ""
-"This is normally not allowed, but the option "
-"Acquire::AllowDowngradeToInsecureRepositories was given to override it."
+"This is normally not allowed, but the option Acquire::"
+"AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
 
 #: apt-pkg/acquire-item.cc
@@ -113,8 +113,8 @@ msgid ""
 "Clearsigned file isn't valid, got '%s' (does the network require "
 "authentication?)"
 msgstr ""
-"แฟ้มที่เซ็นกำกับครอบข้อความมีเนื้อหาไม่ถูกต้อง ได้รับผลลัพธ์ '%s' "
-"(เครือข่ายต้องยืนยันตัวบุคคลหรือไม่?)"
+"แฟ้มที่เซ็นกำกับครอบข้อความมีเนื้อหาไม่ถูกต้อง ได้รับผลลัพธ์ "
+"'%s' (เครือข่ายต้องยืนยันตัวบุคคลหรือไม่?)"
 
 #: apt-pkg/acquire-item.cc
 #, fuzzy, c-format
@@ -2556,8 +2556,8 @@ msgstr "%s ไม่ต้องการสิ่งใดสำหรับ bu
 #: apt-private/private-source.cc
 #, c-format
 msgid ""
-"No architecture information available for %s. See apt.conf(5) "
-"APT::Architectures for setup"
+"No architecture information available for %s. See apt.conf(5) APT::"
+"Architectures for setup"
 msgstr ""
 "ไม่มีข้อมูลสถาปัตยกรรมสำหรับ %s ดูวิธีตั้งค่าที่หัวข้อ APT::Architectures ของ apt.conf(5)"
 
@@ -3763,8 +3763,8 @@ msgstr ""
 msgid ""
 "Signed file isn't valid, got '%s' (does the network require authentication?)"
 msgstr ""
-"แฟ้มที่เซ็นกำกับครอบข้อความมีเนื้อหาไม่ถูกต้อง ได้รับผลลัพธ์ '%s' "
-"(เครือข่ายต้องยืนยันตัวบุคคลหรือไม่?)"
+"แฟ้มที่เซ็นกำกับครอบข้อความมีเนื้อหาไม่ถูกต้อง ได้รับผลลัพธ์ "
+"'%s' (เครือข่ายต้องยืนยันตัวบุคคลหรือไม่?)"
 
 #: methods/gpgv.cc
 msgid "At least one invalid signature was encountered."
@@ -3865,8 +3865,8 @@ msgstr "แฟ้มว่างเปล่าไม่สามารถเป
 #~ msgstr "PASS ล้มเหลว เซิร์ฟเวอร์ตอบว่า: %s"
 
 #~ msgid ""
-#~ "A proxy server was specified but no login script, "
-#~ "Acquire::ftp::ProxyLogin is empty."
+#~ "A proxy server was specified but no login script, Acquire::ftp::"
+#~ "ProxyLogin is empty."
 #~ msgstr ""
 #~ "มีการระบุพร็อกซี แต่ไม่มีสคริปต์สำหรับเข้าระบบ ค่า Acquire::ftp:ProxyLogin ว่างเปล่า"
 
