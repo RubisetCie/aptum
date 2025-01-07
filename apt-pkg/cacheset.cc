@@ -256,8 +256,8 @@ bool CacheSetHelper::PackageFromPackageName(PackageContainerInterface * const pc
 		return false;
 
 	std::string const pkgstring = pkg;
+	std::string arch = _config->Find("APT::Get::Host-Architecture");
 	size_t const archfound = pkg.find_last_of(':');
-	std::string arch;
 	if (archfound != std::string::npos) {
 		arch = pkg.substr(archfound+1);
 		pkg.erase(archfound);
