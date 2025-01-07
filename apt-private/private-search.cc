@@ -75,16 +75,6 @@ static void LocalitySort(pkgCache::DescFile ** const begin, unsigned long long c
    qsort(begin,Count,Size,LocalityCompare);
 }
 									/*}}}*/
-// EndsWith - Check if a string ends with a suffix		/*{{{*/
-static bool EndsWith(const char *str, const char *suffix)
-{
-   const size_t lenstr = strlen(str);
-   const size_t lensuffix = strlen(suffix);
-   if (unlikely(lensuffix > lenstr))
-      return false;
-   return strncmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
-}
-									/*}}}*/
 
 // Search - Perform a search						/*{{{*/
 // ---------------------------------------------------------------------
@@ -96,6 +86,7 @@ struct ExDescFile
    map_id_t ID;
    ExDescFile() : Df(nullptr), ID(0) {}
 };
+APT_PUBLIC bool _endswith(const char *String, const char *Suffix);
 static inline bool Search(CommandLine &CmdL)
 {
    bool const ShowFull = _config->FindB("APT::Cache::ShowFull",false);
@@ -187,17 +178,17 @@ static inline bool Search(CommandLine &CmdL)
 	 {
 	    const char *section = V.Section();
 	    bool skip = true;
-	    if (Library && EndsWith(section, "libs"))
+	    if (Library && _endswith(section, "libs"))
 			skip = false;
-	    if (skip && Devel && EndsWith(section, "libdevel"))
+	    if (skip && Devel && _endswith(section, "libdevel"))
 			skip = false;
-	    if (skip && Debug && EndsWith(section, "debug"))
+	    if (skip && Debug && _endswith(section, "debug"))
 			skip = false;
-	    if (skip && Doc && EndsWith(section, "doc"))
+	    if (skip && Doc && _endswith(section, "doc"))
 			skip = false;
-	    if (skip && Kernel && EndsWith(section, "kernel"))
+	    if (skip && Kernel && _endswith(section, "kernel"))
 			skip = false;
-	    if (skip && Admin && EndsWith(section, "admin"))
+	    if (skip && Admin && _endswith(section, "admin"))
 			skip = false;
 	    if (skip)
 			continue;

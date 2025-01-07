@@ -32,6 +32,7 @@
 #include <string>
 #include <vector>
 #include <regex.h>
+#include <strutl.h>
 
 #include <apti18n.h>
 									/*}}}*/
@@ -526,6 +527,7 @@ bool VersionContainerInterface::FromPackage(VersionContainerInterface * const vc
 	pkgCache::VerIterator V;
 	bool showErrors;
 	bool found = false;
+	bool const libs = _config->FindB("APT::Get::Libs", false);
 	switch(fallback) {
 	case CacheSetHelper::ALL:
 		if (P->VersionList != 0)
@@ -536,17 +538,17 @@ bool VersionContainerInterface::FromPackage(VersionContainerInterface * const vc
 		break;
 	case CacheSetHelper::CANDANDINST:
 		found |= vci->insert(getInstalledVer(Cache, P, helper));
-		found |= vci->insert(getCandidateVer(Cache, P, helper));
+		found |= vci->insert(getCandidateVer(Cache, P, helper, libs));
 		break;
 	case CacheSetHelper::CANDIDATE:
-		found |= vci->insert(getCandidateVer(Cache, P, helper));
+		found |= vci->insert(getCandidateVer(Cache, P, helper, libs));
 		break;
 	case CacheSetHelper::INSTALLED:
 		found |= vci->insert(getInstalledVer(Cache, P, helper));
 		break;
 	case CacheSetHelper::CANDINST:
 		showErrors = helper.showErrors(false);
-		V = getCandidateVer(Cache, P, helper);
+		V = getCandidateVer(Cache, P, helper, libs);
 		if (V.end() == true)
 			V = getInstalledVer(Cache, P, helper);
 		helper.showErrors(showErrors);
@@ -559,7 +561,7 @@ bool VersionContainerInterface::FromPackage(VersionContainerInterface * const vc
 		showErrors = helper.showErrors(false);
 		V = getInstalledVer(Cache, P, helper);
 		if (V.end() == true)
-			V = getCandidateVer(Cache, P, helper);
+			V = getCandidateVer(Cache, P, helper, libs);
 		helper.showErrors(showErrors);
 		if (V.end() == false)
 			found |= vci->insert(V);
@@ -668,12 +670,52 @@ bool VersionContainerInterface::FromDependency(VersionContainerInterface * const
 	return found;
 }
 									/*}}}*/
+static unsigned int CommonCharacters(const char *const A, const char *const B) APT_CONST;
+static unsigned int CommonCharacters(const char *const A, const char *const B)
+{
+	unsigned int I = 0;
+	char C;
+	do
+	{
+		C = A[I];
+		if (C != B[I])
+			break;
+		++I;
+	} while (C != 0);
+	return I;
+}
+static pkgCache::VerIterator GetLibraryAssociated(pkgCache::PkgIterator const &Pkg, pkgCacheFile const &Cache, pkgCache::VerIterator const &Ver)
+{
+	// Pick the best correspondance, from the name
+	pkgCache::VerIterator Match;
+	unsigned int Best = 0;
+	for (pkgCache::DepIterator D = Ver.DependsList(); D.end() == false; ++D)
+	{
+		pkgCache::VerIterator const V = Cache[D.TargetPkg()].CandidateVerIter(Cache);
+		if (_endswith(V.Section(), "libs"))
+		{
+			unsigned int const Current = CommonCharacters(Pkg.Name(), D.TargetPkg().Name());
+			if (Current > Best)
+			{
+				Best = Current;
+				Match = V;
+			}
+		}
+	}
+	if (!Match.IsGood())
+		return Ver;
+	return Match;
+}
+
 // getCandidateVer - Returns the candidate version of the given package	/*{{{*/
 pkgCache::VerIterator VersionContainerInterface::getCandidateVer(pkgCacheFile &Cache,
-		pkgCache::PkgIterator const &Pkg, CacheSetHelper &helper) {
+		pkgCache::PkgIterator const &Pkg, CacheSetHelper &helper, bool lib) {
 	pkgCache::VerIterator Cand;
 	if (Cache.IsDepCacheBuilt() == true) {
 		Cand = Cache[Pkg].CandidateVerIter(Cache);
+		// Handle the development to library replacement, if asked
+		if (lib && _endswith(Cand.Section(), "libdevel"))
+			Cand = GetLibraryAssociated(Pkg, Cache, Cand);
 	} else if (unlikely(Cache.GetPolicy() == nullptr)) {
 		return pkgCache::VerIterator(Cache);
 	} else {

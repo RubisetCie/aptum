@@ -283,6 +283,17 @@ char *_strtabexpand(char *String,size_t Len)
    return String;
 }
 									/*}}}*/
+// _endswith - Returns true if the string ends with suffix		/*{{{*/
+// ---------------------------------------------------------------------
+bool _endswith(const char *String, const char *Suffix)
+{
+   const size_t LenStr = strlen(String);
+   const size_t LenSuffix = strlen(Suffix);
+   if (unlikely(LenSuffix > LenStr))
+      return false;
+   return strncmp(String + LenStr - LenSuffix, Suffix, LenSuffix) == 0;
+}
+									/*}}}*/
 // ParseQuoteWord - Parse a single word out of a string			/*{{{*/
 // ---------------------------------------------------------------------
 /* This grabs a single word, converts any % escaped characters to their

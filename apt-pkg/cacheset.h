@@ -787,7 +787,7 @@ protected:								/*{{{*/
 	    \param Pkg we want the candidate version from this package
 	    \param helper used in this container instance */
 	static pkgCache::VerIterator getCandidateVer(pkgCacheFile &Cache,
-		pkgCache::PkgIterator const &Pkg, CacheSetHelper &helper);
+		pkgCache::PkgIterator const &Pkg, CacheSetHelper &helper, bool lib = false);
 
 	/** \brief returns the installed version of the package
 

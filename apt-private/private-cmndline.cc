@@ -211,9 +211,14 @@ static bool addArgumentsAPTGet(std::vector<CommandLine::Args> &Args, char const 
          addArg(0, "new-pkgs", "APT::Get::Upgrade-Allow-New", 
                 CommandLine::Boolean);
       }
+	  else if (CmdMatches("install"))
+      {
+         addArg(0, "lib", "APT::Get::Libs", 
+                CommandLine::Boolean);
+      }
    }
 
-   else if (CmdMatches("update") || CmdMatches("install"))
+   else if (CmdMatches("update"))
    {
       addArg(0, "list-cleanup", "APT::Get::List-Cleanup", 0);
       addArg(0, "allow-insecure-repositories", "Acquire::AllowInsecureRepositories", 0);
