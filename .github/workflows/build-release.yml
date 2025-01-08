@@ -17,7 +17,7 @@ jobs:
         uses: jtdor/build-deb-action@v1
         with:
           buildpackage-opts: --build=binary --no-sign
-          extra-repos: deb http://deb.debian.org/debian testing main
+          docker-image: debian:testing-slim
           host-arch: ${{github.event.inputs.arch}}
       - name: Upload
         uses: actions/upload-artifact@v4

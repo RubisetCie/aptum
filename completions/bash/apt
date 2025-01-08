@@ -85,6 +85,11 @@ _apt()
                   --trivial-only
                   --reinstall --solver --no-strict-pinning
                   -t --target-release'"$GENERIC_APT_GET_OPTIONS" -- "$cur" ) )
+                case ${command} in
+                    install|reinstall)
+                        COMPREPLY+=( $( compgen -W '-a --architecture --lib' -- "$cur" ) )
+                esac
+                COMPREPLY+=( $( compgen -W "$GENERIC_APT_GET_OPTIONS" -- "$cur" ) )
                 return 0
                 ;;
             update)
