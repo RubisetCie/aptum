@@ -62,6 +62,7 @@ gettext
 
 # Documentation building
 doxygen
+docbook-xml
 docbook-xsl
 xsltproc
 po4a
