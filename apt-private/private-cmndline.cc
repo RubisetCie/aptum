@@ -213,8 +213,8 @@ static bool addArgumentsAPTGet(std::vector<CommandLine::Args> &Args, char const 
       }
 	  else if (CmdMatches("install"))
       {
-         addArg(0, "lib", "APT::Get::Libs", 
-                CommandLine::Boolean);
+         addArg('a', "architecture", "APT::Get::Host-Architecture", CommandLine::HasArg);
+         addArg(0, "lib", "APT::Get::Libs", CommandLine::Boolean);
       }
    }
 

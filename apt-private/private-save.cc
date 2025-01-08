@@ -308,10 +308,10 @@ static bool Load(string_view Filename)
    Progress.OverallProgress(3, 4, 1, _("Loading state"));
    Progress.SubProgress(1, _("Deltas"));
 
+   CacheFile Cache;
    if (_config->FindB("APT::Save::Diff", false) == false)
    {
       // initialize the package manager
-      CacheFile Cache;
       Cache.InhibitActionGroups(true);
       bool const WantLock = _config->FindB("APT::Get::Print-URIs", false) == false;
       _config->Set("APT::Install-Recommends", false);
@@ -355,13 +355,14 @@ static bool Load(string_view Filename)
       const auto removedColor = APT::Configuration::color("action::remove");
       const auto resetColor = not addedColor.empty() ? APT::Configuration::color("neutral") : "";
       const size_t ScreenW = (ScreenWidth > 3) ? ScreenWidth - 3 : 0;
+      const string NativeArch = Cache.GetPkgCache()->NativeArch();
       vector<string> Added, Removed;
 
       // just log the diff
-      PackageForEachDelta(Saved, Current, [&Added](const PackageEntry *const E) {
-	 Added.emplace_back(E->Name + ':' + E->Arch);
-      }, [&Removed](const PackageEntry *const E) {
-	 Removed.emplace_back(E->Name + ':' + E->Arch);
+      PackageForEachDelta(Saved, Current, [&NativeArch,&Added](const PackageEntry *const E) {
+	 Added.emplace_back(NativeArch != E->Arch ? E->Name + ':' + E->Arch : E->Name);
+      }, [&NativeArch,&Removed](const PackageEntry *const E) {
+	 Removed.emplace_back(NativeArch != E->Arch ? E->Name + ':' + E->Arch : E->Name);
       });
 
       Progress.Done();
