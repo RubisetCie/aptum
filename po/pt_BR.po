@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 1.0.5\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2024-12-23 11:22+0000\n"
+"POT-Creation-Date: 2025-01-14 17:33+0000\n"
 "PO-Revision-Date: 2008-11-17 02:33-0200\n"
 "Last-Translator: Felipe Augusto van de Wiel (faw) <faw@debian.org>\n"
 "Language-Team: Brazilian Portuguese <debian-l10n-portuguese@lists.debian."
@@ -181,8 +181,7 @@ msgstr ""
 msgid "Conflicting distribution: %s (expected %s but got %s)"
 msgstr ""
 
-#. Both messages are reused from the ReleaseInfoChange feature in acquire-item.cc
-#: apt-pkg/acquire-item.cc apt-private/private-update.cc
+#: apt-pkg/acquire-item.cc
 #, c-format
 msgid "Repository '%s' changed its '%s' value from '%s' to '%s'"
 msgstr ""
@@ -193,7 +192,7 @@ msgid "Repository '%s' changed its default priority for %s from %hi to %hi."
 msgstr ""
 
 #. TRANSLATOR: the "this" refers to changes in the repository like a new release or owner change
-#: apt-pkg/acquire-item.cc apt-private/private-update.cc
+#: apt-pkg/acquire-item.cc
 #, c-format
 msgid ""
 "More information about this can be found online in the Release notes at: %s"
@@ -1073,6 +1072,12 @@ msgstr "Impossível criar trava no diretório de listas"
 
 #: apt-pkg/deb/debsystem.cc
 msgid "Not locked"
+msgstr ""
+
+#: apt-pkg/deb/debsystem.cc
+msgid ""
+"The dpkg executable set in Dir::Bin::dpkg is missing, falling back to using "
+"default dpkg."
 msgstr ""
 
 #. we don't care for the difference

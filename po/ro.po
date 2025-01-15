@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 2.9.8\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2024-12-23 11:22+0000\n"
+"POT-Creation-Date: 2025-01-14 17:33+0000\n"
 "PO-Revision-Date: 2024-09-02 00:21+0200\n"
 "Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
@@ -227,8 +227,7 @@ msgstr ""
 msgid "Conflicting distribution: %s (expected %s but got %s)"
 msgstr "Distribuție în conflict: %s (se aștepta %s, dar s-a obținut %s)"
 
-#. Both messages are reused from the ReleaseInfoChange feature in acquire-item.cc
-#: apt-pkg/acquire-item.cc apt-private/private-update.cc
+#: apt-pkg/acquire-item.cc
 #, c-format
 msgid "Repository '%s' changed its '%s' value from '%s' to '%s'"
 msgstr "Depozitul „%s” și-a schimbat valoarea „%s” din „%s” în „%s”"
@@ -241,7 +240,7 @@ msgstr ""
 "%hi."
 
 #. TRANSLATOR: the "this" refers to changes in the repository like a new release or owner change
-#: apt-pkg/acquire-item.cc apt-private/private-update.cc
+#: apt-pkg/acquire-item.cc
 #, c-format
 msgid ""
 "More information about this can be found online in the Release notes at: %s"
@@ -1192,6 +1191,12 @@ msgstr "Nu se poate bloca directorul de administrare (%s), sunteți „root”?"
 #: apt-pkg/deb/debsystem.cc
 msgid "Not locked"
 msgstr "Nu este blocat"
+
+#: apt-pkg/deb/debsystem.cc
+msgid ""
+"The dpkg executable set in Dir::Bin::dpkg is missing, falling back to using "
+"default dpkg."
+msgstr ""
 
 #. we don't care for the difference
 #: apt-pkg/deb/dpkgpm.cc

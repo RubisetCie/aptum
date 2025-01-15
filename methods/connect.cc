@@ -89,10 +89,10 @@ static bool ConnectionAllowed(char const * const Service, std::string const &Hos
 struct FdFd final : public MethodFd
 {
    int fd = -1;
-   int Fd() APT_OVERRIDE { return fd; }
-   ssize_t Read(void *buf, size_t count) APT_OVERRIDE { return ::read(fd, buf, count); }
-   ssize_t Write(void *buf, size_t count) APT_OVERRIDE { return ::write(fd, buf, count); }
-   int Close() APT_OVERRIDE
+   int Fd() override { return fd; }
+   ssize_t Read(void *buf, size_t count) override { return ::read(fd, buf, count); }
+   ssize_t Write(void *buf, size_t count) override { return ::write(fd, buf, count); }
+   int Close() override
    {
       int result = 0;
       if (fd != -1)
@@ -995,7 +995,7 @@ static SSL_CTX *GetContextForHost(std::string const &host, aptConfigWrapperForMe
 }
 
 ResultState UnwrapTLS(std::string const &Host, std::unique_ptr<MethodFd> &Fd,
-		      unsigned long const Timeout, aptMethod *const,
+		      unsigned long const Timeout, aptMethod *const /*Owner*/,
 		      aptConfigWrapperForMethods const *const OwnerConf)
 {
    if (_config->FindB("Acquire::AllowTLS", true) == false)

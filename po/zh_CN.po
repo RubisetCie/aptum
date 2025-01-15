@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 2.9.1\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2024-12-23 11:22+0000\n"
+"POT-Creation-Date: 2025-01-14 17:33+0000\n"
 "PO-Revision-Date: 2024-04-16 13:15-0400\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (simplified) <debian-l10n-chinese@lists.debian.org>\n"
@@ -194,8 +194,7 @@ msgstr "%s 的 Release 文件已经过期(已经过期了 %s)。该仓库的更�
 msgid "Conflicting distribution: %s (expected %s but got %s)"
 msgstr "冲突的发行版：%s (期望 %s 但得到 %s)"
 
-#. Both messages are reused from the ReleaseInfoChange feature in acquire-item.cc
-#: apt-pkg/acquire-item.cc apt-private/private-update.cc
+#: apt-pkg/acquire-item.cc
 #, c-format
 msgid "Repository '%s' changed its '%s' value from '%s' to '%s'"
 msgstr "仓库'%s'将其'%s'值从'%s'修改到了'%s'"
@@ -206,7 +205,7 @@ msgid "Repository '%s' changed its default priority for %s from %hi to %hi."
 msgstr "仓库'%s'将其'%s'的默认优先级从'%hi'修改到了'%hi'。"
 
 #. TRANSLATOR: the "this" refers to changes in the repository like a new release or owner change
-#: apt-pkg/acquire-item.cc apt-private/private-update.cc
+#: apt-pkg/acquire-item.cc
 #, c-format
 msgid ""
 "More information about this can be found online in the Release notes at: %s"
@@ -1080,6 +1079,12 @@ msgstr "无法对状态列表目录加锁(%s)，请查看您是否正以 root �
 #: apt-pkg/deb/debsystem.cc
 msgid "Not locked"
 msgstr "未锁定"
+
+#: apt-pkg/deb/debsystem.cc
+msgid ""
+"The dpkg executable set in Dir::Bin::dpkg is missing, falling back to using "
+"default dpkg."
+msgstr ""
 
 #. we don't care for the difference
 #: apt-pkg/deb/dpkgpm.cc

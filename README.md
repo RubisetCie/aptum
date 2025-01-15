@@ -6,7 +6,7 @@ It provides command-line tools for searching and managing as well as querying in
 
 Included tools are:
 
-- **apt-get** for retrieval of packages and information about them from authenticated sources and for installation, upgrade and removal of packages together with their dependencies.
+- **apt-get** for retrieval of packages and information about them
 - **apt-cache** for querying available information about installed as well as available packages.
 - **apt-cdrom** to use removable media as a source for packages.
 - **apt-config** as an interface to the configuration settings.

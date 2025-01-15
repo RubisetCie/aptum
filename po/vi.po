@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 1.0.8\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2024-12-23 11:22+0000\n"
+"POT-Creation-Date: 2025-01-14 17:33+0000\n"
 "PO-Revision-Date: 2014-09-12 13:48+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <translation-team-vi@lists.sourceforge.net>\n"
@@ -198,8 +198,7 @@ msgstr ""
 msgid "Conflicting distribution: %s (expected %s but got %s)"
 msgstr "Bản phát hành xung đột: %s (cần %s nhưng lại nhận được %s)"
 
-#. Both messages are reused from the ReleaseInfoChange feature in acquire-item.cc
-#: apt-pkg/acquire-item.cc apt-private/private-update.cc
+#: apt-pkg/acquire-item.cc
 #, c-format
 msgid "Repository '%s' changed its '%s' value from '%s' to '%s'"
 msgstr ""
@@ -210,7 +209,7 @@ msgid "Repository '%s' changed its default priority for %s from %hi to %hi."
 msgstr ""
 
 #. TRANSLATOR: the "this" refers to changes in the repository like a new release or owner change
-#: apt-pkg/acquire-item.cc apt-private/private-update.cc
+#: apt-pkg/acquire-item.cc
 #, c-format
 msgid ""
 "More information about this can be found online in the Release notes at: %s"
@@ -1111,6 +1110,12 @@ msgstr "Không thể khoá thư mục quản trị (%s), bạn có quyền root 
 #: apt-pkg/deb/debsystem.cc
 msgid "Not locked"
 msgstr "Chưa được khoá"
+
+#: apt-pkg/deb/debsystem.cc
+msgid ""
+"The dpkg executable set in Dir::Bin::dpkg is missing, falling back to using "
+"default dpkg."
+msgstr ""
 
 #. we don't care for the difference
 #: apt-pkg/deb/dpkgpm.cc
