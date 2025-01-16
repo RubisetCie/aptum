@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build
-        uses: jtdor/build-deb-action@v1
+        uses: RubisetCie/build-deb-action@master
         with:
           buildpackage-opts: --build=binary --no-sign
           docker-image: debian:testing-slim
