@@ -189,7 +189,7 @@ static bool Modernize(std::string const &filename) /*{{{*/
       if (e.signedBy.empty() && not meta->GetOrigin().empty())
       {
 	 std::string dir = _config->FindDir("Dir") + std::string{"usr/share/keyrings/"};
-	 std::string keyring = meta->GetOrigin() + "-archive-keyring.gpg";
+	 std::string keyring = std::regex_replace(meta->GetOrigin(), std::regex(" "), "-") + "-archive-keyring.gpg";
 	 std::transform(keyring.begin(), keyring.end(), keyring.begin(), tolower);
 	 if (FileExists(dir + keyring))
 	    e.signedBy = dir + keyring;
@@ -236,13 +236,12 @@ static bool Modernize(std::string const &filename) /*{{{*/
       else
 	 outname = _config->FindDir("Dir::Etc::SourceParts") + (e.origin) + ".sources";
 
-      if (auto it = streams.find(outname); it == streams.end())
+      if (auto it = streams.find(outname); not simulate && it == streams.end())
       {
-	 if (not simulate)
-	    std::cerr << "- Writing " << outname << "\n";
-	 streams[outname].open(simulate ? "/dev/stdout" : outname, std::ios::app);
+	 std::cerr << "- Writing " << outname << "\n";
+	 streams[outname].open(outname, std::ios::app);
       }
-      auto &out = streams[outname];
+      auto &out = simulate ? std::cout : streams[outname];
       if (not out)
 	 _error->Warning("Cannot open %s for writing.", outname.c_str());
       if (e.merged)
