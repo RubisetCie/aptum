@@ -144,7 +144,7 @@ bool DoUpdate()
    }
 
    // show basic stats (if the user whishes)
-   if (_config->FindB("APT::Cmd::Show-Update-Stats", false) == true)
+   if (_config->FindB("APT::Cmd::Show-Update-Stats", true) == true)
    {
       int upgradable = 0;
       if (Cache.Open(false) == false)
