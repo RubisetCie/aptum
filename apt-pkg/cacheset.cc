@@ -688,6 +688,7 @@ static pkgCache::VerIterator GetLibraryAssociated(pkgCache::PkgIterator const &P
 {
 	// Pick the best correspondance, from the name
 	pkgCache::VerIterator Match;
+	pkgCache::VerIterator Devel;
 	unsigned int Best = 0;
 	for (pkgCache::DepIterator D = Ver.DependsList(); D.end() == false; ++D)
 	{
@@ -695,10 +696,30 @@ static pkgCache::VerIterator GetLibraryAssociated(pkgCache::PkgIterator const &P
 		if (_endswith(V.Section(), "libs"))
 		{
 			unsigned int const Current = CommonCharacters(Pkg.Name(), D.TargetPkg().Name());
-			if (Current > Best)
+			if (Current > Best || Best == 0)
 			{
 				Best = Current;
 				Match = V;
+			}
+		}
+		else if (!Devel.IsGood() && (_endswith(V.Section(), "libdevel") || _endswith(V.Section(), "devel")))
+			Devel = V;
+	}
+	// If nothing was found, assume it's a transition package
+	if (!Match.IsGood())
+	{
+		Best = 0;
+		for (pkgCache::DepIterator D = Devel.DependsList(); D.end() == false; ++D)
+		{
+			pkgCache::VerIterator const V = Cache[D.TargetPkg()].CandidateVerIter(Cache);
+			if (_endswith(V.Section(), "libs"))
+			{
+				unsigned int const Current = CommonCharacters(Pkg.Name(), D.TargetPkg().Name());
+				if (Current > Best || Best == 0)
+				{
+					Best = Current;
+					Match = V;
+				}
 			}
 		}
 	}
@@ -714,7 +735,7 @@ pkgCache::VerIterator VersionContainerInterface::getCandidateVer(pkgCacheFile &C
 	if (Cache.IsDepCacheBuilt() == true) {
 		Cand = Cache[Pkg].CandidateVerIter(Cache);
 		// Handle the development to library replacement, if asked
-		if (lib && _endswith(Cand.Section(), "libdevel"))
+		if (lib && (_endswith(Cand.Section(), "libdevel") || _endswith(Cand.Section(), "devel") || _endswith(Cand.Section(), "libs")))
 			Cand = GetLibraryAssociated(Pkg, Cache, Cand);
 	} else if (unlikely(Cache.GetPolicy() == nullptr)) {
 		return pkgCache::VerIterator(Cache);
