@@ -919,6 +919,7 @@ void Stats(ostream &out, pkgDepCache &Dep, APT::PackageVector const &HeldBackPac
    unsigned long Downgrade = 0;
    unsigned long Install = 0;
    unsigned long ReInstall = 0;
+   const bool showUpdates = _config->FindB("APT::Cmd::Show-Update-Stats", true);
    auto outVer = _config->FindI("APT::Output-Version");
    for (pkgCache::PkgIterator I = Dep.PkgBegin(); I.end() == false; ++I)
    {
@@ -940,16 +941,22 @@ void Stats(ostream &out, pkgDepCache &Dep, APT::PackageVector const &HeldBackPac
       ioprintf(out, _("Summary:"));
       ioprintf(out, "\n  ");
    }
-   ioprintf(out,outVer < 30 ? _("%lu upgraded, %lu newly installed, ") : _("Upgrading: %lu, Installing: %lu, "),
-	    Upgrade,Install);
+   if (showUpdates) {
+       ioprintf(out,outVer < 30 ? _("%lu upgraded, %lu newly installed, ") : _("Upgrading: %lu, Installing: %lu, "), Upgrade,Install);
+   } else {
+       ioprintf(out,outVer < 30 ? _("%lu newly installed, ") : _("Installing: %lu, "), Install);
+   }
    
    if (ReInstall != 0)
       ioprintf(out,outVer < 30 ? _("%lu reinstalled, ") : _("Reinstalling: %lu, "),ReInstall);
    if (Downgrade != 0)
       ioprintf(out,outVer < 30 ? _("%lu downgraded, ") : _("Downgrading: %lu, "),Downgrade);
 
-   ioprintf(out, outVer < 30 ? _("%lu to remove and %lu not upgraded.\n") : _("Removing: %lu, Not Upgrading: %lu\n"),
-	    Dep.DelCount(), HeldBackPackages.size());
+   if (showUpdates) {
+      ioprintf(out, outVer < 30 ? _("%lu to remove and %lu not upgraded.\n") : _("Removing: %lu, Not Upgrading: %lu\n"), Dep.DelCount(), HeldBackPackages.size());
+   } else {
+      ioprintf(out, outVer < 30 ? _("%lu to remove.\n") : _("Removing: %lu\n"), Dep.DelCount());
+   }
 
    if (Dep.BadCount() != 0) {
       if (outVer >= 30)

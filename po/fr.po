@@ -2456,11 +2456,11 @@ msgstr "Les paquets suivants seront mis à jour :"
 
 #: apt-private/private-output.cc
 msgid "Upgrading:"
-msgstr ""
+msgstr "Mise à jour :"
 
 #: apt-private/private-output.cc
 msgid "DOWNGRADING:"
-msgstr ""
+msgstr "RÉTROGRADATION :"
 
 #: apt-private/private-output.cc
 msgid "The following packages will be DOWNGRADED:"
@@ -2492,7 +2492,7 @@ msgstr ""
 
 #: apt-private/private-output.cc
 msgid "Summary:"
-msgstr ""
+msgstr "Résumé :"
 
 #: apt-private/private-output.cc
 #, c-format
@@ -2503,7 +2503,13 @@ msgstr "%lu mis à jour, %lu nouvellement installés, "
 #, fuzzy, c-format
 #| msgid "Installing %s"
 msgid "Upgrading: %lu, Installing: %lu, "
-msgstr "Installation de %s"
+msgstr "Mise à jour : %lu, Installation: %lu, "
+
+#: apt-private/private-output.cc
+#, fuzzy, c-format
+#| msgid "Installing %s"
+msgid "Installing: %lu, "
+msgstr "Installation: %lu, "
 
 #: apt-private/private-output.cc
 #, c-format
@@ -2535,7 +2541,12 @@ msgstr "%lu à enlever et %lu non mis à jour.\n"
 #: apt-private/private-output.cc
 #, c-format
 msgid "Removing: %lu, Not Upgrading: %lu\n"
-msgstr ""
+msgstr "Suppression : %lu, Maintien : %lu\n"
+
+#: apt-private/private-output.cc
+#, c-format
+msgid "Removing: %lu\n"
+msgstr "Suppression : %lu\n"
 
 #: apt-private/private-output.cc
 #, c-format
