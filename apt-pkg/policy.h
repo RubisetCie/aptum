@@ -36,6 +36,7 @@
 #include <apt-pkg/pkgcache.h>
 #include <apt-pkg/versionmatch.h>
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -58,8 +59,9 @@ class APT_PUBLIC pkgPolicy : public pkgDepCache::Policy
       explicit PkgPin(std::string const &Pkg) : Pin(), Pkg(Pkg) {};
    };
 
-   Pin *VerPins;
-   signed short *PFPriority;
+   std::unique_ptr<Pin[]> SrcVerPins;
+   std::unique_ptr<Pin[]> VerPins;
+   std::unique_ptr<signed short[]> PFPriority;
    std::vector<Pin> Defaults;
    std::vector<PkgPin> Unmatched;
    pkgCache *Cache;
@@ -84,7 +86,7 @@ class APT_PUBLIC pkgPolicy : public pkgDepCache::Policy
    virtual ~pkgPolicy();
    private:
    struct Private;
-   Private *const d;
+   std::unique_ptr<Private> const d;
 };
 
 APT_PUBLIC bool ReadPinFile(pkgPolicy &Plcy, std::string File = "");

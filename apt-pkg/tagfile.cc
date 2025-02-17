@@ -15,7 +15,6 @@
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/fileutl.h>
-#include <apt-pkg/string_view.h>
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/tagfile-keys.h>
 #include <apt-pkg/tagfile.h>
@@ -31,9 +30,9 @@
 #include <apti18n.h>
 									/*}}}*/
 
-using APT::StringView;
 using APT::Configuration::color;
 using std::string;
+using std::string_view;
 
 class APT_HIDDEN pkgTagFilePrivate					/*{{{*/
 {
@@ -74,6 +73,9 @@ public:
       FileChunk(bool const pgood, size_t const plength) noexcept : good(pgood), length(plength) {}
    };
    std::list<FileChunk> chunks;
+
+   bool FillBuffer();
+   void RemoveCommentsFromBuffer();
 
    ~pkgTagFilePrivate()
    {
@@ -156,10 +158,7 @@ void pkgTagFile::Init(FileFd * const pFd,unsigned long long Size)
 }
 									/*}}}*/
 // TagFile::~pkgTagFile - Destructor					/*{{{*/
-pkgTagFile::~pkgTagFile()
-{
-   delete d;
-}
+pkgTagFile::~pkgTagFile() = default;
 									/*}}}*/
 // TagFile::Offset - Return the current offset in the buffer		/*{{{*/
 APT_PURE unsigned long pkgTagFile::Offset()
@@ -264,57 +263,57 @@ bool pkgTagFile::Step(pkgTagSection &Tag)
 // ---------------------------------------------------------------------
 /* This takes the bit at the end of the buffer and puts it at the start
    then fills the rest from the file */
-static bool FillBuffer(pkgTagFilePrivate * const d)
+bool pkgTagFilePrivate::FillBuffer()
 {
    unsigned long long Actual = 0;
    // See if only a bit of the file is left
-   unsigned long long const dataSize = d->Size - ((d->End - d->Buffer) + 1);
-   if (d->Fd->Read(d->End, dataSize, &Actual) == false)
+   unsigned long long const dataSize = Size - ((End - Buffer) + 1);
+   if (Fd->Read(End, dataSize, &Actual) == false)
       return false;
    if (Actual != dataSize)
-      d->Done = true;
-   d->End += Actual;
+      Done = true;
+   End += Actual;
    return true;
 }
-static void RemoveCommentsFromBuffer(pkgTagFilePrivate * const d)
+void pkgTagFilePrivate::RemoveCommentsFromBuffer()
 {
    // look for valid comments in the buffer
    char * good_start = nullptr, * bad_start = nullptr;
-   char * current = d->Start;
-   if (d->isCommentedLine == false)
+   char * current = Start;
+   if (isCommentedLine == false)
    {
-      if (d->Start == d->Buffer)
+      if (Start == Buffer)
       {
 	 // the start of the buffer is a newline as a record can't start
 	 // in the middle of a line by definition.
-	 if (*d->Start == '#')
+	 if (*Start == '#')
 	 {
-	    d->isCommentedLine = true;
+	    isCommentedLine = true;
 	    ++current;
-	    if (current > d->End)
-	       d->chunks.emplace_back(false, 1);
+	    if (current > End)
+	       chunks.emplace_back(false, 1);
 	 }
       }
-      if (d->isCommentedLine == false)
-	 good_start = d->Start;
+      if (isCommentedLine == false)
+	 good_start = Start;
       else
-	 bad_start = d->Start;
+	 bad_start = Start;
    }
    else
-      bad_start = d->Start;
+      bad_start = Start;
 
    std::vector<std::pair<char*, size_t>> good_parts;
-   while (current <= d->End)
+   while (current <= End)
    {
-      size_t const restLength = (d->End - current);
-      if (d->isCommentedLine == false)
+      size_t const restLength = (End - current);
+      if (isCommentedLine == false)
       {
 	 current = static_cast<char*>(memchr(current, '#', restLength));
 	 if (current == nullptr)
 	 {
-	    size_t const goodLength = d->End - good_start;
-	    d->chunks.emplace_back(true, goodLength);
-	    if (good_start != d->Start)
+	    size_t const goodLength = End - good_start;
+	    chunks.emplace_back(true, goodLength);
+	    if (good_start != Start)
 	       good_parts.push_back(std::make_pair(good_start, goodLength));
 	    break;
 	 }
@@ -324,10 +323,10 @@ static void RemoveCommentsFromBuffer(pkgTagFilePrivate * const d)
 	 if (*current == '\n')
 	 {
 	    size_t const goodLength = (current - good_start) + 1;
-	    d->chunks.emplace_back(true, goodLength);
+	    chunks.emplace_back(true, goodLength);
 	    good_parts.push_back(std::make_pair(good_start, goodLength));
 	    good_start = nullptr;
-	    d->isCommentedLine = true;
+	    isCommentedLine = true;
 	 }
 	 current += 2;
       }
@@ -336,17 +335,17 @@ static void RemoveCommentsFromBuffer(pkgTagFilePrivate * const d)
 	 current = static_cast<char*>(memchr(current, '\n', restLength));
 	 if (current == nullptr)
 	 {
-	    d->chunks.emplace_back(false, (d->End - bad_start));
+	    chunks.emplace_back(false, (End - bad_start));
 	    break;
 	 }
 	 ++current;
 	 // is the next line a comment, too?
-	 if (current >= d->End || *current != '#')
+	 if (current >= End || *current != '#')
 	 {
-	    d->chunks.emplace_back(false, (current - bad_start));
+	    chunks.emplace_back(false, (current - bad_start));
 	    good_start = current;
 	    bad_start = nullptr;
-	    d->isCommentedLine = false;
+	    isCommentedLine = false;
 	 }
 	 ++current;
       }
@@ -355,31 +354,31 @@ static void RemoveCommentsFromBuffer(pkgTagFilePrivate * const d)
    if (good_parts.empty() == false)
    {
       // we found comments, so move later parts over them
-      current = d->Start;
+      current = Start;
       for (auto const &good: good_parts)
       {
 	 memmove(current, good.first, good.second);
 	 current += good.second;
       }
-      d->End = current;
+      End = current;
    }
 
-   if (d->isCommentedLine == true)
+   if (isCommentedLine == true)
    {
       // deal with a buffer containing only comments
       // or an (unfinished) comment at the end
       if (good_parts.empty() == true)
-	 d->End = d->Start;
+	 End = Start;
       else
-	 d->Start = d->End;
+	 Start = End;
    }
    else
    {
       // the buffer was all comment, but ended with the buffer
-      if (good_parts.empty() == true && good_start >= d->End)
-	 d->End = d->Start;
+      if (good_parts.empty() == true && good_start >= End)
+	 End = Start;
       else
-	 d->Start = d->End;
+	 Start = End;
    }
 }
 bool pkgTagFile::Fill()
@@ -396,10 +395,10 @@ bool pkgTagFile::Fill()
    unsigned long long Actual = 0;
    while (d->Done == false && d->Size > (Actual + 1))
    {
-      if (FillBuffer(d) == false)
+      if (d->FillBuffer() == false)
 	 return false;
       if ((d->Flags & pkgTagFile::SUPPORT_COMMENTS) != 0)
-	 RemoveCommentsFromBuffer(d);
+	 d->RemoveCommentsFromBuffer();
       Actual = d->End - d->Buffer;
    }
    d->Start = d->Buffer;
@@ -628,7 +627,7 @@ void pkgTagSection::Trim()
 }
 									/*}}}*/
 // TagSection::Exists - return True if a tag exists			/*{{{*/
-bool pkgTagSection::Exists(StringView Tag) const
+bool pkgTagSection::Exists(string_view Tag) const
 {
    unsigned int tmp;
    return Find(Tag, tmp);
@@ -648,7 +647,7 @@ bool pkgTagSection::Find(Key key,unsigned int &Pos) const
    Pos = Bucket - 1;
    return Bucket != 0;
 }
-bool pkgTagSection::Find(StringView TagView,unsigned int &Pos) const
+bool pkgTagSection::Find(string_view TagView,unsigned int &Pos) const
 {
    const char * const Tag = TagView.data();
    size_t const Length = TagView.length();
@@ -693,7 +692,7 @@ bool pkgTagSection::FindInternal(unsigned int Pos, const char *&Start,
 
    return true;
 }
-bool pkgTagSection::Find(StringView Tag,const char *&Start,
+bool pkgTagSection::Find(string_view Tag,const char *&Start,
 		         const char *&End) const
 {
    unsigned int Pos;
@@ -707,25 +706,25 @@ bool pkgTagSection::Find(Key key,const char *&Start,
 }
 									/*}}}*/
 // TagSection::FindS - Find a string					/*{{{*/
-StringView pkgTagSection::Find(StringView Tag) const
+string_view pkgTagSection::Find(string_view Tag) const
 {
    const char *Start;
    const char *End;
    if (Find(Tag,Start,End) == false)
-      return StringView();
-   return StringView(Start, End - Start);
+      return string_view();
+   return string_view(Start, End - Start);
 }
-StringView pkgTagSection::Find(Key key) const
+string_view pkgTagSection::Find(Key key) const
 {
    const char *Start;
    const char *End;
    if (Find(key,Start,End) == false)
-      return StringView();
-   return StringView(Start, End - Start);
+      return string_view();
+   return string_view(Start, End - Start);
 }
 									/*}}}*/
 // TagSection::FindRawS - Find a string					/*{{{*/
-StringView pkgTagSection::FindRawInternal(unsigned int Pos) const
+string_view pkgTagSection::FindRawInternal(unsigned int Pos) const
 {
    if (unlikely(Pos + 1 >= d->Tags.size() || Pos >= d->Tags.size()))
       return _error->Error("Internal parsing error"), "";
@@ -743,14 +742,14 @@ StringView pkgTagSection::FindRawInternal(unsigned int Pos) const
 
    for (; isspace_ascii(End[-1]) != 0 && End > Start; --End);
 
-   return StringView(Start, End - Start);
+   return string_view(Start, End - Start);
 }
-StringView pkgTagSection::FindRaw(StringView Tag) const
+string_view pkgTagSection::FindRaw(std::string_view Tag) const
 {
    unsigned int Pos;
    return Find(Tag, Pos) ? FindRawInternal(Pos) : "";
 }
-StringView pkgTagSection::FindRaw(Key key) const
+string_view pkgTagSection::FindRaw(Key key) const
 {
    unsigned int Pos;
    return Find(key, Pos) ? FindRawInternal(Pos) : "";
@@ -791,7 +790,7 @@ signed int pkgTagSection::FindI(Key key,signed long Default) const
 
    return Find(key, Pos) ? FindIInternal(Pos) : Default;
 }
-signed int pkgTagSection::FindI(StringView Tag,signed long Default) const
+signed int pkgTagSection::FindI(string_view Tag,signed long Default) const
 {
    unsigned int Pos;
 
@@ -827,7 +826,7 @@ unsigned long long pkgTagSection::FindULL(Key key, unsigned long long const &Def
 
    return Find(key, Pos) ? FindULLInternal(Pos, Default) : Default;
 }
-unsigned long long pkgTagSection::FindULL(StringView Tag, unsigned long long const &Default) const
+unsigned long long pkgTagSection::FindULL(string_view Tag, unsigned long long const &Default) const
 {
    unsigned int Pos;
 
@@ -849,7 +848,7 @@ bool pkgTagSection::FindB(Key key, bool Default) const
    unsigned int Pos;
    return Find(key, Pos) ? FindBInternal(Pos, Default): Default;
 }
-bool pkgTagSection::FindB(StringView Tag, bool Default) const
+bool pkgTagSection::FindB(string_view Tag, bool Default) const
 {
    unsigned int Pos;
    return Find(Tag, Pos) ? FindBInternal(Pos, Default) : Default;
@@ -875,7 +874,7 @@ bool pkgTagSection::FindFlag(Key key, uint8_t &Flags,
       return true;
    return FindFlagInternal(Pos, Flags, Flag);
 }
-bool pkgTagSection::FindFlag(StringView Tag, uint8_t &Flags,
+bool pkgTagSection::FindFlag(string_view Tag, uint8_t &Flags,
 			     uint8_t const Flag) const
 {
    unsigned int Pos;
@@ -917,7 +916,7 @@ bool pkgTagSection::FindFlag(Key key,unsigned long &Flags,
    unsigned int Pos;
    return Find(key, Pos) ? FindFlagInternal(Pos, Flags, Flag) : true;
 }
-bool pkgTagSection::FindFlag(StringView Tag,unsigned long &Flags,
+bool pkgTagSection::FindFlag(string_view Tag,unsigned long &Flags,
 			     unsigned long Flag) const
 {
    unsigned int Pos;
@@ -959,34 +958,22 @@ APT_PURE unsigned int pkgTagSection::Count() const {			/*{{{*/
 }
 									/*}}}*/
 // TagSection::Write - Ordered (re)writing of fields			/*{{{*/
-#if APT_PKG_ABI > 600
 pkgTagSection::Tag pkgTagSection::Tag::Remove(std::string_view Name)
-#else
-pkgTagSection::Tag pkgTagSection::Tag::Remove(std::string const &Name)
-#endif
 {
    return Tag(REMOVE, Name, "");
 }
-#if APT_PKG_ABI > 600
 pkgTagSection::Tag pkgTagSection::Tag::Rename(std::string_view OldName, std::string_view NewName)
-#else
-pkgTagSection::Tag pkgTagSection::Tag::Rename(std::string const &OldName, std::string const &NewName)
-#endif
 {
    return Tag(RENAME, OldName, NewName);
 }
-#if APT_PKG_ABI > 600
 pkgTagSection::Tag pkgTagSection::Tag::Rewrite(std::string_view Name, std::string_view Data)
-#else
-pkgTagSection::Tag pkgTagSection::Tag::Rewrite(std::string const &Name, std::string const &Data)
-#endif
 {
    if (Data.empty() == true)
       return Tag(REMOVE, Name, "");
    else
       return Tag(REWRITE, Name, Data);
 }
-static bool WriteTag(FileFd &File, std::string Tag, StringView Value, pkgTagSection::WriteFlags flags)
+static bool WriteTag(FileFd &File, std::string Tag, string_view Value, pkgTagSection::WriteFlags flags)
 {
    if (Value.empty() || isspace_ascii(Value[0]) != 0)
       Tag.append(":");
@@ -1107,4 +1094,4 @@ bool pkgTagSection::Write(FileFd &File, pkgTagSection::WriteFlags flags, char co
 
 #include "tagfile-order.c"
 
-pkgTagSection::~pkgTagSection() { delete d; }
+pkgTagSection::~pkgTagSection() = default;

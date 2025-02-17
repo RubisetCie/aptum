@@ -46,6 +46,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
 
@@ -332,9 +333,9 @@ class APT_PUBLIC pkgDepCache : protected pkgCache::Namespace
    inline Header &Head() {return *Cache->HeaderP;};
    inline GrpIterator GrpBegin() {return Cache->GrpBegin();};
    inline PkgIterator PkgBegin() {return Cache->PkgBegin();};
-   inline GrpIterator FindGrp(APT::StringView Name) {return Cache->FindGrp(Name);};
-   inline PkgIterator FindPkg(APT::StringView Name) {return Cache->FindPkg(Name);};
-   inline PkgIterator FindPkg(APT::StringView Name, APT::StringView Arch) {return Cache->FindPkg(Name, Arch);};
+   inline GrpIterator FindGrp(std::string_view Name) {return Cache->FindGrp(Name);};
+   inline PkgIterator FindPkg(std::string_view Name) {return Cache->FindPkg(Name);};
+   inline PkgIterator FindPkg(std::string_view Name, std::string_view Arch) {return Cache->FindPkg(Name, Arch);};
 
    inline pkgCache &GetCache() {return *Cache;};
    inline pkgVersioningSystem &VS() {return *Cache->VS;};

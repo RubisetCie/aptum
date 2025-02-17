@@ -27,6 +27,7 @@
 #include <apt-pkg/macros.h>
 #include <apt-pkg/pkgcache.h>
 
+#include <memory>
 #include <set>
 #include <string>
 
@@ -52,9 +53,9 @@ class APT_PUBLIC pkgPackageManager : protected pkgCache::Namespace
    static bool SigINTStop;
    
    protected:
-   std::string *FileNames;
+   std::unique_ptr<std::string[]>FileNames;
    pkgDepCache &Cache;
-   pkgOrderList *List;
+   std::unique_ptr<pkgOrderList> List;
    bool Debug;
    bool NoImmConfigure;
    bool ImmConfigureAll;

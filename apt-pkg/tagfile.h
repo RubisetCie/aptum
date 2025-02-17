@@ -25,9 +25,10 @@
 #include <cstdio>
 
 #include <list>
+#include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
-#include <apt-pkg/string_view.h>
 
 
 class FileFd;
@@ -47,11 +48,11 @@ class APT_PUBLIC pkgTagSection
    unsigned int AlphaIndexes[128];
    unsigned int BetaIndexes[128];
 
-   pkgTagSectionPrivate * const d;
+   std::unique_ptr<pkgTagSectionPrivate> const d;
 
    APT_HIDDEN bool FindInternal(unsigned int Pos,const char *&Start, const char *&End) const;
-   APT_HIDDEN APT::StringView FindInternal(unsigned int Pos) const;
-   APT_HIDDEN APT::StringView FindRawInternal(unsigned int Pos) const;
+   APT_HIDDEN std::string_view FindInternal(unsigned int Pos) const;
+   APT_HIDDEN std::string_view FindRawInternal(unsigned int Pos) const;
    APT_HIDDEN signed int FindIInternal(unsigned int Pos,signed long Default = 0) const;
    APT_HIDDEN bool FindBInternal(unsigned int Pos, bool Default = false) const;
    APT_HIDDEN unsigned long long FindULLInternal(unsigned int Pos, unsigned long long const &Default = 0) const;
@@ -67,8 +68,8 @@ class APT_PUBLIC pkgTagSection
    inline bool operator !=(const pkgTagSection &rhs) {return Section != rhs.Section;};
 
    // TODO: Remove internally
-   std::string FindS(APT::StringView sv) const { return std::string{Find(sv)}; }
-   std::string FindRawS(APT::StringView sv) const { return std::string{FindRaw(sv)}; };
+   std::string FindS(std::string_view sv) const { return std::string{Find(sv)}; }
+   std::string FindRawS(std::string_view sv) const { return std::string{FindRaw(sv)}; };
 
    // Functions for lookup with a perfect hash function
    enum class Key;
@@ -81,23 +82,23 @@ class APT_PUBLIC pkgTagSection
    bool FindFlag(Key key,uint8_t &Flags, uint8_t const Flag) const;
    bool FindFlag(Key key,unsigned long &Flags, unsigned long Flag) const;
    bool Exists(Key key) const;
-   APT::StringView Find(Key key) const;
-   APT::StringView FindRaw(Key key) const;
+   std::string_view Find(Key key) const;
+   std::string_view FindRaw(Key key) const;
 #endif
 
-   bool Find(APT::StringView Tag,const char *&Start, const char *&End) const;
-   bool Find(APT::StringView Tag,unsigned int &Pos) const;
-   APT::StringView Find(APT::StringView Tag) const;
-   APT::StringView FindRaw(APT::StringView Tag) const;
-   signed int FindI(APT::StringView Tag,signed long Default = 0) const;
-   bool FindB(APT::StringView, bool Default = false) const;
-   unsigned long long FindULL(APT::StringView Tag, unsigned long long const &Default = 0) const;
+   bool Find(std::string_view Tag,const char *&Start, const char *&End) const;
+   bool Find(std::string_view Tag,unsigned int &Pos) const;
+   std::string_view Find(std::string_view Tag) const;
+   std::string_view FindRaw(std::string_view Tag) const;
+   signed int FindI(std::string_view Tag,signed long Default = 0) const;
+   bool FindB(std::string_view, bool Default = false) const;
+   unsigned long long FindULL(std::string_view Tag, unsigned long long const &Default = 0) const;
 
-   bool FindFlag(APT::StringView Tag,uint8_t &Flags,
+   bool FindFlag(std::string_view Tag,uint8_t &Flags,
 		 uint8_t const Flag) const;
-   bool FindFlag(APT::StringView Tag,unsigned long &Flags,
+   bool FindFlag(std::string_view Tag,unsigned long &Flags,
 		 unsigned long Flag) const;
-   bool Exists(APT::StringView Tag) const;
+   bool Exists(std::string_view Tag) const;
 
    bool static FindFlag(uint8_t &Flags, uint8_t const Flag,
 				const char* const Start, const char* const Stop);
@@ -150,15 +151,9 @@ class APT_PUBLIC pkgTagSection
       std::string Name;
       std::string Data;
 
-#if APT_PKG_ABI > 600
       static Tag Remove(std::string_view Name);
       static Tag Rename(std::string_view OldName, std::string_view NewName);
       static Tag Rewrite(std::string_view Name, std::string_view Data);
-#else
-      static Tag Remove(std::string const &Name);
-      static Tag Rename(std::string const &OldName, std::string const &NewName);
-      static Tag Rewrite(std::string const &Name, std::string const &Data);
-#endif
       private:
       Tag(ActionType const Action, std::string_view Name, std::string_view Data) :
 	 Action(Action), Name(Name), Data(Data) {}
@@ -189,7 +184,7 @@ class APT_PUBLIC pkgTagSection
  * for comments e.g. needs to be enabled explicitly. */
 class APT_PUBLIC pkgTagFile
 {
-   pkgTagFilePrivate * const d;
+   std::unique_ptr<pkgTagFilePrivate> const d;
 
    APT_HIDDEN bool Fill();
    APT_HIDDEN bool Resize();

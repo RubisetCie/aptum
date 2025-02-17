@@ -120,9 +120,9 @@ unsigned char debListParser::ParseMultiArch(bool const showErrors)	/*{{{*/
 {
    unsigned char MA;
    auto const MultiArch = Section.Find(pkgTagSection::Key::Multi_Arch);
-   if (MultiArch.empty() == true || MultiArch == "no")
+   if (MultiArch.empty() == true || MultiArch == "no"sv)
       MA = pkgCache::Version::No;
-   else if (MultiArch == "same") {
+   else if (MultiArch == "same"sv) {
       if (ArchitectureAll() == true)
       {
 	 if (showErrors == true)
@@ -133,9 +133,9 @@ unsigned char debListParser::ParseMultiArch(bool const showErrors)	/*{{{*/
       else
 	 MA = pkgCache::Version::Same;
    }
-   else if (MultiArch == "foreign")
+   else if (MultiArch == "foreign"sv)
       MA = pkgCache::Version::Foreign;
-   else if (MultiArch == "allowed")
+   else if (MultiArch == "allowed"sv)
       MA = pkgCache::Version::Allowed;
    else
    {
@@ -169,8 +169,8 @@ bool debListParser::NewVersion(pkgCache::VerIterator &Ver)
    pkgCache::GrpIterator G = Ver.ParentPkg().Group();
 
    // Setup the defaults
-   Ver->SourcePkgName = G->Name;
-   Ver->SourceVerStr = Ver->VerStr;
+   Ver.SourceVersion()->Group = G.MapPointer();
+   Ver.SourceVersion()->VerStr = Ver->VerStr;
 
    // Parse the name and version str
    if (Section.Find(pkgTagSection::Key::Source,Start,Stop) == true)
@@ -191,7 +191,7 @@ bool debListParser::NewVersion(pkgCache::VerIterator &Ver)
 	       {
 		  map_stringitem_t const idx = StoreString(pkgCacheGenerator::VERSIONNUMBER, version);
 		  G = Ver.ParentPkg().Group();
-		  Ver->SourceVerStr = idx;
+		  Ver.SourceVersion()->VerStr = idx;
 	       }
 	    }
 	 }
@@ -208,7 +208,7 @@ bool debListParser::NewVersion(pkgCache::VerIterator &Ver)
    }
 
    // Link into by source package group.
-   Ver->SourcePkgName = G->Name;
+   Ver.SourceVersion()->Group = G.MapPointer();
    Ver->NextInSource = G->VersionsInSource;
    G->VersionsInSource = Ver.MapPointer();
 
@@ -563,25 +563,6 @@ const char *debListParser::ParseDepends(const char *Start,const char *Stop,
 
    return res;
 }
-#if APT_PKG_ABI <= 600
-const char *debListParser::ParseDepends(const char *Start,const char *Stop,
-					APT::StringView &Package,APT::StringView &Ver,
-					unsigned int &Op, bool ParseArchFlags,
-					bool const StripMultiArch,
-					bool const ParseRestrictionsList,
-				        string Arch)
-{
-   string_view PackageView;
-   string_view VerView;
-
-   auto res = ParseDepends(Start, Stop, PackageView, VerView, Op, (bool)ParseArchFlags,
-   (bool) StripMultiArch, (bool) ParseRestrictionsList, Arch);
-   Package = PackageView;
-   Ver = VerView;
-
-   return res;
-}
-#endif
 
 const char *debListParser::ParseDepends(const char *Start, const char *Stop,
 					string_view &Package, string_view &Ver,

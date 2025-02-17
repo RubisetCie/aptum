@@ -16,8 +16,10 @@
 #include <cassert>
 #include <iostream>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace APT
@@ -147,7 +149,7 @@ using namespace APT::CacheFilter;
 /** \brief Basic helper class for matching regex */
 class BaseRegexMatcher
 {
-   regex_t *pattern;
+   std::optional<regex_t> pattern;
 
    public:
    BaseRegexMatcher(std::string const &string);

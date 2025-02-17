@@ -19,7 +19,6 @@
 #ifndef STRUTL_H
 #define STRUTL_H
 
-#include <apt-pkg/string_view.h>
 #include <cstddef>
 #include <cstring>
 #include <ctime>
@@ -43,12 +42,12 @@ namespace {
 
 namespace APT {
    namespace String {
-      APT_PUBLIC std::string Strip(const std::string &s);
-      APT_PUBLIC bool Endswith(const std::string &s, const std::string &ending);
-      APT_PUBLIC bool Startswith(const std::string &s, const std::string &starting);
-      APT_PUBLIC std::string Join(std::vector<std::string> list, const std::string &sep);
+      APT_PUBLIC std::string_view Strip(std::string_view s);
+      APT_PUBLIC bool Endswith(const std::string_view &s, const std::string_view &ending);
+      APT_PUBLIC bool Startswith(const std::string_view &s, const std::string_view &starting);
+      APT_PUBLIC std::string Join(std::vector<std::string> list, const std::string_view &sep);
       // Returns string display length honoring multi-byte characters
-      APT_PUBLIC size_t DisplayLength(StringView str);
+      APT_PUBLIC size_t DisplayLength(std::string_view str);
    }
 }
 
@@ -57,7 +56,6 @@ APT_PUBLIC bool UTF8ToCodeset(const char *codeset, const std::string &orig, std:
 APT_PUBLIC char *_strstrip(char *String);
 APT_PUBLIC char *_strrstrip(char *String); // right strip only
 APT_PUBLIC bool _endswith(const char *String, const char *Suffix);
-[[deprecated("Use SubstVar to avoid memory headaches")]] APT_PUBLIC char *_strtabexpand(char *String,size_t Len);
 APT_PUBLIC bool ParseQuoteWord(const char *&String,std::string &Res);
 APT_PUBLIC bool ParseCWord(const char *&String,std::string &Res);
 APT_PUBLIC std::string QuoteString(const std::string &Str,const char *Bad);
@@ -99,7 +97,6 @@ APT_PUBLIC std::string TimeRFC1123(time_t Date, bool const NumericTimezone);
  * @return \b true if parsing was successful, otherwise \b false.
  */
 [[nodiscard]] APT_PUBLIC bool RFC1123StrToTime(const std::string &str,time_t &time);
-[[nodiscard, deprecated("Unused and untested in src:apt")]] APT_PUBLIC bool FTPMDTMStrToTime(const char *str, time_t &time);
 APT_PUBLIC std::string LookupTag(const std::string &Message,const char *Tag,const char *Default = 0);
 APT_PUBLIC int StringToBool(const std::string &Text,int Default = -1);
 APT_PUBLIC bool ReadMessages(int Fd, std::vector<std::string> &List);
@@ -107,13 +104,13 @@ APT_PUBLIC bool StrToNum(const char *Str,unsigned long &Res,unsigned Len,unsigne
 APT_PUBLIC bool StrToNum(const char *Str,unsigned long long &Res,unsigned Len,unsigned Base = 0);
 APT_PUBLIC bool Base256ToNum(const char *Str,unsigned long &Res,unsigned int Len);
 APT_PUBLIC bool Base256ToNum(const char *Str,unsigned long long &Res,unsigned int Len);
-APT_PUBLIC bool Hex2Num(const APT::StringView Str,unsigned char *Num,unsigned int Length);
+APT_PUBLIC bool Hex2Num(const std::string_view Str,unsigned char *Num,unsigned int Length);
 // input changing string split
 APT_PUBLIC bool TokSplitString(char Tok,char *Input,char **List,
 		    unsigned long ListMax);
 
 // split a given string by a char
-APT_PUBLIC std::vector<std::string> VectorizeString(std::string const &haystack, char const &split) APT_PURE;
+APT_PUBLIC std::vector<std::string> VectorizeString(std::string_view const &haystack, char const &split) APT_PURE;
 
 /* \brief Return a vector of strings from string "input" where "sep"
  * is used as the delimiter string.
@@ -129,8 +126,8 @@ APT_PUBLIC std::vector<std::string> VectorizeString(std::string const &haystack,
  * if used the string is only split on maxsplit places and the last
  * item in the vector contains the remainder string.
  */
-APT_PUBLIC std::vector<std::string> StringSplit(std::string const &input,
-                                     std::string const &sep,
+APT_PUBLIC std::vector<std::string> StringSplit(std::string_view const &input,
+                                     std::string_view const &sep,
                                      unsigned int maxsplit=std::numeric_limits<unsigned int>::max()) APT_PURE;
 
 
@@ -250,7 +247,7 @@ struct SubstVar
    const std::string *Contents;
 };
 APT_PUBLIC std::string SubstVar(std::string Str,const struct SubstVar *Vars);
-APT_PUBLIC std::string SubstVar(const std::string &Str,const std::string &Subst,const std::string &Contents);
+APT_PUBLIC std::string SubstVar(const std::string_view &Str,const std::string_view &Subst,const std::string_view &Contents);
 
 struct RxChoiceList
 {

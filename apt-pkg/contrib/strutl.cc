@@ -56,43 +56,30 @@ using namespace std;
 // ---------------------------------------------------------------------
 namespace APT {
    namespace String {
-std::string Strip(const std::string &str)
+std::string_view Strip(std::string_view str)
 {
-   // ensure we have at least one character
-   if (str.empty() == true)
-      return str;
-
-   char const * const s = str.c_str();
-   size_t start = 0;
-   for (; isspace(s[start]) != 0; ++start)
-      ; // find the first not-space
-
-   // string contains only whitespaces
-   if (s[start] == '\0')
-      return "";
-
-   size_t end = str.length() - 1;
-   for (; isspace(s[end]) != 0; --end)
-      ; // find the last not-space
-
-   return str.substr(start, end - start + 1);
+   while (!str.empty() && isspace(str[0]))
+      str.remove_prefix(1);
+   while (!str.empty() && isspace(str.back()))
+      str.remove_suffix(1);
+   return str;
 }
 
-bool Endswith(const std::string &s, const std::string &end)
+bool Endswith(const std::string_view &s, const std::string_view &end)
 {
    if (end.size() > s.size())
       return false;
    return (s.compare(s.size() - end.size(), end.size(), end) == 0);
 }
 
-bool Startswith(const std::string &s, const std::string &start)
+bool Startswith(const std::string_view &s, const std::string_view &start)
 {
    if (start.size() > s.size())
       return false;
    return (s.compare(0, start.size(), start) == 0);
 }
 
-std::string Join(std::vector<std::string> list, const std::string &sep)
+std::string Join(std::vector<std::string> list, const std::string_view &sep)
 {
    std::ostringstream oss;
    for (auto it = list.begin(); it != list.end(); it++)
@@ -104,7 +91,7 @@ std::string Join(std::vector<std::string> list, const std::string &sep)
 }
 
 // Returns string display length honoring multi-byte characters
-size_t DisplayLength(StringView str)
+size_t DisplayLength(string_view str)
 {
    size_t len = 0;
 
@@ -245,41 +232,6 @@ char *_strrstrip(char *String)
 			       *End == '\r'); End--);
    End++;
    *End = 0;
-   return String;
-}
-									/*}}}*/
-// strtabexpand - Converts tabs into 8 spaces				/*{{{*/
-// ---------------------------------------------------------------------
-/* */
-char *_strtabexpand(char *String,size_t Len)
-{
-   for (char *I = String; I != I + Len && *I != 0; I++)
-   {
-      if (*I != '\t')
-	 continue;
-      if (I + 8 > String + Len)
-      {
-	 *I = 0;
-	 return String;
-      }
-
-      /* Assume the start of the string is 0 and find the next 8 char
-         division */
-      int Len;
-      if (String == I)
-	 Len = 1;
-      else
-	 Len = 8 - ((String - I) % 8);
-      Len -= 2;
-      if (Len <= 0)
-      {
-	 *I = ' ';
-	 continue;
-      }
-      
-      memmove(I + Len,I + 1,strlen(I) + 1);
-      for (char *J = I; J + Len != I; *I = ' ', I++);
-   }
    return String;
 }
 									/*}}}*/
@@ -514,10 +466,10 @@ string TimeToStr(unsigned long Sec)
 // SubstVar - Substitute a string for another string			/*{{{*/
 // ---------------------------------------------------------------------
 /* This replaces all occurrences of Subst with Contents in Str. */
-string SubstVar(const string &Str,const string &Subst,const string &Contents)
+string SubstVar(const string_view &Str,const string_view &Subst,const string_view &Contents)
 {
    if (Subst.empty() == true)
-      return Str;
+      return std::string{Str};
 
    string::size_type Pos = 0;
    string::size_type OldPos = 0;
@@ -534,7 +486,7 @@ string SubstVar(const string &Str,const string &Subst,const string &Contents)
    }
 
    if (OldPos == 0)
-      return Str;
+      return std::string{Str};
 
    if (OldPos >= Str.length())
       return Temp;
@@ -941,7 +893,7 @@ string TimeRFC1123(time_t Date, bool const NumericTimezone)
    auto const posix = std::locale::classic();
    std::ostringstream datestr;
    datestr.imbue(posix);
-   APT::StringView const fmt("%a, %d %b %Y %H:%M:%S");
+   std::string_view const fmt("%a, %d %b %Y %H:%M:%S");
    std::use_facet<std::time_put<char>>(posix).put(
                     std::ostreambuf_iterator<char>(datestr),
                     datestr, ' ', &Conv, fmt.data(), fmt.data() + fmt.size());
@@ -1207,20 +1159,6 @@ bool RFC1123StrToTime(std::string const &str,time_t &time)
    return true;
 }
 									/*}}}*/
-// FTPMDTMStrToTime - Converts a ftp modification date into a time_t	/*{{{*/
-// ---------------------------------------------------------------------
-/* */
-bool FTPMDTMStrToTime(const char* const str,time_t &time)
-{
-   struct tm Tm;
-   // MDTM includes no whitespaces but recommend and ignored by strptime
-   if (strptime(str, "%Y %m %d %H %M %S", &Tm) == NULL)
-      return false;
-
-   time = timegm(&Tm);
-   return true;
-}
-									/*}}}*/
 // StrToNum - Convert a fixed length string to a number			/*{{{*/
 // ---------------------------------------------------------------------
 /* This is used in decoding the crazy fixed length string headers in
@@ -1318,7 +1256,7 @@ static int HexDigit(int c)
 // Hex2Num - Convert a long hex number into a buffer			/*{{{*/
 // ---------------------------------------------------------------------
 /* The length of the buffer must be exactly 1/2 the length of the string. */
-bool Hex2Num(const APT::StringView Str,unsigned char *Num,unsigned int Length)
+bool Hex2Num(const std::string_view Str,unsigned char *Num,unsigned int Length)
 {
    if (Str.length() != Length*2)
       return false;
@@ -1387,13 +1325,13 @@ bool TokSplitString(char Tok,char *Input,char **List,
 /* This can be used to split a given string up into a vector, so the
    propose is the same as in the method above and this one is a bit slower
    also, but the advantage is that we have an iteratable vector */
-vector<string> VectorizeString(string const &haystack, char const &split)
+vector<string> VectorizeString(string_view const &haystack, char const &split)
 {
    vector<string> exploded;
    if (haystack.empty() == true)
       return exploded;
-   string::const_iterator start = haystack.begin();
-   string::const_iterator end = start;
+   auto start = haystack.begin();
+   auto end = start;
    do {
       for (; end != haystack.end() && *end != split; ++end);
       exploded.push_back(string(start, end));
@@ -1406,7 +1344,7 @@ vector<string> VectorizeString(string const &haystack, char const &split)
 // ---------------------------------------------------------------------
 /* See header for details.
  */
-vector<string> StringSplit(std::string const &s, std::string const &sep,
+vector<string> StringSplit(std::string_view const &s, std::string_view const &sep,
                            unsigned int maxsplit)
 {
    vector<string> split;
@@ -1420,8 +1358,8 @@ vector<string> StringSplit(std::string const &s, std::string const &sep,
    while (pos != string::npos)
    {
       pos = s.find(sep, start);
-      split.push_back(s.substr(start, pos-start));
-      
+      split.emplace_back(s.substr(start, pos-start));
+
       // if maxsplit is reached, the remaining string is the last item
       if(split.size() >= maxsplit)
       {

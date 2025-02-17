@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <regex.h>
@@ -149,7 +150,7 @@ public:
 									/*}}}*/
 
 /// \brief Parse a pattern, return nullptr or pattern
-APT_PUBLIC std::unique_ptr<APT::CacheFilter::Matcher> ParsePattern(APT::StringView pattern, pkgCacheFile *file);
+APT_PUBLIC std::unique_ptr<APT::CacheFilter::Matcher> ParsePattern(std::string_view pattern, pkgCacheFile *file);
 }
 }
 #endif

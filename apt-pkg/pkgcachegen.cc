@@ -24,7 +24,7 @@
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/progress.h>
 #include <apt-pkg/sourcelist.h>
-#include <apt-pkg/string_view.h>
+#include <apt-pkg/strutl.h>
 #include <apt-pkg/version.h>
 
 #include <algorithm>
@@ -869,11 +869,6 @@ bool pkgCacheGenerator::NewFileVer(pkgCache::VerIterator &Ver,
    auto const Size = List.Size();
    if (Cache.HeaderP->MaxVerFileSize < Size)
       Cache.HeaderP->MaxVerFileSize = Size;
-#if APT_PKG_ABI <= 600
-   APT_IGNORE_DEPRECATED_PUSH
-   VF->Size = Size;
-   APT_IGNORE_DEPRECATED_POP
-#endif
    Cache.HeaderP->VerFileCount++;
 
    return true;
@@ -898,6 +893,11 @@ map_pointer<pkgCache::Version> pkgCacheGenerator::NewVersion(pkgCache::VerIterat
    auto d = AllocateInMap<pkgCache::Version::Extra>(); // sequence point so Ver can be moved if needed
    Ver->d = d;
    if (not Ver.PhasedUpdatePercentage(100))
+      abort();
+   auto SourceVersion = AllocateInMap<pkgCache::SourceVersion>(); // sequence point so Ver can be moved if needed
+   Ver->SourceVersion = SourceVersion;
+   Ver.SourceVersion()->ID = Cache.HeaderP->SourceVersionCount++;
+   if (not Ver.SourceVersion())
       abort();
 
    //Dynamic<pkgCache::VerIterator> DynV(Ver); // caller MergeListVersion already takes care of it
@@ -975,11 +975,6 @@ bool pkgCacheGenerator::NewFileDesc(pkgCache::DescIterator &Desc,
    auto const Size = List.Size();
    if (Cache.HeaderP->MaxDescFileSize < Size)
       Cache.HeaderP->MaxDescFileSize = Size;
-#if APT_PKG_ABI <= 600
-   APT_IGNORE_DEPRECATED_PUSH
-   DF->Size = Size;
-   APT_IGNORE_DEPRECATED_POP
-#endif
    Cache.HeaderP->DescFileCount++;
 
    return true;

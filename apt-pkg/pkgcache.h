@@ -81,8 +81,8 @@
 #include <cstdint>
 #include <ctime>
 #include <string>
+#include <string_view>
 
-#include <apt-pkg/string_view.h>
 
 
 // size of (potentially big) files like debs or the install size of them
@@ -131,6 +131,7 @@ class APT_PUBLIC pkgCache								/*{{{*/
    struct Package;
    struct ReleaseFile;
    struct PackageFile;
+   struct SourceVersion;
    struct Version;
    struct Description;
    struct Provides;
@@ -145,6 +146,7 @@ class APT_PUBLIC pkgCache								/*{{{*/
    class GrpIterator;
    class PkgIterator;
    class VerIterator;
+   class SrcVerIterator;
    class DescIterator;
    class DepIterator;
    class PrvIterator;
@@ -213,7 +215,7 @@ class APT_PUBLIC pkgCache								/*{{{*/
    // Memory mapped cache file
    std::string CacheFile;
    MMap &Map;
-   map_id_t sHash(APT::StringView S) const APT_PURE;
+   map_id_t sHash(std::string_view S) const APT_PURE;
    
    public:
    
@@ -225,13 +227,14 @@ class APT_PUBLIC pkgCache								/*{{{*/
    DescFile *DescFileP;
    ReleaseFile *RlsFileP;
    PackageFile *PkgFileP;
+   SourceVersion *SrcVerP; // reserved for SourceVersion objects
    Version *VerP;
    Description *DescP;
    Provides *ProvideP;
    Dependency *DepP;
    DependencyData *DepDataP;
    char *StrP;
-   void *reserved[12];
+   void *reserved[13];
 
    virtual bool ReMap(bool const &Errorchecks = true);
    inline bool Sync() {return Map.Sync();}
@@ -239,7 +242,7 @@ class APT_PUBLIC pkgCache								/*{{{*/
    inline void *DataEnd() {return ((unsigned char *)Map.Data()) + Map.Size();}
       
    // String hashing function (512 range)
-   inline map_id_t Hash(APT::StringView S) const {return sHash(S);}
+   inline map_id_t Hash(std::string_view S) const {return sHash(S);}
 
    APT_HIDDEN uint32_t CacheHash();
 
@@ -248,15 +251,15 @@ class APT_PUBLIC pkgCache								/*{{{*/
    static std::string_view Priority_NoL10n(unsigned char Prio);
 
    // Accessors
-   GrpIterator FindGrp(APT::StringView Name);
-   PkgIterator FindPkg(APT::StringView Name);
-   PkgIterator FindPkg(APT::StringView Name, APT::StringView Arch);
+   GrpIterator FindGrp(std::string_view Name);
+   PkgIterator FindPkg(std::string_view Name);
+   PkgIterator FindPkg(std::string_view Name, std::string_view Arch);
 
-   APT::StringView ViewString(map_stringitem_t idx) const
+   std::string_view ViewString(map_stringitem_t idx) const
    {
       char *name = StrP + idx;
-      uint16_t len = *reinterpret_cast<const uint16_t*>(name - sizeof(uint16_t));
-      return APT::StringView(name, len);
+      size_t len = *reinterpret_cast<const uint16_t*>(name - sizeof(uint16_t));
+      return {name, len};
    }
 
    Header &Head() {return *HeaderP;}
@@ -321,6 +324,7 @@ struct pkgCache::Header
    map_number_t ReleaseFileSz;
    map_number_t PackageFileSz;
    map_number_t VersionSz;
+   map_number_t SourceVersionSz;
    map_number_t DescriptionSz;
    map_number_t DependencySz;
    map_number_t DependencyDataSz;
@@ -336,18 +340,14 @@ struct pkgCache::Header
    map_id_t GroupCount;
    map_id_t PackageCount;
    map_id_t VersionCount;
+   map_id_t SourceVersionCount;
    map_id_t DescriptionCount;
    map_id_t DependsCount;
    map_id_t DependsDataCount;
    map_fileid_t ReleaseFileCount;
    map_fileid_t PackageFileCount;
-#if APT_PKG_ABI <= 600
-   map_fileid_t VerFileCount;
-   map_fileid_t DescFileCount;
-#else
    map_id_t VerFileCount;
    map_id_t DescFileCount;
-#endif
    map_id_t ProvidesCount;
 
    /** \brief index of the first PackageFile structure
@@ -377,7 +377,7 @@ struct pkgCache::Header
        twice the number of pools as there are non-private structure types. The generator
        stores this information so future additions can make use of any unused pool
        blocks. */
-   DynamicMMap::Pool Pools[2 * 12];
+   DynamicMMap::Pool Pools[2 * 13];
 
    /** \brief hash tables providing rapid group/package name lookup
 
@@ -436,6 +436,9 @@ struct pkgCache::Group
 
    /** \brief List of binary produces by source package with this name. */
    map_pointer<Version> VersionsInSource;
+
+   /** \brief SourceVersionList */
+   map_pointer<SourceVersion> SourceVersionList;
 
    /** \brief Private pointer */
    map_pointer<void> d;
@@ -604,9 +607,6 @@ struct pkgCache::VerFile
    map_pointer<VerFile> NextFile;
    /** \brief position in the package file */
    map_filesize_t Offset;         // File offset
-#if APT_PKG_ABI <= 600
-   [[deprecated("No usage in src:apt, try MaxVerFileSize instead")]] map_filesize_t Size;
-#endif
 };
 									/*}}}*/
 // DescFile structure							/*{{{*/
@@ -619,9 +619,27 @@ struct pkgCache::DescFile
    map_pointer<DescFile> NextFile;
    /** \brief position in the file */
    map_filesize_t Offset;         // File offset
-#if APT_PKG_ABI <= 600
-   [[deprecated("No usage in src:apt, try MaxDescFileSize instead")]] map_filesize_t Size;
-#endif
+};
+									/*}}}*/
+// SourceVersion structure					  	/*{{{*/
+/** \brief information for a single version of a source package
+
+    The version list is always sorted from highest version to lowest
+    version by the generator. Equal version numbers are either merged
+    or handled as separate versions based on the Hash value. */
+struct pkgCache::SourceVersion
+{
+   /** \brief unique sequel ID */
+   map_id_t ID;
+   /** \brief Group the source package belongs too */
+   map_pointer<pkgCache::Group> Group;
+   /** \brief complete version string */
+   map_stringitem_t VerStr;
+   map_pointer<Version> VersionList [[gnu::unavailable("not yet available")]];
+   map_pointer<SourceVersion> NextSourceVersion [[gnu::unavailable("not yet available")]];
+
+   /** \brief Private pointer */
+   map_pointer<void> d;
 };
 									/*}}}*/
 // Version structure							/*{{{*/
@@ -638,12 +656,11 @@ struct pkgCache::Version
    map_stringitem_t VerStr;
    /** \brief section this version is filled in */
    map_stringitem_t Section;
-   /** \brief source package name this version comes from
-      Always contains the name, even if it is the same as the binary name */
-   map_stringitem_t SourcePkgName;
-   /** \brief source version this version comes from
-      Always contains the version string, even if it is the same as the binary version */
-   map_stringitem_t SourceVerStr;
+
+   /** \brief the source version object */
+   map_pointer<pkgCache::SourceVersion> SourceVersion;
+   /** \brief next version in the source package (might be different binary) */
+   map_pointer<Version> NextInSourceVersion;
 
    /** \brief Multi-Arch capabilities of a package version */
    enum VerMultiArch { No = 0, /*!< is the default and doesn't trigger special behaviour */
@@ -837,6 +854,7 @@ class pkgCache::Namespace						/*{{{*/
    typedef pkgCache::GrpIterator GrpIterator;
    typedef pkgCache::PkgIterator PkgIterator;
    typedef pkgCache::VerIterator VerIterator;
+   typedef pkgCache::SrcVerIterator SrcVerIterator;
    typedef pkgCache::DescIterator DescIterator;
    typedef pkgCache::DepIterator DepIterator;
    typedef pkgCache::PrvIterator PrvIterator;
