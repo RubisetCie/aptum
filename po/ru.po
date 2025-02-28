@@ -12,14 +12,14 @@
 # Yuri Kozlov <kozlov.y@gmail.com>, 2004, 2005, 2006, 2007, 2008.
 # Yuri Kozlov <yuray@komyakino.ru>, 2009, 2010, 2012, 2015, 2016.
 # Lev Lamberov <dogsleg@debian.org>, 2018.
-# Алексей Шилин <shilin.aleksej@gmail.com>, 2017-2024.
+# Алексей Шилин <shilin.aleksej@gmail.com>, 2017-2025.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: apt 2.9.11\n"
+"Project-Id-Version: apt 2.9.30\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
 "POT-Creation-Date: 2025-02-16 16:59+0000\n"
-"PO-Revision-Date: 2024-11-18 23:14+0300\n"
+"PO-Revision-Date: 2025-02-26 11:30+0300\n"
 "Last-Translator: Алексей Шилин <shilin.aleksej@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
 "Language: ru\n"
@@ -1160,6 +1160,8 @@ msgid ""
 "The dpkg executable set in Dir::Bin::dpkg is missing, falling back to using "
 "default dpkg."
 msgstr ""
+"Исполняемый файл dpkg, указанный в Dir::Bin::dpkg, не найден, поэтому будет "
+"использован dpkg по умолчанию."
 
 #. we don't care for the difference
 #: apt-pkg/deb/dpkgpm.cc
@@ -2734,7 +2736,7 @@ msgstr "Файл «%s» изменён, запустите «apt-get update».\n
 #: apt-private/private-sources.cc
 #, c-format
 msgid "Rewrite %zu sources?"
-msgstr ""
+msgstr "Преобразовать %zu источников?"
 
 #: apt-private/private-unmet.cc
 #, c-format
@@ -2759,7 +2761,7 @@ msgstr ""
 #: apt-private/private-update.cc
 #, c-format
 msgid "The %s entry for '%s' should be upgraded to deb822 .sources"
-msgstr ""
+msgstr "Запись %s для «%s» должна быть преобразована в формат deb822 .sources"
 
 #. TRANSLATOR: the first is manpage reference, the last the URI from a sources.list
 #: apt-private/private-update.cc
@@ -2771,26 +2773,28 @@ msgstr "Отсутствует поле Signed-By в записи %s для '%s'
 msgid ""
 "Consider migrating all sources.list(5) entries to the deb822 .sources format"
 msgstr ""
+"Рассмотрите возможность перевода всех записей sources.list(5) в формат "
+"deb822 .sources"
 
 #: apt-private/private-update.cc
 msgid ""
 "The deb822 .sources format supports both embedded as well as external "
 "OpenPGP keys"
 msgstr ""
+"Формат deb822 .sources поддерживает как встроенные, так и внешние ключи "
+"OpenPGP"
 
 #: apt-private/private-update.cc
-#, fuzzy
-#| msgid ""
-#| "See apt-secure(8) manpage for repository creation and user configuration "
-#| "details."
 msgid "See apt-secure(8) for best practices in configuring repository signing."
 msgstr ""
-"Информацию о создании репозитория и настройках пользователя смотрите в "
-"справочной странице apt-secure(8)."
+"Рекомендации по настройке подписей репозиториев смотрите на справочной "
+"странице apt-secure(8)."
 
 #: apt-private/private-update.cc
 msgid "Some sources can be modernized. Run 'apt modernize-sources' to do so."
 msgstr ""
+"Некоторые источники могут быть преобразованы. Для этого выполните «apt "
+"modernize-sources»."
 
 #: apt-private/private-update.cc
 #, c-format
@@ -3206,10 +3210,8 @@ msgid "concatenate files, with automatic decompression"
 msgstr "объединить файлы, с автоматическим разжатием"
 
 #: cmdline/apt-helper.cc
-#, fuzzy
-#| msgid "Problem hashing file"
 msgid "hash file"
-msgstr "Проблема при хешировании файла"
+msgstr "вычислить хеш-сумму файла"
 
 #: cmdline/apt-helper.cc
 msgid "detect proxy using apt.conf"
@@ -3451,7 +3453,7 @@ msgstr "редактировать файл с источниками пакет
 
 #: cmdline/apt.cc
 msgid "modernize .list files to .sources files"
-msgstr ""
+msgstr "преобразовать файлы .list в файлы .sources"
 
 #: cmdline/apt.cc
 msgid "satisfy dependency strings"
@@ -4006,19 +4008,13 @@ msgstr ""
 "ключа?!"
 
 #: methods/gpgv.cc
-#, fuzzy
-#| msgid ""
-#| "Could not execute 'apt-key' to verify signature (is gnupg installed?)"
 msgid "Could not execute 'gpgv' to verify signature (is gnupg installed?)"
 msgstr ""
-"Не удалось выполнить «apt-key» для проверки подписи (программа gnupg "
-"установлена?)"
+"Не удалось выполнить «gpgv» для проверки подписи (установлен ли gnupg?)"
 
 #: methods/gpgv.cc
-#, fuzzy
-#| msgid "Unknown error executing apt-key"
 msgid "Unknown error executing gpgv"
-msgstr "Неизвестная ошибка при выполнении apt-key"
+msgstr "Неизвестная ошибка при выполнении gpgv"
 
 #. TRANSLATORS: The second %s is the reason and is untranslated for repository owners.
 #: methods/gpgv.cc
