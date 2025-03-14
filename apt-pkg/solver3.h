@@ -19,6 +19,8 @@
 #include <apt-pkg/pkgcache.h>
 #include <apt-pkg/policy.h>
 
+template <typename T> struct always_false : std::false_type {};
+
 namespace APT
 {
 
@@ -49,7 +51,7 @@ class ContiguousCacheMap
       else if constexpr (std::is_same_v<K, pkgCache::Package>)
 	 size = cache.Head().PackageCount;
       else
-	 static_assert(false, "Cannot construct map for key type");
+	 static_assert(always_false<K>::value, "Cannot construct map for key type");
 
       data_ = new V[size]{};
    }
@@ -242,6 +244,11 @@ class Solver
    bool DeferVersionSelection{_config->FindB("APT::Solver::Defer-Version-Selection", true)};
    // \brief If set, we use strict pinning.
    int Timeout{_config->FindI("APT::Solver::Timeout", 10)};
+
+   // \brief Keep recommends installed
+   bool KeepRecommends{_config->FindB("APT::AutoRemove::RecommendsImportant", true)};
+   // \brief Keep suggests installed
+   bool KeepSuggests{_config->FindB("APT::AutoRemove::SuggestsImportant", true)};
 
    // \brief Discover a variable, translating the underlying dependencies to the SAT presentation
    //
