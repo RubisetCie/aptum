@@ -28,6 +28,7 @@ APTUM expands APT with the following features:
 - Shortcut to display close history:
 	- `apt history`: print the history of commands:
 	- `apt history -f`: print the full history
+- Option `-architecture=<arch>` to select architecture for all installing packages
 - Always asking for confirmation before installing a package
 
 
@@ -79,6 +80,10 @@ Then to start the configuration, you need to run the following from a build dire
 Example of standard build:
 
 	cmake -DCMAKE_BUILD_TYPE=Release -DWITH_DOC=ON -DWITH_TESTS=ON .
+
+Example of build with keeping the system state:
+
+	cmake -DCMAKE_BUILD_TYPE=Release -DSTATE_DIR=/var/lib/apt -DLOG_DIR=/var/log/apt -DCACHE_DIR=/var/cache/apt -DCONF_DIR=/etc/apt -DLIBEXEC_DIR=/usr/lib/apt .
 
 Testing
 -------
