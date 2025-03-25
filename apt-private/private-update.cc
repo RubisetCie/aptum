@@ -106,7 +106,6 @@ bool DoUpdate()
 
    if (_config->FindB("APT::Get::Update::SourceListWarnings::SignedBy", SLWarnings))
    {
-      bool modernize = false;
       for (auto *S : *List)
       {
 	 URI uri(S->GetURI());
@@ -130,16 +129,8 @@ bool DoUpdate()
 	       // TRANSLATOR: the first is manpage reference, the last the URI from a sources.list
 	       _error->Audit(_("Missing Signed-By in the %s entry for '%s'"),
 			     "sources.list(5)", URI::ArchiveOnly(uri).c_str());
-	       modernize = true;
 	    }
 	 }
-      }
-      if (modernize)
-      {
-         _error->Audit(_("Consider migrating all sources.list(5) entries to the deb822 .sources format"));
-         _error->Audit(_("The deb822 .sources format supports both embedded as well as external OpenPGP keys"));
-	 _error->Audit(_("See apt-secure(8) for best practices in configuring repository signing."));
-	 _error->Notice(_("Some sources can be modernized. Run 'apt modernize-sources' to do so."));
       }
    }
 
