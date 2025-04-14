@@ -28,7 +28,7 @@ APTUM expands APT with the following features:
 - Shortcut to display close history:
 	- `apt history`: print the history of commands:
 	- `apt history -f`: print the full history
-- Option `-architecture=<arch>` to select architecture for all installing packages
+- Option `--architecture=<arch>` to select architecture for all installing packages
 - Always asking for confirmation before installing a package
 
 
