@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 0.5.26\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2025-03-09 17:32+0000\n"
+"POT-Creation-Date: 2025-05-19 18:28+0200\n"
 "PO-Revision-Date: 2008-12-11 14:52+0200\n"
 "Last-Translator: Tapio Lehtonen <tale@debian.org>\n"
 "Language-Team: Finnish <debian-l10n-finnish@lists.debian.org>\n"
@@ -1852,10 +1852,10 @@ msgstr ""
 
 #: apt-private/private-install.cc
 msgid ""
-"Unable to fetch some archives, maybe run apt-get update or try with --fix-"
+"Unable to fetch some archives, maybe run apt update or try with --fix-"
 "missing?"
 msgstr ""
-"Joidenkin arkistojen nouto ei onnistunut, ehkä \"apt-get update\" auttaa tai "
+"Joidenkin arkistojen nouto ei onnistunut, ehkä \"apt update\" auttaa tai "
 "kokeile --fix-missing?"
 
 #: apt-private/private-install.cc
@@ -3302,6 +3302,10 @@ msgstr ""
 #| msgid "Failed to satisfy %s dependency for %s: %s"
 msgid "satisfy dependency strings"
 msgstr "Riippuvuutta %s paketille %s ei voi tyydyttää: %s"
+
+#: cmdline/apt.cc
+msgid "produce a reason trace for the current state of the package"
+msgstr ""
 
 #: dselect/install
 msgid "Bad default setting!"

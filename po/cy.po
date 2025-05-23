@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 1.0.5\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2025-03-09 17:32+0000\n"
+"POT-Creation-Date: 2025-05-19 18:28+0200\n"
 "PO-Revision-Date: 2005-06-06 13:46+0100\n"
 "Last-Translator: Dafydd Harries <daf@muse.19inch.net>\n"
 "Language-Team: Welsh <cy@pengwyn.linux.org.uk>\n"
@@ -1887,10 +1887,10 @@ msgstr ""
 
 #: apt-private/private-install.cc
 msgid ""
-"Unable to fetch some archives, maybe run apt-get update or try with --fix-"
+"Unable to fetch some archives, maybe run apt update or try with --fix-"
 "missing?"
 msgstr ""
-"Ni ellir cyrchu rhai archifau, efallai dylwch rhedeg apt-get update, neu "
+"Ni ellir cyrchu rhai archifau, efallai dylwch rhedeg apt update, neu "
 "geidio defnyddio --fix-missing?"
 
 #: apt-private/private-install.cc
@@ -3348,6 +3348,10 @@ msgstr ""
 #| msgid "Failed to satisfy %s dependency for %s: %s"
 msgid "satisfy dependency strings"
 msgstr "Methwyd bodloni dibyniaeth %s am %s: %s"
+
+#: cmdline/apt.cc
+msgid "produce a reason trace for the current state of the package"
+msgstr ""
 
 #: dselect/install
 msgid "Bad default setting!"

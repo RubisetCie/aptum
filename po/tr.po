@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 2.6.0\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2025-03-09 17:32+0000\n"
+"POT-Creation-Date: 2025-05-19 18:28+0200\n"
 "PO-Revision-Date: 2023-04-19 15:15+0300\n"
 "Last-Translator: Mert Dirik <mertdirik@gmail.com>\n"
 "Language-Team: Debian l10n Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -1947,10 +1947,10 @@ msgstr "%s paketi kaldırma için seçildi.\n"
 
 #: apt-private/private-install.cc
 msgid ""
-"Unable to fetch some archives, maybe run apt-get update or try with --fix-"
+"Unable to fetch some archives, maybe run apt update or try with --fix-"
 "missing?"
 msgstr ""
-"Bazı arşivler alınamıyor, apt-get update'i çalıştırmayı ya da --fix-missing "
+"Bazı arşivler alınamıyor, apt update'i çalıştırmayı ya da --fix-missing "
 "seçeneğini ekleyerek düzeltmeyi deneyin."
 
 #: apt-private/private-install.cc
@@ -3440,6 +3440,10 @@ msgstr ""
 #: cmdline/apt.cc
 msgid "satisfy dependency strings"
 msgstr "Bağımlılık dizgilerini karşıla"
+
+#: cmdline/apt.cc
+msgid "produce a reason trace for the current state of the package"
+msgstr ""
 
 #: dselect/install
 msgid "Bad default setting!"

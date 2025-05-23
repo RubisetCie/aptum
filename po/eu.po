@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 1.0.5\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2025-03-09 17:32+0000\n"
+"POT-Creation-Date: 2025-05-19 18:28+0200\n"
 "PO-Revision-Date: 2009-05-17 00:41+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -1857,10 +1857,10 @@ msgstr ""
 
 #: apt-private/private-install.cc
 msgid ""
-"Unable to fetch some archives, maybe run apt-get update or try with --fix-"
+"Unable to fetch some archives, maybe run apt update or try with --fix-"
 "missing?"
 msgstr ""
-"Ezin izan dira artxibo batzuk lortu; beharbada apt-get update exekutatu, edo "
+"Ezin izan dira artxibo batzuk lortu; beharbada apt update exekutatu, edo "
 "--fix-missing aukerarekin saiatu?"
 
 #: apt-private/private-install.cc
@@ -3310,6 +3310,10 @@ msgstr ""
 #| msgid "Failed to satisfy %s dependency for %s: %s"
 msgid "satisfy dependency strings"
 msgstr "Huts egin du %2$s(r)en %1$s mendekotasuna betetzean: %3$s"
+
+#: cmdline/apt.cc
+msgid "produce a reason trace for the current state of the package"
+msgstr ""
 
 #: dselect/install
 msgid "Bad default setting!"

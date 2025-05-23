@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: apt 2.9.35\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2025-03-27 21:54+0000\n"
+"POT-Creation-Date: 2025-05-19 18:28+0200\n"
 "PO-Revision-Date: 2025-03-29 00:56+0100\n"
 "Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
@@ -2035,10 +2035,10 @@ msgstr "Consultați %s pentru mai multe detalii."
 
 #: apt-private/private-install.cc
 msgid ""
-"Unable to fetch some archives, maybe run apt-get update or try with --fix-"
+"Unable to fetch some archives, maybe run apt update or try with --fix-"
 "missing?"
 msgstr ""
-"Nu s-au putut aduce unele arhive, poate ar fi o idee bună să rulați «apt-get "
+"Nu s-au putut aduce unele arhive, poate ar fi o idee bună să rulați «apt "
 "update» sau încercați cu „--fix-missing”?"
 
 #: apt-private/private-install.cc
@@ -3574,6 +3574,10 @@ msgstr "modernizarea fișierelor .list în fișiere .sources"
 #: cmdline/apt.cc
 msgid "satisfy dependency strings"
 msgstr "efectuează operațiile pentru satisfacerea lanțurilor de dependențe"
+
+#: cmdline/apt.cc
+msgid "produce a reason trace for the current state of the package"
+msgstr ""
 
 #: dselect/install
 msgid "Bad default setting!"
