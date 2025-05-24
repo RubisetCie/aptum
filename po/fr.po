@@ -771,8 +771,7 @@ msgstr "Impossible d'obtenir le verrou %s. Il est occupé par le processus %d"
 #: apt-pkg/contrib/fileutl.cc
 #, c-format
 msgid "Could not get lock %s. It is held by process %d (%s)"
-msgstr "Impossible d'obtenir le verrou %s, maintenu par processus %d (%s)"
-"Impossible d'obtenir le verrou %s. Il est occupé par le processus %d (%s)"
+msgstr "Impossible d'obtenir le verrou %s. Il est occupé par le processus %d (%s)"
 
 #: apt-pkg/contrib/fileutl.cc
 #, c-format
@@ -2101,7 +2100,7 @@ msgstr "Espace nécessaire : %sB / %sB disponible\n"
 #: apt-private/private-install.cc
 #, c-format
 msgid "More space needed than available: %sB > %sB, installation may fail"
-msgstr "Pas assez d'espace disponible : %sB > %sB, l'installation peut échouer"
+msgstr ""
 "Besoin de plus d'espace que disponible : %sB > %sB, l'installation risque "
 "d'échouer"
 
@@ -2122,7 +2121,7 @@ msgstr "dans %s : %sB / %sB disponible\n"
 #, c-format
 msgid ""
 "More space needed in %s than available: %sB > %sB, installation may fail"
-msgstr "Plus d'espace requis dans %s : %sB > %sB, l'installation peut échouer"
+msgstr ""
 "Besoin de plus d'espace dans %s que disponible : %sB > %sB, l'installation "
 "risque d'échouer"
 
@@ -2264,7 +2263,7 @@ msgstr[1] ""
 
 #: apt-private/private-install.cc
 msgid "Result calculated by the 3.0 solver."
-msgstr ""
+msgstr "Résultat calculés par le solveur 3.0"
 
 #: apt-private/private-install.cc
 msgid "Suggested packages:"
