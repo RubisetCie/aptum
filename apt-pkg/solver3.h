@@ -201,7 +201,7 @@ class Solver
    // and std::pop_heap() rather than a priority_queue because we need to
    // be able to iterate over the queued work and see if a choice would
    // invalidate any work.
-   heap<Work> work{};
+   heap<Work> work;
 
    // \brief Backlog of solved work.
    //
@@ -209,7 +209,7 @@ class Solver
    // here to revisit it later. This is similar to what MiniSAT calls the
    // trail; one distinction is that we have both literals and our work
    // queue to be concerned about
-   std::vector<Solved> solved{};
+   std::vector<Solved> solved;
 
    // \brief Propagation queue
    std::queue<Var> propQ;
@@ -287,6 +287,7 @@ class Solver
 
    // \brief Basic solver initializer. This cannot fail.
    Solver(pkgCache &Cache, pkgDepCache::Policy &Policy, EDSP::Request::Flags requestFlags);
+   ~Solver();
 
    // Assume that the variable is decided as specified.
    [[nodiscard]] bool Assume(Var var, bool decision, const Clause *reason = nullptr);
