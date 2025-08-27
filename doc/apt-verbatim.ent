@@ -268,7 +268,7 @@
 ">
 
 <!-- this will be updated by 'prepare-release' -->
-<!ENTITY apt-product-version "3.1.4">
+<!ENTITY apt-product-version "3.1.5">
 
 <!-- (Code)names for various things used all over the place -->
 <!ENTITY debian-oldstable-codename "bookworm">
@@ -397,7 +397,7 @@
 	<arg choice='plain' rep='repeat'>&synopsis-param-filename;</arg>
 	&synopsis-help;
 </cmdsynopsis></refsynopsisdiv>">
-<!ENTITY synopsis-arg-ftparchive "<arg choice='plain'><replaceable>&synopsis-path;</replaceable></arg><arg><filename><replaceable>&synopsis-override;</replaceable></filename><arg><replaceable>&synopsis-pathprefix;</replaceable></arg></arg>">
+<!ENTITY synopsis-arg-ftparchive "<arg choice='plain'><replaceable>&synopsis-path;</replaceable></arg><arg><replaceable>&synopsis-override;</replaceable><arg><replaceable>&synopsis-pathprefix;</replaceable></arg></arg>">
 <!ENTITY synopsis-command-apt-ftparchive "<refsynopsisdiv><cmdsynopsis>
 	<command>apt-ftparchive</command>
 	<arg><option>-dsq</option></arg>
