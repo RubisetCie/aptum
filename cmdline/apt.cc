@@ -22,6 +22,7 @@
 #include <apt-private/private-cmndline.h>
 #include <apt-private/private-depends.h>
 #include <apt-private/private-download.h>
+#include <apt-private/private-history.h>
 #include <apt-private/private-install.h>
 #include <apt-private/private-list.h>
 #include <apt-private/private-main.h>
@@ -77,7 +78,6 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
       {"list", &DoList, _("list packages based on package names")},
       {"search", &DoSearch, _("search in package descriptions")},
       {"show", &ShowPackage, _("show package details")},
-      {"history", &ShowHistory, _("show installation and removal history")},
 
       // package stuff
       {"install", &DoInstall, _("install packages")},
@@ -85,7 +85,7 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
       {"remove", &DoInstall, _("remove packages")},
       {"autoremove", &DoInstall, _("automatically remove all unused packages")},
       {"auto-remove", &DoInstall, nullptr},
-      {"autopurge",&DoInstall, nullptr},
+      {"autopurge", &DoInstall, nullptr},
       {"purge", &DoInstall, nullptr},
 
       // system wide stuff
@@ -97,6 +97,13 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
       {"save", &DoSave, _("start a new save state and push it")},
       {"load", &DoLoad, _("restore the installed packages to a saved state")},
 
+      // history stuff
+      {"history-list", &DoHistoryList, _("show list of history")},
+      {"history-info", &DoHistoryInfo, _("show info on specific transactions")},
+      {"history-redo", &DoHistoryRedo, _("redo transactions")},
+      {"history-undo", &DoHistoryUndo, _("undo transactions")},
+      {"history-rollback", &DoHistoryRollback, _("rollback transactions")},
+
       // misc
       {"edit-sources", &EditSources, _("edit the source information file")},
       {"modernize-sources", &ModernizeSources, _("modernize .list files to .sources files")},
@@ -107,11 +114,11 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
 
       // for compat with muscle memory
       {"dist-upgrade", &DoDistUpgrade, nullptr},
-      {"showsrc",&ShowSrcPackage, nullptr},
-      {"depends",&Depends, nullptr},
-      {"rdepends",&RDepends, nullptr},
-      {"policy",&Policy, nullptr},
-      {"build-dep", &DoBuildDep,nullptr},
+      {"showsrc", &ShowSrcPackage, nullptr},
+      {"depends", &Depends, nullptr},
+      {"rdepends", &RDepends, nullptr},
+      {"policy", &Policy, nullptr},
+      {"build-dep", &DoBuildDep, nullptr},
       {"clean", &DoClean, nullptr},
       {"distclean", &DoDistClean, nullptr},
       {"dist-clean", &DoDistClean, nullptr},
@@ -122,8 +129,7 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
       {"changelog", &DoChangelog, nullptr},
       {"info", &ShowPackage, nullptr},
 
-      {nullptr, nullptr, nullptr}
-   };
+      {nullptr, nullptr, nullptr}};
 }
 									/*}}}*/
 int main(int argc, const char *argv[])					/*{{{*/

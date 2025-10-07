@@ -1,3 +1,31 @@
+apt (3.1.8) unstable; urgency=medium
+
+  * Move "Tried to start delayed item […], but failed" to debugging
+    (Closes: #1111554)
+
+ -- Julian Andres Klode <jak@debian.org>  Sat, 04 Oct 2025 14:29:54 +0200
+
+apt (3.1.7) unstable; urgency=medium
+
+  [ Julian Andres Klode ]
+  * test-history: Adjust for as-installed testing
+
+  [ Simon Johnsson ]
+  * Add history undo, redo, and rollback features
+
+ -- Julian Andres Klode <jak@debian.org>  Thu, 02 Oct 2025 16:48:11 +0200
+
+apt (3.1.6) unstable; urgency=medium
+
+  [ David Kalnischkies ]
+  * Show command in test failure messages if default is overridden
+  * Support kernel images with + in uname in kernel autoremove test
+
+  [ Simon Johnsson ]
+  * History Command and Parsing
+
+ -- Julian Andres Klode <jak@debian.org>  Fri, 26 Sep 2025 18:38:54 +0200
+
 apt (3.1.5) unstable; urgency=medium
 
   [ Christopher Bock ]

@@ -38,3 +38,97 @@ Commandline: dummy
 Comment: A test comment
 Install: pkg2:amd64 (1)
 End-Date: dummy" cathistory
+
+normalizedinfo() {
+    apt history-info 0 | sed -E \
+    -e 's/^( *-?Start time *: ).*/\1dummy/' \
+    -e 's/^( *-?End time *: ).*/\1dummy/' \
+    -e 's|^( *-?Command line *: ).*/(.*)|\1\2|'
+}
+
+testsuccessequal "Transaction ID: 0
+Start time: dummy
+End time: dummy
+Requested by: 
+Command line: apt-get install pkg1
+Packages changed:
+    Install pkg1:amd64 (1)
+" normalizedinfo
+ 
+# replace aribtrary command line and date with "dummy".
+normalizedlist() {
+    apt history-list | sed -E 's/^([0-9]+)[[:space:]]+'\
+'.*'\
+'[0-9]{4}-[0-9]{2}-[0-9]{2}[[:space:]]+'\
+'[0-9]{2}:[0-9]{2}:[0-9]{2}/'\
+'\1  dummy                    dummy               /'
+}
+
+testsuccessequal "ID Command line             Date and Time          Action    Changes                  
+
+0  dummy                    dummy                  Install   1                        
+1  dummy                    dummy                  Install   1                        " normalizedlist
+
+################################################################################
+# Read previous history for manipulation
+################################################################################
+
+# Test history
+# 0 - Install pkg1
+# 1 - Install pkg2
+# 2 - Remove pkg1 (undo ID 0)
+# 3 - Install pkg1 (undo ID 2)
+# 4 - Remove pkg1 (redo ID 2)
+# 5 - Install pkg1 (rollback to ID 1)
+# 6 - Remove pkg1 (rollback to ID 2)
+
+testdpkginstalled pkg1
+# undo the first package install
+apt history-undo 0 -y >> /dev/null
+testdpkgnotinstalled pkg1
+# ...which generates a new id that we also undo
+apt history-undo 2 -y >>/dev/null
+testdpkginstalled pkg1
+
+# redo the removal
+apt history-redo 2 -y >> /dev/null
+testdpkgnotinstalled pkg1
+
+# rollback to ID 1 and it should be installed
+apt history-rollback 1 -y >> /dev/null 
+testdpkginstalled pkg1
+# rollback to ID 2 and it should be removed
+apt history-rollback 2 -y >> /dev/null
+testdpkgnotinstalled pkg1
+# rollback to ID 0 and it should be installed
+apt history-rollback 0 -y >> /dev/null
+testdpkginstalled pkg1
+# rollback to ID 4 and it should be removed
+apt history-rollback 4 -y >> /dev/null
+testdpkgnotinstalled pkg1
+
+################################################################################
+# Reset history log
+################################################################################
+
+msgmsg "Actionless group"
+cat > rootdir/var/log/apt/history.log << EOF
+Start-Date: dummy
+Commandline: install nothing
+End-Date: dummy
+EOF
+
+testsuccessequal "ID Command line             Date and Time          Action    Changes                  
+
+0  install nothing          dummy                            0                        " normalizedlist
+
+testsuccessequal "Transaction ID: 0
+Start time: dummy
+End time: dummy
+Requested by: 
+Command line: install nothing
+Packages changed:" normalizedinfo
+
+testfailureequal "E: Incorrect usage, no ID was given." apt history-redo
+testfailureequal "E: Incorrect usage, no ID was given." apt history-undo
+testfailureequal "E: Incorrect usage, no ID was given." apt history-rollback

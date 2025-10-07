@@ -1113,7 +1113,6 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
       {"dotty",&Dotty, nullptr},
       {"xvcg",&XVcg, nullptr},
       {"show",&ShowPackage, _("Show a readable record for the package")},
-      {"history",&ShowHistory, _("show installation and removal history")},
       {"pkgnames",&ShowPkgNames, _("List the names of all packages in the system")},
       {"showauto",&ShowAuto, nullptr},
       {"policy",&Policy, _("Show policy settings")},
