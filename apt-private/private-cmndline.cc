@@ -88,6 +88,10 @@ static bool addArgumentsAPTCache(std::vector<CommandLine::Args> &Args, char cons
    {
       addArg(0,"only-source","APT::Cache::Only-Source",0);
    }
+   else if (CmdMatches("history"))
+   {
+      addArg('f', "full", "APT::Cache::ShowFull", 0);
+   }
    else if (CmdMatches("gencaches", "showpkg", "stats", "dump",
 	    "dumpavail", "showauto", "policy", "madison"))
       ;

@@ -154,6 +154,11 @@ _apt()
                     --only-source' -- "$cur" ) )
                 return 0
                 ;;
+            history)
+                COMPREPLY=( $( compgen -W '
+                    --full' -- "$cur" ) )
+                return 0
+                ;;
             source)
                 COMPREPLY=( $( compgen -W '
                     -s --simulate --dry-run

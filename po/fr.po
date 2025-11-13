@@ -3183,6 +3183,10 @@ msgid "Show a readable record for the package"
 msgstr "Afficher la description du paquet"
 
 #: cmdline/apt-cache.cc
+msgid "Show installation and removal history"
+msgstr "Afficher l'historique d'installation et suppression"
+
+#: cmdline/apt-cache.cc
 msgid "List the names of all packages in the system"
 msgstr "Lister le nom de tous les paquets du système"
 
@@ -3677,6 +3681,10 @@ msgstr "chercher dans les descriptions de paquet"
 #: cmdline/apt.cc
 msgid "show package details"
 msgstr "afficher les détails du paquet"
+
+#: cmdline/apt.cc
+msgid "show installation and removal history"
+msgstr "afficher l'historique d'installation et suppression"
 
 #. package stuff
 #: cmdline/apt.cc

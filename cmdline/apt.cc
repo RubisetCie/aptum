@@ -98,6 +98,7 @@ static std::vector<aptDispatchWithHelp> GetCommands()			/*{{{*/
       {"load", &DoLoad, _("restore the installed packages to a saved state")},
 
       // history stuff
+      {"history", &ShowHistory, _("show installation and removal history")},
       {"history-list", &DoHistoryList, _("show list of history")},
       {"history-info", &DoHistoryInfo, _("show info on specific transactions")},
       {"history-redo", &DoHistoryRedo, _("redo transactions")},
