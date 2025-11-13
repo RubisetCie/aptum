@@ -17,6 +17,7 @@ jobs:
         uses: RubisetCie/build-deb-action@master
         env:
           DEB_BUILD_PROFILES: pkg.apt.nosqv
+          BUILD_PRE: 'rm /usr/bin/sqv'
         with:
           buildpackage-opts: --build=binary --no-sign
           docker-image: debian:testing-slim
