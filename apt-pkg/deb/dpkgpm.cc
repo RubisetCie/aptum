@@ -266,12 +266,12 @@ bool pkgDPkgPM::Configure(PkgIterator Pkg)
    if (Pkg.end() == true)
       return false;
 
-   List.push_back(Item(Item::Configure, Pkg));
+   List.emplace_back(Item::Configure, Pkg);
 
    // Use triggers for config calls if we configure "smart"
    // as otherwise Pre-Depends will not be satisfied, see #526774
    if (_config->FindB("DPkg::TriggersPending", false) == true)
-      List.push_back(Item(Item::TriggersPending, PkgIterator()));
+      List.emplace_back(Item::TriggersPending, PkgIterator());
 
    return true;
 }
@@ -285,9 +285,9 @@ bool pkgDPkgPM::Remove(PkgIterator Pkg,bool Purge)
       return false;
 
    if (Purge == true)
-      List.push_back(Item(Item::Purge,Pkg));
+      List.emplace_back(Item::Purge,Pkg);
    else
-      List.push_back(Item(Item::Remove,Pkg));
+      List.emplace_back(Item::Remove,Pkg);
    return true;
 }
 									/*}}}*/
@@ -646,7 +646,7 @@ void pkgDPkgPM::ProcessDpkgStatusLine(char *line)
    }
 
    // At this point we have a pkgname, but it might not be arch-qualified !
-   if (pkgname.find(":") == std::string::npos)
+   if (pkgname.find(':') == std::string::npos)
    {
       pkgCache::GrpIterator const Grp = Cache.FindGrp(pkgname);
       if (unlikely(Grp.end()== true))
@@ -779,7 +779,7 @@ void pkgDPkgPM::ProcessDpkgStatusLine(char *line)
    }
 
    std::string arch = "";
-   if (pkgname.find(":") != string::npos)
+   if (pkgname.find(':') != string::npos)
       arch = StringSplit(pkgname, ":")[1];
    std::string i18n_pkgname = pkgname;
    if (arch.size() != 0)
@@ -1515,8 +1515,15 @@ bool pkgDPkgPM::Go(APT::Progress::PackageManager *progress)
       int Fd = -1;
       Inhibitor()
       {
-	 if (_config->FindB("DPkg::Inhibit-Shutdown", true))
-	    Fd = Inhibit("shutdown", "APT", "APT is installing or removing packages", "block");
+        std::string to_inhibit;
+        if (_config->FindB("DPkg::Inhibit-Shutdown", true))
+          to_inhibit.append("shutdown:");
+        if (_config->FindB("DPkg::Inhibit-Sleep", true))
+          to_inhibit.append("sleep:");
+        // Remove trailing : separator
+        if (to_inhibit.length() > 0)
+          to_inhibit.pop_back();
+        Fd = Inhibit(to_inhibit.c_str(), "APT", "APT is installing or removing packages", "block");
       }
       ~Inhibitor()
       {
@@ -2320,10 +2327,10 @@ void pkgDPkgPM::WriteApportReport(const char *pkgpath, const char *errormsg)
    // do not report dpkg I/O errors, this is a format string, so we compare
    // the prefix and the suffix of the error with the dpkg error message
    vector<string> io_errors;
-   io_errors.push_back(string("failed to read"));
-   io_errors.push_back(string("failed to write"));
-   io_errors.push_back(string("failed to seek"));
-   io_errors.push_back(string("unexpected end of file or stream"));
+   io_errors.emplace_back("failed to read");
+   io_errors.emplace_back("failed to write");
+   io_errors.emplace_back("failed to seek");
+   io_errors.emplace_back("unexpected end of file or stream");
 
    for (vector<string>::iterator I = io_errors.begin(); I != io_errors.end(); ++I)
    {

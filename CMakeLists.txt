@@ -1,4 +1,4 @@
-# Copyright (C) 2009, 2016 Julian Andres Klode <jak@debian.org>.
+# Copyright (C) 2009, 2016 Software Freedom Conservancy
 # Licensed under the same terms as APT; i.e. GPL 2 or later.
 
 # set minimum version
@@ -204,7 +204,7 @@ endif()
 # Configure some variables like package, version and architecture.
 set(PACKAGE ${PROJECT_NAME})
 set(PACKAGE_MAIL "APT Development Team <deity@lists.debian.org>")
-set(PACKAGE_VERSION "3.1.12")
+set(PACKAGE_VERSION "3.2.0")
 string(REGEX MATCH "^[0-9.]+" PROJECT_VERSION ${PACKAGE_VERSION})
 
 if (NOT DEFINED DPKG_DATADIR)

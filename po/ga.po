@@ -1,23 +1,20 @@
-# SOME DESCRIPTIVE TITLE.
-# This file is put in the public domain.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#  <>, YEAR-2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: apt 3.1.4\n"
 "Report-Msgid-Bugs-To: APT Development Team <deity@lists.debian.org>\n"
-"POT-Creation-Date: 2025-10-25 20:24+0200\n"
-"PO-Revision-Date: 2025-09-24 18:43+0100\n"
+"POT-Creation-Date: 2026-01-05 22:58+0100\n"
+"PO-Revision-Date: 2025-12-27 12:56+0000\n"
 "Last-Translator: Aindriú Mac Giolla Eoin <aindriu80@gmail.com>\n"
-"Language-Team: \n"
+"Language-Team: Irish\n"
 "Language: ga\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n>=3 && n<=6 ? 2 : "
-"n>=7 && n<=10 ? 3 : 4);\n"
-"X-Generator: Poedit 3.4.2\n"
+"Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : "
+"4;\n"
+"X-Generator: Gtranslator 49.0\n"
 
 #: apt-pkg/acquire-item.cc
 msgid ""
@@ -59,7 +56,7 @@ msgid ""
 "Acquire::AllowDowngradeToInsecureRepositories was given to override it."
 msgstr ""
 "De ghnáth ní cheadaítear é seo, ach tugadh an rogha "
-"Acquiver: :AllowDownGradeToInsecureRepositories chun é a shárú."
+"Acquire::AllowDowngradeToInsecureRepositories chun é a shárú."
 
 #: apt-pkg/acquire-item.cc
 #, c-format
@@ -237,7 +234,7 @@ msgstr ""
 #: apt-pkg/acquire-item.cc apt-pkg/update.cc apt-private/private-download.cc
 #, c-format
 msgid "Failed to fetch %s  %s"
-msgstr "Theip ar %s %s a fháil"
+msgstr "Theip ar %s  %s a fháil"
 
 #: apt-pkg/acquire-item.cc
 #, c-format
@@ -467,7 +464,7 @@ msgstr "Níor aimsíodh leagan '%s' do '%s'"
 
 #: apt-pkg/cdrom.cc
 msgid "Unmounting CD-ROM...\n"
-msgstr "Díshuiteáil CD-ROM...\n"
+msgstr "CD-ROM á dhíghléasadh...\n"
 
 #: apt-pkg/cdrom.cc
 #, c-format
@@ -480,7 +477,7 @@ msgstr "Ag fanacht le diosca...\n"
 
 #: apt-pkg/cdrom.cc
 msgid "Mounting CD-ROM...\n"
-msgstr "Gléasadh CD-ROM...\n"
+msgstr "CD-ROM á ghléasadh...\n"
 
 #: apt-pkg/cdrom.cc
 msgid "Identifying... "
@@ -635,51 +632,51 @@ msgstr "Giorrúchán cineál neamhaitheanta: '%c'"
 #: apt-pkg/contrib/configuration.cc
 #, c-format
 msgid "Syntax error %s:%u: Block starts with no name."
-msgstr "Earráid comhréireachta %s: %u: Tosaíonn an bloc gan aon ainm."
+msgstr "Earráid comhréireachta %s:%u: Tosaíonn an bloc gan aon ainm."
 
 #: apt-pkg/contrib/configuration.cc
 #, c-format
 msgid "Syntax error %s:%u: Malformed tag"
-msgstr "Earráid comhréireachta %s: %u: Clib mhífhoirmithe"
+msgstr "Earráid comhréireachta %s:%u: Clib mhífhoirmithe"
 
 #: apt-pkg/contrib/configuration.cc
 #, c-format
 msgid "Syntax error %s:%u: Extra junk after value"
-msgstr "Earráid comhréireachta %s: %u: Bruscar breise tar éis luacha"
+msgstr "Earráid comhréireachta %s:%u: Bruscar breise tar éis luacha"
 
 #: apt-pkg/contrib/configuration.cc
 #, c-format
 msgid "Syntax error %s:%u: Directives can only be done at the top level"
 msgstr ""
-"Earráid comhréireachta %s: %u: Ní féidir treoracha a dhéanamh ach ag an "
+"Earráid comhréireachta %s:%u: Ní féidir treoracha a dhéanamh ach ag an "
 "leibhéal is airde"
 
 #: apt-pkg/contrib/configuration.cc
 #, c-format
 msgid "Syntax error %s:%u: Too many nested includes"
-msgstr "Earráid comhréireachta %s: %u: Cuimsíonn an iomarca neadaithe"
+msgstr "Earráid comhréireachta %s:%u: Cuimsíonn an iomarca neadaithe"
 
 #: apt-pkg/contrib/configuration.cc
 #, c-format
 msgid "Syntax error %s:%u: Included from here"
-msgstr "Earráid comhréireachta %s: %u: San áireamh as seo"
+msgstr "Earráid comhréireachta %s:%u: San áireamh as seo"
 
 #: apt-pkg/contrib/configuration.cc
 #, c-format
 msgid "Syntax error %s:%u: Unsupported directive '%s'"
-msgstr "Earráid comhréireachta %s: %u: Treoir gan tacaíocht '%s'"
+msgstr "Earráid comhréireachta %s:%u: Treoir gan tacaíocht '%s'"
 
 #: apt-pkg/contrib/configuration.cc
 #, c-format
 msgid "Syntax error %s:%u: clear directive requires an option tree as argument"
 msgstr ""
-"Earráid comhréireachta %s: %u: teastaíonn crann rogha mar argóint ag treoir "
+"Earráid comhréireachta %s:%u: teastaíonn crann rogha mar argóint ag treoir "
 "shoiléir"
 
 #: apt-pkg/contrib/configuration.cc
 #, c-format
 msgid "Syntax error %s:%u: Extra junk at end of file"
-msgstr "Earráid comhréireachta%s: %u: Bruscar breise ag deireadh an chomhaid"
+msgstr "Earráid comhréireachta %s:%u: Bruscar breise ag deireadh an chomhaid"
 
 #. TRANSLATOR: This is a warning level displayed before the message
 #: apt-pkg/contrib/error.cc
@@ -952,7 +949,7 @@ msgid ""
 "with %s:// to use."
 msgstr ""
 "%s: Meaitseálann dhintiúir do %s, ach níl an prótacal criptithe. Déan "
-"anótáil le %s://le húsáid."
+"anótáil le %s:// le húsáid."
 
 #: apt-pkg/contrib/progress.cc
 #, c-format
@@ -999,7 +996,7 @@ msgstr "%liu %linóim %lis"
 #: apt-pkg/contrib/strutl.cc
 #, c-format
 msgid "%limin %lis"
-msgstr "%lin%lis"
+msgstr "%linóim %lis"
 
 #. TRANSLATOR: s means seconds
 #: apt-pkg/contrib/strutl.cc
@@ -1377,31 +1374,27 @@ msgstr "Theip ar phleanálaí seachtrach gan teachtaireacht earráide"
 #: apt-pkg/history.cc
 #, c-format
 msgid "Unknown flag: %s"
-msgstr ""
+msgstr "Bratach anaithnid: %s"
 
 #: apt-pkg/history.cc
-#, fuzzy, c-format
-#| msgid "Can't find authentication record for: %s"
+#, c-format
 msgid "Cannot find history files: %s"
-msgstr "Ní féidir taifead fíordheimhnithe a fháil do: %s"
+msgstr "Ní féidir comhaid staire a aimsiú: %s"
 
 #: apt-pkg/history.cc
-#, fuzzy, c-format
-#| msgid "Could not open file %s"
+#, c-format
 msgid "Could not open file: %s"
-msgstr "Ní fhéadfaí comhad %s a oscailt"
+msgstr "Níorbh fhéidir an comhad a oscailt: %s"
 
 #: apt-pkg/history.cc
-#, fuzzy, c-format
-#| msgid "Could not open file %s"
+#, c-format
 msgid "Could not parse file: %s"
-msgstr "Ní fhéadfaí comhad %s a oscailt"
+msgstr "Níorbh fhéidir an comhad a pharsáil: %s"
 
 #: apt-pkg/history.cc
-#, fuzzy, c-format
-#| msgid "Could not open file %s"
+#, c-format
 msgid "Could not close file: %s"
-msgstr "Ní fhéadfaí comhad %s a oscailt"
+msgstr "Níorbh fhéidir an comhad a dhúnadh: %s"
 
 #: apt-pkg/indexcopy.cc
 #, c-format
@@ -1476,7 +1469,7 @@ msgid ""
 "you really want to do it, activate the APT::Force-LoopBreak option."
 msgstr ""
 "Beidh ort an pacáiste riachtanach %s a bhaint go sealadach leis an suiteáil "
-"seo mar gheall ar lúb Coimhlintí/Réamhspleáchais. Is minic a bhíonn sé seo "
+"seo mar gheall ar lúb Coimhlintí/Réamh-spleáchais. Is minic a bhíonn sé seo "
 "dona, ach más mian leat é a dhéanamh i ndáiríre, gníomhaigh an rogha "
 "APT::Force-LoopBreak."
 
@@ -1508,7 +1501,7 @@ msgstr "Tá an comhad taisce pacáiste truaillithe, tá an hais mícheart ann"
 
 #: apt-pkg/pkgcache.cc
 msgid "Depends"
-msgstr "Ag brath"
+msgstr "Réamh-braitheann"
 
 #: apt-pkg/pkgcache.cc
 msgid "PreDepends"
@@ -1532,7 +1525,7 @@ msgstr "Athsholáthraíonn"
 
 #: apt-pkg/pkgcache.cc
 msgid "Breaks"
-msgstr "Sosanna"
+msgstr "Briseann"
 
 #: apt-pkg/pkgcache.cc
 msgid "Enhances"
@@ -1576,20 +1569,23 @@ msgstr "Tharla earráid agus %s (%s%d) á phróiseáil"
 #: apt-pkg/pkgcachegen.cc
 msgid "Wow, you exceeded the number of package names this APT is capable of."
 msgstr ""
-"Wow, sháraigh tú líon na n-ainmneacha pacáiste atá in ann an APT seo a "
+"M'anam, sháraigh tú líon na n-ainmneacha pacáiste atá in ann an APT seo a "
 "dhéanamh."
 
 #: apt-pkg/pkgcachegen.cc
 msgid "Wow, you exceeded the number of versions this APT is capable of."
-msgstr "Wow, sháraigh tú líon na leaganacha atá in ann an APT seo a dhéanamh."
+msgstr ""
+"M'anam, sháraigh tú líon na leaganacha atá in ann an APT seo a dhéanamh."
 
 #: apt-pkg/pkgcachegen.cc
 msgid "Wow, you exceeded the number of descriptions this APT is capable of."
-msgstr "Wow, sháraigh tú líon na dtuairiscí atá in ann an APT seo a dhéanamh."
+msgstr ""
+"M'anam, sháraigh tú líon na dtuairiscí atá in ann an APT seo a dhéanamh."
 
 #: apt-pkg/pkgcachegen.cc
 msgid "Wow, you exceeded the number of dependencies this APT is capable of."
-msgstr "Wow, sháraigh tú líon na spleáchais atá in ann an APT seo a dhéanamh."
+msgstr ""
+"M'anam, sháraigh tú líon na spleáchais atá in ann an APT seo a dhéanamh."
 
 #: apt-pkg/pkgcachegen.cc
 msgid "Reading package lists"
@@ -1692,21 +1688,21 @@ msgstr ""
 #: apt-private/acqprogress.cc
 #, c-format
 msgid "Hit:%lu %s"
-msgstr "Buail: %lu %s"
+msgstr "Buail:%lu %s"
 
 #. TRANSLATOR: Very short word to be displayed for files processed in 'apt-get update'
 #. Potentially replaced later by "Hit:", "Ign:" or "Err:" if something (bad) happens
 #: apt-private/acqprogress.cc
 #, c-format
 msgid "Get:%lu %s"
-msgstr "Faigh: %lu %s"
+msgstr "Faigh:%lu %s"
 
 #. TRANSLATOR: Very short word to be displayed for files in 'apt-get update'
 #. which failed to download, but the error is ignored (compare "Err:")
 #: apt-private/acqprogress.cc
 #, c-format
 msgid "Ign:%lu %s"
-msgstr "Ign:%lu %s"
+msgstr "Neamhaird:%lu %s"
 
 #. TRANSLATOR: Very short word to be displayed for files in 'apt-get update'
 #. which failed to download and the error is critical (compare "Ign:")
@@ -1930,6 +1926,12 @@ msgid "Couldn't determine free space in %s"
 msgstr "Níorbh fhéidir spás saor in %s a chinneadh"
 
 #: apt-private/private-download.cc
+#, fuzzy, c-format
+#| msgid "Couldn't determine free space in %s"
+msgid "Couldn't determine filesystem statistics of %s."
+msgstr "Níorbh fhéidir spás saor in %s a chinneadh"
+
+#: apt-private/private-download.cc
 #, c-format
 msgid "You don't have enough free space in %s."
 msgstr "Níl go leor spáis saor agat i %s."
@@ -1939,147 +1941,128 @@ msgid "Unable to lock the download directory"
 msgstr "Ní féidir an t-eolaire íoslódála a ghlasáil"
 
 #: apt-private/private-history.cc
-#, fuzzy
-#| msgid "Installing:"
 msgid "Install"
-msgstr "Ag suiteáil:"
+msgstr "Suiteáil"
 
 #: apt-private/private-history.cc
-#, fuzzy
-#| msgid "[installed]"
 msgid "Reinstall"
-msgstr "[suiteáilte]"
+msgstr "Athshuiteáil"
 
 #: apt-private/private-history.cc
-#, fuzzy
-#| msgid "Upgrading:"
 msgid "Upgrade"
-msgstr "Ag uasghrádú:"
+msgstr "Uasghrádú"
 
 #: apt-private/private-history.cc
-#, fuzzy
-#| msgid "%lu downgraded, "
 msgid "Downgrade"
-msgstr "%lu íosghrádaithe, "
+msgstr "Íosghrádú"
 
 #: apt-private/private-history.cc
 msgid "Remove"
-msgstr ""
+msgstr "Bain"
 
 #: apt-private/private-history.cc
 msgid "Purge"
-msgstr ""
+msgstr "Purgú"
 
 #: apt-private/private-history.cc
 msgid "Undefined"
-msgstr ""
+msgstr "Gan Sainmhíniú"
 
 #: apt-private/private-history.cc
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: apt-private/private-history.cc
 msgid "Command line"
-msgstr ""
+msgstr "Líne ordaithe"
 
 #. NOTE: if date format is different,
 #. this width needs to change
 #: apt-private/private-history.cc
 msgid "Date and Time"
-msgstr ""
+msgstr "Dáta agus Am"
 
 #. width for datestring
 #: apt-private/private-history.cc
 msgid "Action"
-msgstr ""
+msgstr "Gníomh"
 
 #. 9 chars longest action type
 #: apt-private/private-history.cc
 msgid "Changes"
-msgstr ""
+msgstr "Athruithe"
 
 #: apt-private/private-history.cc
-#, fuzzy
-#| msgid "[installed,automatic]"
 msgid "automatic"
-msgstr "[suiteáilte, uathoibríoch]"
+msgstr "uathoibríoch"
 
 #: apt-private/private-history.cc
 msgid "Transaction ID"
-msgstr ""
+msgstr "Aitheantas Idirbhirt"
 
 #: apt-private/private-history.cc
 msgid "Start time"
-msgstr ""
+msgstr "Am tosaithe"
 
 #: apt-private/private-history.cc
 msgid "End time"
-msgstr ""
+msgstr "Am deiridh"
 
 #: apt-private/private-history.cc
 msgid "Requested by"
-msgstr ""
+msgstr "Iarrtha ag"
 
 #: apt-private/private-history.cc
-#, fuzzy
-#| msgid "Error:"
 msgid "Error"
-msgstr "Earráid:"
+msgstr "Earráid"
 
 #: apt-private/private-history.cc
 msgid "Comment"
-msgstr ""
+msgstr "Trácht"
 
 #. For each performed action, print what it did to each package
 #: apt-private/private-history.cc
-#, fuzzy
-#| msgid "No packages found"
 msgid "Packages changed"
-msgstr "Níor aimsíodh aon phacáistí"
+msgstr "Pacáistí athraithe"
 
 #: apt-private/private-history.cc
-#, fuzzy, c-format
-#| msgid "Couldn't find package %s"
+#, c-format
 msgid "Could not find package %s"
 msgstr "Níorbh fhéidir pacáiste %s a aimsiú"
 
 #: apt-private/private-history.cc
-#, fuzzy, c-format
-#| msgid "but it is not installed"
+#, c-format
 msgid "Tried to remove %s, but it is not installed"
-msgstr "ach níl sé suiteáilte"
+msgstr "Rinneadh iarracht %s a bhaint, ach níl sé suiteáilte"
 
 #: apt-private/private-history.cc
-#, fuzzy, c-format
-#| msgid "Can not find version '%s' of package '%s'"
+#, c-format
 msgid "Could not find given version %s of %s"
-msgstr "Ní féidir leagan '%s' den phacáiste '%s' a aimsiú"
+msgstr "Níorbh fhéidir an leagan %s de %s a aimsiú"
 
 #: apt-private/private-history.cc
 msgid "Incorrect usage, no ID was given."
-msgstr ""
+msgstr "Úsáid mhícheart, níor tugadh aon aitheantas."
 
 #: apt-private/private-history.cc
 #, c-format
 msgid "'%s' not a valid ID."
-msgstr ""
+msgstr "Ní aitheantas bailí é '%s'."
 
 #: apt-private/private-history.cc
 #, c-format
 msgid "Transaction ID '%ld' out of bounds."
-msgstr ""
+msgstr "ID idirbhirt '%ld' lasmuigh de theorainneacha."
 
 #: apt-private/private-history.cc
-#, fuzzy, c-format
-#| msgid "Could not resolve '%s'"
+#, c-format
 msgid "Could not read %s"
-msgstr "Níorbh fhéidir '%s' a réiteach"
+msgstr "Níorbh fhéidir %s a léamh"
 
 #: apt-private/private-history.cc
-#, fuzzy, c-format
-#| msgid "Could not resolve '%s'"
+#, c-format
 msgid "Could not read: %s"
-msgstr "Níorbh fhéidir '%s' a réiteach"
+msgstr "Níorbh fhéidir léamh: %s"
 
 #: apt-private/private-install.cc
 msgid ""
@@ -2152,7 +2135,7 @@ msgid ""
 "essential."
 msgstr ""
 "Baineadh pacáistí riachtanacha agus úsáideadh -y gan --allow-remove-"
-"essencial."
+"essential."
 
 #: apt-private/private-install.cc
 msgid "Packages were downgraded and -y was used without --allow-downgrades."
@@ -2180,7 +2163,7 @@ msgstr ""
 #: apt-private/private-install.cc
 #, c-format
 msgid "  Download size: %sB / %sB\n"
-msgstr " Méid íoslódála: %sB/ %sB\n"
+msgstr "  Méid íoslódála: %sB / %sB\n"
 
 #. TRANSLATOR: The required space between number and unit is already included
 #. in the replacement strings, so %sB will be correctly translate in e.g. 1,5 MB
@@ -2192,7 +2175,7 @@ msgstr "Ní mór %sB/%sB de chartlann a fháil.\n"
 #: apt-private/private-install.cc
 #, c-format
 msgid "  Download size: %sB\n"
-msgstr " Méid íoslódála: %sB\n"
+msgstr "  Méid íoslódála: %sB\n"
 
 #. TRANSLATOR: The required space between number and unit is already included
 #. in the replacement string, so %sB will be correctly translate in e.g. 1,5 MB
@@ -2230,7 +2213,7 @@ msgstr ""
 #: apt-private/private-install.cc
 #, c-format
 msgid "in %s:  %sB / %sB available\n"
-msgstr "i %s: %sB/%sB ar fáil\n"
+msgstr "i %s:  %sB / %sB ar fáil\n"
 
 #. TRANSLATOR: The required space between number and unit is already included
 #. in the replacement string, so %sB will be correctly translate in e.g. 1,5 MB
@@ -2251,7 +2234,7 @@ msgstr "Spás ag teastáil: %sB\n"
 #: apt-private/private-install.cc
 #, c-format
 msgid "  Freed space: %sB\n"
-msgstr "  Spás saortha:%sB\n"
+msgstr "  Spás saortha: %sB\n"
 
 #. TRANSLATOR: The required space between number and unit is already included
 #. in the replacement string, so %sB will be correctly translate in e.g. 1,5 MB
@@ -2497,7 +2480,7 @@ msgstr "anaithnid"
 #: apt-private/private-output.cc
 #, c-format
 msgid "[installed,upgradable to: %s]"
-msgstr "[suiteáilte, inuasghrádaithe go: %s]"
+msgstr "[suiteáilte,inuasghrádaithe go: %s]"
 
 #: apt-private/private-output.cc
 msgid "[installed,local]"
@@ -2505,11 +2488,11 @@ msgstr "[suiteáilte,áitiúil]"
 
 #: apt-private/private-output.cc
 msgid "[installed,auto-removable]"
-msgstr "[suiteáilte, inbhainte go huathoibríoch]"
+msgstr "[suiteáilte,inbhainte go huathoibríoch]"
 
 #: apt-private/private-output.cc
 msgid "[installed,automatic]"
-msgstr "[suiteáilte, uathoibríoch]"
+msgstr "[suiteáilte,uathoibríoch]"
 
 #: apt-private/private-output.cc
 msgid "[installed]"
@@ -2572,7 +2555,7 @@ msgstr "Ag suiteáil:"
 
 #: apt-private/private-output.cc
 msgid "Installing dependencies:"
-msgstr "Spleithiúlachtaí a shuiteáil:Ag suiteáil spleáchais:"
+msgstr "Ag suiteáil spleáchais:"
 
 #: apt-private/private-output.cc
 msgid "REMOVING:"
@@ -2691,7 +2674,7 @@ msgstr "Níl %lu suiteáilte nó bainte go hiomlán.\n"
 #. YESEXPR/NOEXPR defined in your l10n.
 #: apt-private/private-output.cc
 msgid "[Y/n]"
-msgstr "[Y/n]"
+msgstr "[T/n]"
 
 #. TRANSLATOR: Yes/No question help-text: defaulting to N[o]
 #. e.g. "Should this file be removed? [y/N] "
@@ -2699,12 +2682,12 @@ msgstr "[Y/n]"
 #. YESEXPR/NOEXPR defined in your l10n.
 #: apt-private/private-output.cc
 msgid "[y/N]"
-msgstr "[y/N]"
+msgstr "[t/N]"
 
 #. TRANSLATOR: "Yes" answer printed for a yes/no question if --assume-yes is set
 #: apt-private/private-output.cc
 msgid "Y"
-msgstr "Y"
+msgstr "T"
 
 #. TRANSLATOR: "No" answer printed for a yes/no question if --assume-no is set
 #: apt-private/private-output.cc apt-private/private-sources.cc
@@ -2764,11 +2747,11 @@ msgstr "%s -> %s le tosaíocht %d\n"
 
 #: apt-private/private-show.cc
 msgid "  Installed: "
-msgstr " Suiteáilte: "
+msgstr "  Suiteáilte: "
 
 #: apt-private/private-show.cc
 msgid "  Candidate: "
-msgstr " Iarrthóir: "
+msgstr "  Iarrthóir: "
 
 #: apt-private/private-show.cc
 msgid "(none)"
@@ -2777,7 +2760,7 @@ msgstr "(níl aon)"
 #. Show the priority tables
 #: apt-private/private-show.cc
 msgid "  Version table:"
-msgstr " Tábla leagan:"
+msgstr "  Tábla leagan:"
 
 #: apt-private/private-show.cc
 msgid "phased"
@@ -2906,7 +2889,9 @@ msgstr ""
 
 #: apt-private/private-source.cc
 msgid "Must specify at least one package to check builddeps for"
-msgstr "Ní mór pacáiste amháin ar a laghad a shonrú chun foirgnimh a sheiceáil"
+msgstr ""
+"Ní mór pacáiste amháin ar a laghad a shonrú le seiceáil a dhéanamh ar na "
+"builddeps"
 
 #: apt-private/private-source.cc
 #, c-format
@@ -2919,14 +2904,12 @@ msgstr ""
 #: apt-private/private-source.cc
 #, c-format
 msgid "Note, using directory '%s' to get the build dependencies\n"
-msgstr ""
-"Tabhair faoi deara, eolaire '%s' a úsáid chun na spleáchais tógála a fháil\n"
+msgstr "Nóta, eolaire '%s' a úsáid chun na spleáchais tógála a fháil\n"
 
 #: apt-private/private-source.cc
 #, c-format
 msgid "Note, using file '%s' to get the build dependencies\n"
-msgstr ""
-"Tabhair faoi deara, comhad '%s' a úsáid chun na spleáchais tógála a fháil\n"
+msgstr "Nóta, comhad '%s' a úsáid chun na spleáchais tógála a fháil\n"
 
 #: apt-private/private-source.cc
 msgid "Failed to process build dependencies"
@@ -3002,8 +2985,8 @@ msgstr ""
 #: apt-private/private-update.cc
 msgid "Some sources can be modernized. Run 'apt modernize-sources' to do so."
 msgstr ""
-"Is féidir roinnt foinsí a nuachóiriú. Rith 'foinsí nuachóirithe oiriúnach' "
-"chun é sin a dhéanamh."
+"Is féidir roinnt foinsí a nuachóiriú. Rith 'apt modernize-sources' chun é "
+"sin a dhéanamh."
 
 #: apt-private/private-update.cc
 #, c-format
@@ -3045,23 +3028,23 @@ msgstr "Struchtúir iomlána pacáiste: "
 
 #: cmdline/apt-cache.cc
 msgid "  Normal packages: "
-msgstr " Pacáistí gnáth: "
+msgstr "  Pacáistí gnáth: "
 
 #: cmdline/apt-cache.cc
 msgid "  Pure virtual packages: "
-msgstr " Pacáistí fíorúla íon: "
+msgstr "  Pacáistí fíorúla íon: "
 
 #: cmdline/apt-cache.cc
 msgid "  Single virtual packages: "
-msgstr " Pacáistí fíorúla aonair: "
+msgstr "  Pacáistí fíorúla aonair: "
 
 #: cmdline/apt-cache.cc
 msgid "  Mixed virtual packages: "
-msgstr " Pacáistí fíorúla measctha: "
+msgstr "  Pacáistí fíorúla measctha: "
 
 #: cmdline/apt-cache.cc
 msgid "  Missing: "
-msgstr " Ar iarraidh: "
+msgstr "  Ar iarraidh: "
 
 #: cmdline/apt-cache.cc
 msgid "Total distinct source versions: "
@@ -3081,7 +3064,7 @@ msgstr "Spleáchais iomlána: "
 
 #: cmdline/apt-cache.cc
 msgid "Total ver/file relations: "
-msgstr "Caidreamh iomlán ver/comhad: "
+msgstr "Caidreamh iomlán leagan/comhad: "
 
 #: cmdline/apt-cache.cc
 msgid "Total Desc/File relations: "
@@ -3121,7 +3104,7 @@ msgid ""
 "availability of the configured sources (e.g. offline).\n"
 msgstr ""
 "Úsáid: apt-cache [roghanna] ordú\n"
-"       apt-cache [roghanna] taispeáin pkg1 [pkg2...]\n"
+"       apt-cache [roghanna] show pkg1 [pkg2...]\n"
 "\n"
 "ceisteanna apt-cache agus taispeánann faisnéis atá ar fáil faoi shuiteáilte\n"
 "agus pacáistí inshuiteáilte. Oibríonn sé go heisiach ar na sonraí a "
@@ -3254,7 +3237,7 @@ msgid ""
 "from debian packages. It is used mainly by debconf(1) to prompt for\n"
 "configuration questions before installation of packages.\n"
 msgstr ""
-"Úsáid: apt-extracttemplates comhad1[comhad2 ...]\n"
+"Úsáid: apt-extracttemplates comhad1 [comhad2 ...]\n"
 "\n"
 "Úsáidtear apt-extracttemplates chun comhaid chumraíochta agus teimpléid \n"
 "a bhaint as pacáistí debian. Úsáidtear é den chuid is mó ag debconf(1) "
@@ -3302,7 +3285,7 @@ msgid ""
 "for installation, upgrade and removal of packages together\n"
 "with their dependencies.\n"
 msgstr ""
-"Úsáid: ordú apt-get [roghanna]\n"
+"Úsáid: apt-get [roghanna] ordú\n"
 "       apt-get [roghanna] install|remove pkg1 [pkg2 ...]\n"
 "       apt-get [roghanna] source pkg1 [pkg2 ...]\n"
 "\n"
@@ -3406,8 +3389,8 @@ msgid ""
 "e.g. the same proxy configuration or acquire system as APT would.\n"
 msgstr ""
 "Úsáid: apt-helper [roghanna] ordú\n"
-"       apt-helper [options] cat-file comhad ...\n"
-"       apt-helper [options] download-file uri target-path\n"
+"       apt-helper [roghanna] cat-comhad comhad ...\n"
+"       apt-helper [roghanna] comhad-íoslódála uri cosán-sprice\n"
 "\n"
 "Cuireann apt-helper beartáin orduithe éagsúla le haghaidh scripteanna blaosc "
 "le húsáid\n"
@@ -3488,7 +3471,7 @@ msgstr "Bhí %s socraithe cheana féin le suiteáil de láimh.\n"
 #: cmdline/apt-mark.cc
 #, c-format
 msgid "%s was already set to automatically installed.\n"
-msgstr "Socraíodh %s cheana féin le suiteáil go huathoibríoch\n"
+msgstr "Socraíodh %s cheana féin le suiteáil go huathoibríoch.\n"
 
 #: cmdline/apt-mark.cc
 msgid "No changes necessary"
@@ -3602,7 +3585,7 @@ msgid ""
 "By default it sorts by binary package information, but the -s option\n"
 "can be used to switch to source package ordering instead.\n"
 msgstr ""
-"Úsáid: apt-sortpkgs [roghanna] comhad1[comhad2 ...]\n"
+"Úsáid: apt-sortpkgs [roghanna] comhad1 [comhad2 ...]\n"
 "\n"
 "Is uirlis simplí é apt-sortpkgs chun comhaid faisnéise pacáiste a shórtáil.\n"
 "De réir réamhshocraithe sórálann sé de réir faisnéise pacáiste dénártha, ach "
@@ -3628,7 +3611,7 @@ msgstr ""
 "APT,\n"
 "cosúil le apt-get agus apt-cache, ach cuireann sé ar chumas roghanna níos "
 "oiriúnaí\n"
-"úsáid idirghníomhach de réir réamhshocrú\n"
+"úsáid idirghníomhach de réir réamhshocrú.\n"
 
 #. query
 #: cmdline/apt.cc
@@ -3676,23 +3659,23 @@ msgstr "uasghrádaigh an córas trí phacáistí a bhaint/a shuiteáil/a uasghr�
 #. history stuff
 #: cmdline/apt.cc
 msgid "show list of history"
-msgstr ""
+msgstr "taispeáin liosta staire"
 
 #: cmdline/apt.cc
 msgid "show info on specific transactions"
-msgstr ""
+msgstr "taispeáin faisnéis faoi idirbhearta sonracha"
 
 #: cmdline/apt.cc
 msgid "redo transactions"
-msgstr ""
+msgstr "athdhéan idirbhearta"
 
 #: cmdline/apt.cc
 msgid "undo transactions"
-msgstr ""
+msgstr "cealaigh idirbhearta"
 
 #: cmdline/apt.cc
 msgid "rollback transactions"
-msgstr ""
+msgstr "idirbhearta rolladh siar"
 
 #. misc
 #: cmdline/apt.cc
@@ -3836,7 +3819,7 @@ msgstr ""
 "Is féidir an rogha --source-override a úsáid chun comhad athshlánaithe src a "
 "shonrú\n"
 "\n"
-"Ba chóir an t-ordú 'pacáistí' agus 'foinsí' a reáchtáil i bhfréamh an\n"
+"Ba chóir an t-ordú 'packages' agus 'sources' a reáchtáil i bhfréamh an\n"
 "crann. Ba chóir go ndéanfadh BinaryPath díriú ar bhonn an chuardaigh "
 "athfhillteach agus \n"
 "Ba chóir go mbeadh na bratacha athshlánaithe i gcomhad athshlánaithe. Is é "
@@ -3981,12 +3964,12 @@ msgstr "Líne %s %llu #3 mífheidhmithe"
 #: ftparchive/writer.cc
 #, c-format
 msgid "W: Unable to read directory %s\n"
-msgstr "W: Ní féidir eolaire %s a léamh\n"
+msgstr "R: Ní féidir eolaire %s a léamh\n"
 
 #: ftparchive/writer.cc
 #, c-format
 msgid "W: Unable to stat %s\n"
-msgstr "W: Ní féidir %s a atosú\n"
+msgstr "R: Ní féidir %s a atosú\n"
 
 #: ftparchive/writer.cc
 msgid "E: "
@@ -3994,7 +3977,7 @@ msgstr "E: "
 
 #: ftparchive/writer.cc
 msgid "W: "
-msgstr "W: "
+msgstr "R: "
 
 #: ftparchive/writer.cc
 msgid "E: Errors apply to file "
@@ -4027,7 +4010,7 @@ msgstr "*** Theip ar %s a nascadh le %s"
 #: ftparchive/writer.cc
 #, c-format
 msgid " DeLink limit of %sB hit.\n"
-msgstr " Teorainn DeLink de %sB buille.\n"
+msgstr " Teorainn DeLink de %sB buailte.\n"
 
 #: ftparchive/writer.cc
 msgid "Archive had no package field"
@@ -4203,12 +4186,12 @@ msgstr "Teip sealadach a réiteach '%s'"
 #: methods/connect.cc
 #, c-format
 msgid "System error resolving '%s:%s'"
-msgstr "Earráid an chórais ag réiteach '%s: %s'"
+msgstr "Earráid an chórais ag réiteach '%s:%s'"
 
 #: methods/connect.cc
 #, c-format
 msgid "Something wicked happened resolving '%s:%s' (%i - %s)"
-msgstr "Tharla rud éigin olc ag réiteach '%s: %s' (%i - %s)"
+msgstr "Tharla rud éigin olc ag réiteach '%s:%s' (%i - %s)"
 
 #: methods/connect.cc
 #, c-format

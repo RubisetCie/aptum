@@ -2,28 +2,53 @@ name: Build Release
 on:
   workflow_dispatch:
     inputs:
+      version:
+        type: string
+        description: Version tag
+        default: '1.0.0'
+        required: true
       arch:
         description: 'Target architecture (amd64, i386, etc)'
-        required: true
         default: 'amd64'
+        required: true
+      releases:
+        description: Create release
+        type: boolean
+        required: true
+        default: true
+      artifacts:
+        description: Upload artifacts
+        type: boolean
+        required: true
+        default: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Build
         uses: RubisetCie/build-deb-action@master
         env:
           DEB_BUILD_PROFILES: pkg.apt.nosqv
-          BUILD_PRE: 'rm /usr/bin/sqv'
+          #BUILD_PRE: 'rm /usr/bin/sqv'
         with:
           buildpackage-opts: --build=binary --no-sign
           docker-image: debian:testing-slim
           host-arch: ${{github.event.inputs.arch}}
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: ${{github.event.inputs.releases=='true'}}
+        with:
+          name: ${{github.event.inputs.version}}
+          tag_name: ${{github.event.inputs.version}}
+          prerelease: false
+          draft: true
+          files: debian/artifacts/*.deb
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
+        if: ${{github.event.inputs.artifacts=='true'}}
         with:
           name: aptum-${{github.event.inputs.arch}}
           path: 'debian/artifacts/*'

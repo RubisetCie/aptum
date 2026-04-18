@@ -1,4 +1,26 @@
 # Debian apt(8) completion                             -*- shell-script -*-
+# shellcheck shell=bash
+
+_apt_patterns() {
+    if [[ $cur == ?(\\)\?* ]]; then
+        compopt -o filenames  # escape to avoid ? filename matches
+        COMPREPLY=( $( compgen -P '?' -W '
+            automatic
+            broken
+            config-files
+            essential
+            garbage
+            installed
+            obsolete
+            phasing
+            security
+            upgradable
+            virtual
+        ' -- "${cur#?(\\)\?}" ) )
+        return 0
+    fi
+    return 1
+}
 
 _apt()
 {
@@ -51,6 +73,7 @@ _apt()
         "download" "changelog"
         "moo"
         "modernize-sources"
+        "history-list" "history-info" "history-undo" "history-redo" "history-rollback"
         "depends" "rdepends" "why" "why-not"
         "policy")
 
@@ -101,7 +124,7 @@ _apt()
                 return 0
                 ;;
             list)
-                COMPREPLY=( $( compgen -W '--installed --upgradable 
+                COMPREPLY=( $( compgen -W '--installed --upgradable
                   --manual-installed
                   -v --verbose
                   -s --no-description
@@ -202,6 +225,7 @@ _apt()
     if [[ -v command ]]; then
         case $command in
             remove|purge|autoremove|autopurge|why)
+                _apt_patterns && return 0
                 if [[ -f /etc/debian_version ]]; then
                     # Debian system
                     COMPREPLY=( $( \
@@ -213,6 +237,7 @@ _apt()
                 return 0
                 ;;
             show|list|download|changelog|depends|rdepends|why-not)
+                _apt_patterns || \
                 COMPREPLY=( $( apt-cache --no-generate pkgnames "$cur" \
                     2> /dev/null ) )
                 return 0
@@ -221,6 +246,7 @@ _apt()
                 if [[ "$cur" == .* || "$cur" == /* || "$cur" == ~* ]]; then
                     _filedir "deb"
                 else
+                    _apt_patterns || \
                     COMPREPLY=( $( apt-cache --no-generate pkgnames "$cur" \
                         2> /dev/null ) )
                 fi
@@ -230,6 +256,7 @@ _apt()
                 if [[ "$command" == build-dep && ( "$cur" == .* || "$cur" == /* || "$cur" == ~* ) ]]; then
                     _filedir "dsc"
                 else
+                    _apt_patterns || \
                     COMPREPLY=( $( apt-cache --no-generate pkgnames "$cur" \
                         2> /dev/null ) $( apt-cache dumpavail | \
                         command grep "^Source: $cur" | sort -u | cut -f2 -d" " ) )
@@ -239,6 +266,12 @@ _apt()
             edit-sources)
                 COMPREPLY=( $( compgen -W '$( command ls $sourcesdir )' \
                     -- "$cur" ) )
+                return 0
+                ;;
+            history-info|history-rollback|history-redo|history-undo)
+                local _historyids=$( apt history-list |
+                    awk '/^(ID|$)/{next};{print$1}' |tac 2> /dev/null )
+                COMPREPLY=( $( compgen -W "${_historyids[@]}" -- "$cur" ) )
                 return 0
                 ;;
             moo)
@@ -254,6 +287,6 @@ _apt()
 
     return 0
 } &&
-complete -F _apt apt
+complete -o nosort -F _apt apt
 
 # ex: ts=4 sw=4 et filetype=sh

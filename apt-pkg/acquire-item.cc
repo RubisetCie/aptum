@@ -477,7 +477,7 @@ bool pkgAcqTransactionItem::QueueURI(pkgAcquire::ItemDesc &Item)
 	 if (unlikely(TargetHash == nullptr))
 	    return false;
 	 ::URI uri{U};
-	 auto const trailing_slash = uri.Path.find_last_of("/");
+	 auto const trailing_slash = uri.Path.find_last_of('/');
 	 if (unlikely(trailing_slash == std::string::npos))
 	    return false;
 	 auto altPath = uri.Path.substr(0, trailing_slash) + "/by-hash/" + TargetHash->HashType() + "/" + TargetHash->HashValue();
@@ -495,8 +495,8 @@ bool pkgAcqTransactionItem::QueueURI(pkgAcquire::ItemDesc &Item)
    if (SameMirrorURI.empty() == false)
    {
       UsedMirror = TransactionManager->UsedMirror;
-      if (Item.Description.find(" ") != string::npos)
-	 Item.Description.replace(0, Item.Description.find(" "), UsedMirror);
+      if (Item.Description.find(' ') != string::npos)
+	 Item.Description.replace(0, Item.Description.find(' '), UsedMirror);
    }
    return pkgAcquire::Item::QueueURI(Item);
 }
@@ -1703,8 +1703,9 @@ void pkgAcqMetaClearSig::QueueIndexes(bool const verify)			/*{{{*/
 	       if (TransactionManager->MetaIndexParser->IsArchitectureSupported(arch) == false)
 	       {
 		  new CleanupItem(Owner, TransactionManager, Target);
-		  _error->Notice(_("Skipping acquire of configured file '%s' as repository '%s' doesn't support architecture '%s'"),
-			Target.MetaKey.c_str(), TransactionManager->Target.Description.c_str(), arch.c_str());
+		  if (not std::ranges::contains(APT::Configuration::getArchitectureVariants(true), arch, [](auto v) { return v.name; }))
+		     _error->Notice(_("Skipping acquire of configured file '%s' as repository '%s' doesn't support architecture '%s'"),
+			   Target.MetaKey.c_str(), TransactionManager->Target.Description.c_str(), arch.c_str());
 		  continue;
 	       }
 	       // if the architecture is officially supported but currently no packages for it available,

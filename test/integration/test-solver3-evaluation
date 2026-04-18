@@ -142,7 +142,7 @@ The following packages have unmet dependencies:
  a : Depends: c but it is not going to be installed
 E: Unable to correct problems, you have held broken packages.
 E: The following information from --solver 3.0 may provide additional context:
-   Unable to satisfy dependencies. Reached two conflicting decisions:
+   Unable to satisfy dependencies. Reached two conflicting assignments:
    1. a:amd64=3 is selected for install
    2. a:amd64 Depends c
       but none of the choices are installable:
@@ -176,7 +176,7 @@ Package: apt
 Title: Failure: The 3.0 solver did not find a result
 SourcePackage: apt
 ErrorMessage:
- Unable to satisfy dependencies. Reached two conflicting decisions:
+ Unable to satisfy dependencies. Reached two conflicting assignments:
  1. a:amd64=3 is selected for install
  .
  2. a:amd64 Depends c
@@ -185,34 +185,3 @@ ErrorMessage:
 AptSolverDump:
 $(cat rootdir/var/log/apt/edsp.log.zst | base64 | sed 's#^# #')" cat rootdir/var/crash/apt-edsp.$(id -u).crash
 
-msgmsg "Test that more upgrades are not better in installs"
-# FIXME: This will fail once 3.0 solver tries upgrading by source package.
-insertinstalledpackage 'b' 'all' '2' 'Source: src'
-insertinstalledpackage  'c' 'all' '2' 'Source: src'
-
-# No "Writing error report..."
-testsuccess rm rootdir/var/crash/apt-edsp.$(id -u).crash
-testsuccessequal "Reading package lists...
-Building dependency tree...
-Solving dependencies...
-The following additional packages will be installed:
-  c
-The following packages will be upgraded:
-  b c
-2 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
-Inst b [2] (3 unstable [all])
-Inst c [2] (3 unstable [all])
-Conf b (3 unstable [all])
-Conf c (3 unstable [all])"  apt install --solver internal b  -s
-
-testfailure test -e rootdir/var/crash/apt-edsp.$(id -u).crash
-
-# Safety check to check that the 3.0 result actually looks worse
-testsuccessequal "Reading package lists...
-Building dependency tree...
-Solving dependencies...
-The following packages will be upgraded:
-  b
-1 upgraded, 0 newly installed, 0 to remove and 1 not upgraded.
-Inst b [2] (3 unstable [all])
-Conf b (3 unstable [all])"  apt install --solver 3.0 b  -s
