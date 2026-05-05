@@ -870,6 +870,12 @@ std::string pkgAcquire::Item::ShortDesc() const				/*{{{*/
    return DescURI();
 }
 									/*}}}*/
+void pkgAcquire::Item::Cancelled()					/*{{{*/
+{
+   if (auto Self = dynamic_cast<pkgAcqMetaClearSig*>(this))
+      Self->DoCancelled();
+}
+									/*}}}*/
 void pkgAcquire::Item::Finished()					/*{{{*/
 {
 }
@@ -1334,7 +1340,7 @@ void pkgAcqMetaBase::CommitTransaction()
    switch (TransactionManager->State)
    {
       case TransactionStarted: break;
-      case TransactionAbort: _error->Fatal("Transaction %s was already committed and is now aborted", TransactionManager->Target.URI.c_str()); return;
+      case TransactionAbort: _error->Fatal("Transaction %s was already aborted and is now committed", TransactionManager->Target.URI.c_str()); return;
       case TransactionCommit: _error->Fatal("Transaction %s was already committed and is again committed", TransactionManager->Target.URI.c_str()); return;
    }
    TransactionManager->State = TransactionCommit;
@@ -1344,8 +1350,12 @@ void pkgAcqMetaBase::CommitTransaction()
    for (std::vector<pkgAcqTransactionItem*>::iterator I = Transaction.begin();
         I != Transaction.end(); ++I)
    {
-      (*I)->TransactionState(TransactionCommit);
+      if (*I != this)
+         (*I)->TransactionState(TransactionCommit);
    }
+   // commit ourselves last to not end up with fresh InRelease
+   // that doesn't match other files when killed mid-commit
+   TransactionState(TransactionCommit);
    Transaction.clear();
 }
 									/*}}}*/
@@ -2004,6 +2014,12 @@ string pkgAcqMetaClearSig::Custom600Headers() const
       Header += "\nSigned-By: " + QuoteString(key, "");
 
    return Header;
+}
+									/*}}}*/
+void pkgAcqMetaClearSig::DoCancelled()					/*{{{*/
+{
+   if (TransactionManager->State == TransactionStarted)
+      TransactionManager->AbortTransaction();
 }
 									/*}}}*/
 void pkgAcqMetaClearSig::Finished()					/*{{{*/
