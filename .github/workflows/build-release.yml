@@ -2,11 +2,6 @@ name: Build Release
 on:
   workflow_dispatch:
     inputs:
-      version:
-        type: string
-        description: Version tag
-        default: '1.0.0'
-        required: true
       arch:
         description: 'Target architecture (amd64, i386, etc)'
         default: 'amd64'
@@ -37,12 +32,21 @@ jobs:
           buildpackage-opts: --build=binary --no-sign
           docker-image: debian:testing-slim
           host-arch: ${{github.event.inputs.arch}}
+      - id: version
+        if: ${{github.event.inputs.releases=='true'}}
+        name: Extract Version
+        run: |
+          for f in debian/artifacts/apt_*.deb; do
+            while IFS='_' read -ra s; do
+              echo "TAG_VERSION=${s[1]}" >> $GITHUB_OUTPUT
+            done <<< "$f";break
+          done
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         if: ${{github.event.inputs.releases=='true'}}
         with:
-          name: ${{github.event.inputs.version}}
-          tag_name: ${{github.event.inputs.version}}
+          name: ${{steps.version.outputs.TAG_VERSION}}
+          tag_name: ${{steps.version.outputs.TAG_VERSION}}
           prerelease: false
           draft: true
           files: debian/artifacts/*.deb
