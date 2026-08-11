@@ -264,9 +264,9 @@ valgrind() {
 		CMD="${APTCMDLINEBINDIR}/${CMD}"
 	fi
 	if command valgrind --version >/dev/null 2>&1; then
-		runapt command valgrind -q --error-exitcode=7 "$CMD" "$@"
+		runapt command prlimit --nofile=1024 valgrind -q --error-exitcode=7 "$CMD" "$@"
 	else
-		runapt command "$CMD" "$@"
+		runapt command prlimit --nofile=1024 "$CMD" "$@"
 	fi
 }
 
@@ -369,7 +369,7 @@ setupenvironment() {
 	# Setup coreutils on BSD systems
 	mkdir "${TMPWORKINGDIRECTORY}/bin"
 	for prefix in gnu g; do
-			for command in stat touch sed cp tr sha1sum sha256sum md5sum sha512sum grep date wc chmod head readlink tar expr base64; do
+			for command in stat touch sed cp tr sha1sum sha256sum md5sum sha512sum grep date wc chmod head readlink tar expr base64 rm; do
 					if command -v $prefix$command 2>/dev/null >/dev/null; then
 							[ -e "${TMPWORKINGDIRECTORY}/bin/$command" ] || ln -sf $(command -v $prefix$command)  "${TMPWORKINGDIRECTORY}/bin/$command"
 					fi

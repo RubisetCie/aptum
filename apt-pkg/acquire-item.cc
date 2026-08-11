@@ -1388,20 +1388,20 @@ bool pkgAcqMetaBase::CheckStopAuthentication(pkgAcquire::Item * const I, const s
       I->Status = StatTransientNetworkError;
       _error->Warning(_("An error occurred during the signature verification. "
 	       "The repository is not updated and the previous index files will be used. "
-	       "OpenPGP signature verification failed: %s: %s"),
+	       "Signature verification failed: %s: %s"),
 	    Desc.Description.c_str(),
 	    GPGError.c_str());
       RunScripts("APT::Update::Auth-Failure");
       return true;
    } else if (LookupTag(Message,"Message").find("NODATA") != string::npos) {
       /* Invalid signature file, reject (LP: #346386) (Closes: #627642) */
-      _error->Error(_("OpenPGP signature verification failed: %s: %s"),
+      _error->Error(_("Signature verification failed: %s: %s"),
 	    Desc.Description.c_str(),
 	    GPGError.c_str());
       I->Status = StatAuthError;
       return true;
    } else {
-      _error->Warning(_("OpenPGP signature verification failed: %s: %s"),
+      _error->Warning(_("Signature verification failed: %s: %s"),
 	    Desc.Description.c_str(),
 	    GPGError.c_str());
    }
@@ -4112,6 +4112,7 @@ void pkgAcqAuxFile::Failed(std::string const &Message, pkgAcquire::MethodConfig 
       return;
    if (RealFileExists(DestFile))
       Rename(DestFile, DestFile + ".FAILED");
+   Desc.URI = OriginalURI;
    Worker->ReplyAux(Desc);
 }
 									/*}}}*/
@@ -4119,10 +4120,11 @@ void pkgAcqAuxFile::Done(std::string const &Message, HashStringList const &CalcH
 			 pkgAcquire::MethodConfig const *const Cnf)
 {
    pkgAcqFile::Done(Message, CalcHashes, Cnf);
-   if (Status == StatDone)
+   if (Status == StatDone || Status == StatAuthError || Status == StatError)
+   {
+      Desc.URI = OriginalURI;
       Worker->ReplyAux(Desc);
-   else if (Status == StatAuthError || Status == StatError)
-      Worker->ReplyAux(Desc);
+   }
 }
 									/*}}}*/
 std::string pkgAcqAuxFile::Custom600Headers() const /*{{{*/
@@ -4203,7 +4205,7 @@ static std::string GetAuxFileNameFromURI(std::string const &uri)
 pkgAcqAuxFile::pkgAcqAuxFile(pkgAcquire::Item *const Owner, pkgAcquire::Worker *const Worker,
 			     std::string const &ShortDesc, std::string const &Desc, std::string const &URI,
 			     HashStringList const &Hashes, unsigned long long const MaximumSize) : pkgAcqFile(Owner->GetOwner(), URI, Hashes, Hashes.FileSize(), Desc, ShortDesc, "", GetAuxFileNameFromURI(URI), false),
-												   Owner(Owner), Worker(Worker), MaximumSize(MaximumSize)
+												   Owner(Owner), Worker(Worker), MaximumSize(MaximumSize), OriginalURI(this->Desc.URI)
 {
    /* very bad failures can happen while constructing which causes
       us to hang as the aux request is never answered (e.g. method not available)

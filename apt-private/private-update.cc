@@ -116,7 +116,7 @@ bool DoUpdate()
 	    _error->Audit(_("The %s entry for '%s' should be upgraded to deb822 .sources"),
 			  "sources.list(5)", URI::ArchiveOnly(uri).c_str());
 	 }
-	 if (S->GetSignedBy().empty())
+	 if (S->GetSignedBy().empty() && S->GetTrusted() != metaIndex::TRI_YES && S->GetTrusted() != metaIndex::TRI_DONTCARE)
 	 {
 	    if (S->HasFlag(metaIndex::Flag::DEB822))
 	    {
